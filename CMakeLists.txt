@@ -3,27 +3,26 @@
 # @author    Sergey Baigudin, sergey@baigudin.software
 # @copyright 2020, Sergey Baigudin, Baigudin Software
 
-enable_testing()
-#find_package(GTest REQUIRED)
-
 add_executable(target-eoos-unit-tests
-    ${CMAKE_CURRENT_LIST_DIR}/source/tests.cpp
-)
-
-target_include_directories(target-eoos-unit-tests
-PRIVATE
-#    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/private>
+    "${CMAKE_CURRENT_LIST_DIR}/source/test.Main.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/test.Object.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/test.lib.Align.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/test.lib.SharedPtr.cpp"
 )
 
 target_link_libraries(target-eoos-unit-tests
 PRIVATE
     target-eoos
     gtest_main
-    #GTest::Main
+)
+
+target_include_directories(target-eoos-unit-tests
+PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../system/include/private>"
 )
 
 set_target_properties(target-eoos-unit-tests PROPERTIES
-    OUTPUT_NAME eoos-unit-tests
+    OUTPUT_NAME EoosTests
 )
 
 add_test(
@@ -33,5 +32,5 @@ add_test(
 
 install(
     TARGETS target-eoos-unit-tests
-    RUNTIME DESTINATION "bintest"
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
