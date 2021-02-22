@@ -4,9 +4,9 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020, Sergey Baigudin, Baigudin Software
  */
+#include "Tests.hpp"
 #include "Object.hpp"
 #include "lib.Types.hpp"
-#include "gtest/gtest.h"
 
 namespace eoos
 {

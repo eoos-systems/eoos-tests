@@ -6,8 +6,9 @@
 add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/test.Main.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/test.Object.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/test.lib.Align.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/test.lib.SharedPtr.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.Align.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.SharedPtr.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.Thread.cpp"
 )
 
 target_link_libraries(target-eoos-unit-tests
@@ -18,6 +19,7 @@ PRIVATE
 
 target_include_directories(target-eoos-unit-tests
 PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../system/include/private>"
 )
 

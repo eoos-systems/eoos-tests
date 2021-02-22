@@ -4,8 +4,8 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020, Sergey Baigudin, Baigudin Software
  */
+#include "Tests.hpp"
 #include "lib.SharedPtr.hpp"
-#include "gtest/gtest.h"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
 
@@ -173,8 +173,6 @@ TEST(lib_SharedPtr, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";
-    obj.~SharedPtr();
-    EXPECT_FALSE(obj.isConstructed())    << "Error: Object is conctructed after destruction";
 }
 
 TEST(lib_SharedPtr, setConstructed)

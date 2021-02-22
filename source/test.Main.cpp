@@ -4,10 +4,9 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020, Sergey Baigudin, Baigudin Software
  */
+#include "Tests.hpp" 
 #include "sys.System.hpp"
 #include "Program.hpp"
-#include "gtest/gtest.h"
-#include <iostream>
 
 namespace eoos
 {
@@ -15,6 +14,8 @@ namespace eoos
 namespace
 {
     
+sys::System eoos;
+
 const int32_t RETURN_OF_PROGRAM {777};
 
 } // namespace
@@ -29,11 +30,8 @@ namespace test
 
 TEST(Main, execute)
 {
-    sys::System eoos;
     int32_t const error { eoos.execute() };
-    int const expected {RETURN_OF_PROGRAM};
-    int actual {static_cast<int>(error)};
-    EXPECT_EQ(expected, actual);
+    EXPECT_EQ(RETURN_OF_PROGRAM, error) << "Error: Program was not started";
 }
 
 } // namespace test
