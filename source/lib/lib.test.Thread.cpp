@@ -1,10 +1,11 @@
 /**
- * @brief Unit tests of `lib::Thread`.
- *
+ * @file      lib.test.Thread.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021, Sergey Baigudin, Baigudin Software
+ *
+ * @brief Unit tests of `lib::Thread`. 
  */
-#include "Tests.hpp"
+#include "System.hpp"
 #include "lib.Thread.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
@@ -15,150 +16,214 @@ namespace lib
 {
 namespace test
 {
-namespace
-{
-    
-class Task : public ::eoos::Object<>, public api::Task
-{
-    typedef ::eoos::Object<> Parent;
-  
-public:
 
-    Task() : Parent()
-    {
-    }
-    
-    ~Task() override
-    {
-    }
-    
-    bool_t isConstructed() const override
-    {
-        return Parent::isConstructed();
-    }    
+class test_lib_Thread : public ::testing::Test
+{
 
-    int32_t start() override
+protected:
+
+    class Task : public ::eoos::Object<>, public api::Task
     {
-        isStarted_ = true;
-        return 0;
-    }
+        using Parent = ::eoos::Object<>;
+      
+    public:
     
-    void setConstructed(bool_t const flag)
-    {
-        Parent::setConstructed(flag);
-    }    
+        Task() : Parent()
+        {
+        }
+        
+        Task(bool_t isConstructed) : Parent()
+        {
+            setConstructed(isConstructed);
+        }
     
-    int32_t getStackSize() const override
-    {
-        return 0;
-    }
+        Task(int32_t error) : Parent(),
+            error_ (error){
+        }
+        
+        int32_t getCounter() const
+        {
+            return count_;
+        }       
+
+        bool waitIsStarted()
+        {
+            bool_t isStarted {false};
+            for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
+            {
+                isStarted = isStarted_;
+                if(isStarted)
+                {
+                    break;
+                }
+            }
+            return isStarted;
+        }
+        
+    private:    
+        
+        bool_t isConstructed() const override
+        {
+            return Parent::isConstructed();
+        }    
     
-    bool_t isTestStarted() const
+        int32_t start() override
+        {
+            isStarted_ = true;
+            count_++;
+            Thread<>::yield();
+            count_++;              
+            return error_;
+        }
+        
+        size_t getStackSize() const override
+        {
+            return 0;
+        }
+    
+        bool_t isStarted_ {false};
+        int32_t error_ {0};
+        int32_t count_ {0};
+    };
+    
+protected:    
+
+    static const int32_t TASK_RETURN_ERROR {333};
+
+    struct Tasks
     {
-        return isStarted_;
-    }
+        Task normal;
+        Task unconstructed {false};
+        Task error {TASK_RETURN_ERROR};
+    } task;
     
 private:
 
-    bool_t isStarted_ {false};
-};
+    System eoos;
+};  
 
-} // namespace
-
-TEST(lib_Thread, Constructor)
+TEST_F(test_lib_Thread, Constructor)
 {
-    Task task; 
-    Thread<> obj(task);
-    EXPECT_TRUE(obj.isConstructed())             << "Error: Object is not conctructed";
-    EXPECT_EQ(obj.getStatus(), api::Thread::NEW) << "Error: Status of a new thread is not NEW";
+    Thread<> obj(task.normal);
+    EXPECT_TRUE(obj.isConstructed())                    << "Fatal: Object is not conctructed";
+    EXPECT_EQ(obj.getStatus(), api::Thread::STATUS_NEW) << "Fatal: Status of a new thread is not NEW";
 }
 
-TEST(lib_Thread, isConstructed)
+TEST_F(test_lib_Thread, isConstructed)
 {
-    Task task; 
-    Thread<> obj(task);
-    EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not conctructed";
+    Thread<> obj(task.normal);
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not conctructed";
 }
 
-TEST(lib_Thread, execute)
+TEST_F(test_lib_Thread, execute)
 {
     // Execute constructed task
     {
-        Task task; 
-        Thread<> thread(task);
+        Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not conctructed";
-        bool_t isStarted {false};
-        
-        for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
-        {
-            isStarted = task.isTestStarted();
-            if(isStarted)
-            {
-                break;
-            }
-        }
-        EXPECT_FALSE(isStarted) << "Error: Thread was started without execute() function";
-        
+        EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
         thread.execute();
-        for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
-        {
-            isStarted = task.isTestStarted();
-            if(isStarted)
-            {
-                break;
-            }
-        }
-        EXPECT_TRUE(isStarted) << "Error: Thread was not executed";
+        EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_RUNNABLE) << "Fatal: Status of a new thread is not RUNNABLE";
+        EXPECT_TRUE(task.normal.waitIsStarted()) << "Fatal: Thread was not executed";
         thread.join();
     }
     // Execute not constructed task
     {
-        Task task; 
-        task.setConstructed(false);
-        Thread<> thread(task);
+        Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is conctructed";
         thread.execute();
-        bool_t isStarted {false};
-        for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
-        {
-            isStarted = task.isTestStarted();
-            if(isStarted)
-            {
-                break;
-            }
-        }
-        EXPECT_FALSE(isStarted) << "Error: Thread was executed";
+        EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of a new unconstructed thread is not DEAD";
+        EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Fatal: Unconstructed thread was executed";
         thread.join();
     }
 }
 
-TEST(lib_Thread, join)
+TEST_F(test_lib_Thread, join)
 {
-    Task task;
-    Thread<> thread(task);
-    EXPECT_EQ(thread.getStatus(), api::Thread::NEW) << "Error: Status of a new thread is not NEW";
+    Thread<> thread(task.normal);
+    EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_NEW) << "Error: Status of a new thread is not NEW";
     thread.execute();
     thread.join();
-    EXPECT_EQ(thread.getStatus(), api::Thread::DEAD) << "Error: Status of thread is not DEAD";
+    EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of thread is not DEAD";
 }
 
-TEST(lib_Thread, getId)
+TEST_F(test_lib_Thread, getId)
 {
     {
-        Task task;
-        Thread<> thread(task);
-        EXPECT_NE(thread.getId(), api::Thread::WRONG_ID) << "Error: Thread ID is wrong";
+        Thread<> thread(task.normal);
+        EXPECT_NE(thread.getId(), api::Thread::ID_WRONG) << "Fatal: Thread ID is Wrong";
     }
     {
-        Task task;
-        task.setConstructed(false);
-        Thread<> thread(task);
-        EXPECT_EQ(thread.getId(), api::Thread::WRONG_ID) << "Error: Thread ID is not wrong";
+        Thread<> thread(task.unconstructed);
+        EXPECT_EQ(thread.getId(), api::Thread::ID_WRONG) << "Fatal: Thread ID is not Wrong";
     }    
 }
 
+TEST_F(test_lib_Thread, getPriority)
+{
+    {
+        Thread<> thread(task.normal);
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is not Normal";
+    }
+    {
+        Thread<> thread(task.unconstructed);
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_WRONG) << "Fatal: Thread priority is not Wrong";
+    }    
+}
 
+TEST_F(test_lib_Thread, setPriority)
+{
+    {
+        Thread<> thread(task.normal);
+        EXPECT_TRUE(thread.setPriority(api::Thread::PRIORITY_LOCK)) << "Error: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_LOCK) << "Fatal: Thread priority is wrong";
+    }
+    {
+        Thread<> thread(task.unconstructed);
+        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_LOCK)) << "Error`: Thread priority is set"; 
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_WRONG) << "Fatal: Thread priority is not wrong";        
+    }
+    for(int32_t priority=api::Thread::PRIORITY_MIN; priority<=api::Thread::PRIORITY_MAX; priority++)
+    {
+        Thread<> thread(task.normal);
+        EXPECT_TRUE(thread.setPriority(priority)) << "Error: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), priority) << "Fatal: Thread priority is wrong";
+    }
+    {
+        Thread<> thread(task.normal);
+        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_MAX + 1)) << "Error: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+    }  
+    {
+        Thread<> thread(task.normal);
+        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_MIN - 2)) << "Error: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+    }      
+}
 
+TEST_F(test_lib_Thread, getExecutionError)
+{
+    {
+        Thread<> thread(task.normal);
+        thread.execute();
+        thread.join();
+        EXPECT_EQ(thread.getExecutionError(), 0) << "Fatal: Exit code is wrong";
+    }
+    {
+        Thread<> thread(task.error);
+        thread.execute();
+        thread.join();
+        EXPECT_EQ(thread.getExecutionError(), TASK_RETURN_ERROR) << "Fatal: Exit code is wrong";
+    } 
+}
+
+TEST_F(test_lib_Thread, sleep)
+{   
+}
+
+TEST_F(test_lib_Thread, yield)
+{   
+}
 
 } // namespace test
 } // namespace lib

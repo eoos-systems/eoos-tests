@@ -1,10 +1,11 @@
 /**
- * @brief Unit tests of `lib::SharedPtr`.
- *
+ * @file      lib.test.SharedPtr.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020, Sergey Baigudin, Baigudin Software
+ *
+ * @brief Unit tests of `lib::SharedPtr`. 
  */
-#include "Tests.hpp"
+#include "System.hpp"
 #include "lib.SharedPtr.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
@@ -15,6 +16,15 @@ namespace lib
 {
 namespace test
 {
+
+class test_lib_SharedPtr : public ::testing::Test
+{
+
+protected:
+    
+    System eoos;    
+};    
+    
 namespace
 {
     
@@ -96,14 +106,14 @@ public:
 
 } // namespace
 
-TEST(lib_SharedPtr, Constructor)
+TEST_F(test_lib_SharedPtr, Constructor)
 {
     SharedPtr<ManagedObject> const obj {NULLPTR};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";    
     EXPECT_EQ(obj.get(), NULLPTR)        << "Error: Shared pointer does not equal to NULLPTR";
 }
 
-TEST(lib_SharedPtr, Constructor_pointer)
+TEST_F(test_lib_SharedPtr, Constructor_pointer)
 {
     ManagedObject* const ptr {new ManagedObject()};
     SharedPtr<ManagedObject> const obj {ptr};
@@ -111,7 +121,7 @@ TEST(lib_SharedPtr, Constructor_pointer)
     EXPECT_EQ(obj.get(), ptr)            << "Error: Shared pointer does not equal to its raw pointer";
 }
 
-TEST(lib_SharedPtr, CopyConstructor)
+TEST_F(test_lib_SharedPtr, CopyConstructor)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not conctructed";
@@ -120,7 +130,7 @@ TEST(lib_SharedPtr, CopyConstructor)
     EXPECT_EQ(obj1.get(), obj2.get())       << "Error: Both shared object don't point to the same managed object";
 }
 
-TEST(lib_SharedPtr, MoveConstructor)
+TEST_F(test_lib_SharedPtr, MoveConstructor)
 {
     // Test if compiler moves an obj to obj1
     SharedPtr<ManagedObject> obj1 { createObject() };
@@ -131,7 +141,7 @@ TEST(lib_SharedPtr, MoveConstructor)
     EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is conctructed after movement to object 2";
 }
 
-TEST(lib_SharedPtr, CopyAssignment)
+TEST_F(test_lib_SharedPtr, CopyAssignment)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not conctructed";
@@ -150,7 +160,7 @@ TEST(lib_SharedPtr, CopyAssignment)
 
 }
 
-TEST(lib_SharedPtr, MoveAssignment)
+TEST_F(test_lib_SharedPtr, MoveAssignment)
 {
     SharedPtr<ManagedObject> obj1 {new ManagedObject()};
     SharedPtr<ManagedObject> obj2 {new ManagedObject()};
@@ -169,13 +179,13 @@ TEST(lib_SharedPtr, MoveAssignment)
     EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with rvalue of a moved object";
 }
 
-TEST(lib_SharedPtr, isConstructed)
+TEST_F(test_lib_SharedPtr, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";
 }
 
-TEST(lib_SharedPtr, setConstructed)
+TEST_F(test_lib_SharedPtr, setConstructed)
 {
     TestSharedPtr<ManagedObject> obj{new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not conctructed";
@@ -187,7 +197,7 @@ TEST(lib_SharedPtr, setConstructed)
     EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as conctructed if it is unconctructed";
 }
 
-TEST(lib_SharedPtr, isNotConstructed)
+TEST_F(test_lib_SharedPtr, isNotConstructed)
 {
     using SharedPtr = SharedPtr<ManagedObject,SharedPtrDeleter<ManagedObject>,NullAllocator>;
     bool_t isDeleted {false};
@@ -209,7 +219,7 @@ TEST(lib_SharedPtr, isNotConstructed)
     EXPECT_EQ(obj3.getCount(), 0)       << "Error: Number of shared objects is wrong";
 }
 
-TEST(lib_SharedPtr, get)
+TEST_F(test_lib_SharedPtr, get)
 {
     int32_t const value = 0x12345678;
     ManagedObject* const ptr {new ManagedObject(value)};
@@ -225,7 +235,7 @@ TEST(lib_SharedPtr, get)
     EXPECT_EQ(obj3.get(), NULLPTR)           << "Error: Shared pointer does not equal to its raw pointer";    
 }
 
-TEST(lib_SharedPtr, getCount)
+TEST_F(test_lib_SharedPtr, getCount)
 {
     bool_t isDeleted1 {false};
     SharedPtr<ManagedObject>* obj1 { new SharedPtr<ManagedObject>(new ManagedObject(&isDeleted1)) };
@@ -256,7 +266,7 @@ TEST(lib_SharedPtr, getCount)
     EXPECT_TRUE(isDeleted1)         << "Error: Managed object was not deleted";  
 }
 
-TEST(lib_SharedPtr, operator_arrow)
+TEST_F(test_lib_SharedPtr, operator_arrow)
 {
     int32_t const value = 0x5A5AA5A5;
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
@@ -264,7 +274,7 @@ TEST(lib_SharedPtr, operator_arrow)
     EXPECT_EQ(obj->getValue(), value) << "Error: Value in managed object is wrong";
 }
 
-TEST(lib_SharedPtr, operator_star)
+TEST_F(test_lib_SharedPtr, operator_star)
 {
     int32_t const value = 0xE763ABCD;
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
@@ -272,7 +282,7 @@ TEST(lib_SharedPtr, operator_star)
     EXPECT_EQ((*obj).getValue(), value) << "Error: Value in managed object is wrong";
 }
 
-TEST(lib_SharedPtr, operator_bool)
+TEST_F(test_lib_SharedPtr, operator_bool)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE( obj1 )  << "Error: Object stores NULLPTR";
@@ -282,7 +292,7 @@ TEST(lib_SharedPtr, operator_bool)
     EXPECT_FALSE( obj3 ) << "Error: Object doesn't store NULLPTR";
 }
 
-TEST(lib_SharedPtr, operator_square_brackets)
+TEST_F(test_lib_SharedPtr, operator_square_brackets)
 {
     int32_t* const arr = new int32_t[3]{1,2,3};
     SharedPtr< int32_t,SharedPtrDeleterArray<int32_t> > const obj {arr};

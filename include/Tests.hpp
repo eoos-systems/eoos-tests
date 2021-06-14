@@ -1,8 +1,9 @@
 /**
- * @brief Global definitions of Unit Tests.
- *
+ * @file      Tests.hpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021, Sergey Baigudin, Baigudin Software
+ *
+ * @brief Global definitions of Unit Tests. 
  */
 #ifndef TESTS_HPP_
 #define TESTS_HPP_

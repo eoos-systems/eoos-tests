@@ -1,37 +1,43 @@
 /**
- * @brief Unit tests of `main`.
- *
+ * @file      test.Main.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ *
+ * @brief Unit tests of `main`. 
  */
-#include "Tests.hpp" 
-#include "sys.System.hpp"
+#include "System.hpp"
 #include "Program.hpp"
 
 namespace eoos
 {
-    
-namespace
-{
-    
-sys::System eoos;
 
-const int32_t RETURN_OF_PROGRAM {777};
-
-} // namespace
+static const int32_t PROGRAM_OK           {777};
+static const int32_t PROGRAM_WRONG_ARGS   {666};
     
-int32_t Program::start()
+int32_t Program::start(const api::List<char_t*>* args)
 {
-    return RETURN_OF_PROGRAM;
+    if(args->getLength() != 0)
+    {
+        return PROGRAM_WRONG_ARGS;
+    }
+    return PROGRAM_OK;
 }
     
 namespace test
 {
+    
+class test_Main : public ::testing::Test
+{
 
-TEST(Main, execute)
+protected:
+    
+    System eoos;    
+};
+
+TEST_F(test_Main, execute)
 {
     int32_t const error { eoos.execute() };
-    EXPECT_EQ(RETURN_OF_PROGRAM, error) << "Error: Program was not started";
+    EXPECT_EQ(PROGRAM_OK, error) << "Error: Program was not started";
 }
 
 } // namespace test
@@ -85,5 +91,6 @@ int main(int argc, char** const argv)
     #endif
     
     ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    int const error { RUN_ALL_TESTS() };
+    return error;
 }

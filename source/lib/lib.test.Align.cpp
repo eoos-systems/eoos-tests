@@ -1,10 +1,11 @@
 /**
- * @brief Unit tests of `lib::Align`.
- *
+ * @file      lib.test.Align.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ *
+ * @brief Unit tests of `lib::Align`. 
  */
-#include "Tests.hpp"
+#include "System.hpp"
 #include "lib.Align.hpp"
 
 namespace eoos
@@ -13,6 +14,15 @@ namespace lib
 {
 namespace test
 {
+    
+class test_lib_Align : public ::testing::Test
+{
+
+protected:
+    
+    System eoos;    
+};
+    
     
 template<typename T>
 void testSizeof()
@@ -32,7 +42,7 @@ void testSum(T const o1, T const o2)
     EXPECT_TRUE(ares == ores);
 }
 
-TEST(lib_Align, Sizeof)
+TEST_F(test_lib_Align, Sizeof)
 {
     testSizeof<int8_t>();
     testSizeof<int16_t>();
@@ -44,7 +54,7 @@ TEST(lib_Align, Sizeof)
     testSizeof<uint64_t>();
 }
 
-TEST(lib_Align, Sum)
+TEST_F(test_lib_Align, Sum)
 {
     testSum<int8_t>(-1,2);
 }
