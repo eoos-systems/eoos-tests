@@ -88,7 +88,7 @@ protected:
     
 protected:    
 
-    static const int32_t TASK_RETURN_ERROR {333};
+    static int32_t TASK_RETURN_ERROR;
 
     struct Tasks
     {
@@ -96,11 +96,23 @@ protected:
         Task unconstructed {false};
         Task error {TASK_RETURN_ERROR};
     } task;
+
+    // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
+    // and constants defined in scope of fixture classes as well as in scope of tested classes.
+    int32_t const ID_WRONG {api::Thread::ID_WRONG};
+    
+    int32_t const PRIORITY_WRONG {api::Thread::PRIORITY_WRONG};
+    int32_t const PRIORITY_MAX {api::Thread::PRIORITY_MAX};
+    int32_t const PRIORITY_MIN {api::Thread::PRIORITY_MIN};
+    int32_t const PRIORITY_NORM {api::Thread::PRIORITY_NORM};
+    int32_t const PRIORITY_LOCK  {api::Thread::PRIORITY_LOCK};
     
 private:
 
     System eoos;
 };  
+    
+int32_t test_lib_Thread::TASK_RETURN_ERROR {333};
 
 TEST_F(test_lib_Thread, Constructor)
 {
@@ -151,11 +163,11 @@ TEST_F(test_lib_Thread, getId)
 {
     {
         Thread<> thread(task.normal);
-        EXPECT_NE(thread.getId(), api::Thread::ID_WRONG) << "Fatal: Thread ID is Wrong";
+        EXPECT_NE(thread.getId(), ID_WRONG) << "Fatal: Thread ID is Wrong";
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_EQ(thread.getId(), api::Thread::ID_WRONG) << "Fatal: Thread ID is not Wrong";
+        EXPECT_EQ(thread.getId(), ID_WRONG) << "Fatal: Thread ID is not Wrong";
     }    
 }
 
@@ -163,11 +175,11 @@ TEST_F(test_lib_Thread, getPriority)
 {
     {
         Thread<> thread(task.normal);
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is not Normal";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is not Normal";
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_WRONG) << "Fatal: Thread priority is not Wrong";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Fatal: Thread priority is not Wrong";
     }    
 }
 
@@ -175,15 +187,15 @@ TEST_F(test_lib_Thread, setPriority)
 {
     {
         Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.setPriority(api::Thread::PRIORITY_LOCK)) << "Error: Thread priority is not set";
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_LOCK) << "Fatal: Thread priority is wrong";
+        EXPECT_TRUE(thread.setPriority(PRIORITY_LOCK)) << "Error: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_LOCK) << "Fatal: Thread priority is wrong";
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_LOCK)) << "Error`: Thread priority is set"; 
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_WRONG) << "Fatal: Thread priority is not wrong";        
+        EXPECT_FALSE(thread.setPriority(PRIORITY_LOCK)) << "Error`: Thread priority is set"; 
+        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Fatal: Thread priority is not wrong";        
     }
-    for(int32_t priority=api::Thread::PRIORITY_MIN; priority<=api::Thread::PRIORITY_MAX; priority++)
+    for(int32_t priority=PRIORITY_MIN; priority<=PRIORITY_MAX; priority++)
     {
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.setPriority(priority)) << "Error: Thread priority is not set";
@@ -191,13 +203,13 @@ TEST_F(test_lib_Thread, setPriority)
     }
     {
         Thread<> thread(task.normal);
-        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_MAX + 1)) << "Error: Thread priority is set";
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+        EXPECT_FALSE(thread.setPriority(PRIORITY_MAX + 1)) << "Error: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is wrong";
     }  
     {
         Thread<> thread(task.normal);
-        EXPECT_FALSE(thread.setPriority(api::Thread::PRIORITY_MIN - 2)) << "Error: Thread priority is set";
-        EXPECT_EQ(thread.getPriority(), api::Thread::PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+        EXPECT_FALSE(thread.setPriority(PRIORITY_MIN - 2)) << "Error: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is wrong";
     }      
 }
 
