@@ -24,8 +24,7 @@ public:
      * @brief Constructor.
      */
     System()
-    {
-        sys::Call::initialize();
+        : isInitialized_ (sys::Call::initialize()) {
     }
 
     /**
@@ -35,6 +34,18 @@ public:
     {
         sys::Call::deinitialize();
     }
+    
+    /**
+     * @brief Tests if the OS has been initialized.
+     *
+     * @return True if the OS has been initialized successfully.
+     */
+    bool_t isInitialized() const
+    {
+        return isInitialized_;
+    }
+
+    
 
     /**
      * @brief Executes the operating system.
@@ -45,6 +56,10 @@ public:
     {
         return sys::Call::execute();
     }
+	
+private:
+    
+    bool_t isInitialized_;
 
 };
 

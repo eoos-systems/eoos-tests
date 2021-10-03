@@ -37,7 +37,8 @@ protected:
 TEST_F(test_Main, execute)
 {
     int32_t const error { eoos.execute() };
-    EXPECT_EQ(PROGRAM_OK, error) << "Error: Program was not started";
+    ASSERT_TRUE(eoos.isInitialized())  << "Fatal: EOOS was not initialized";
+    ASSERT_EQ(PROGRAM_OK, error)       << "Fatal: Program was not started";
 }
 
 } // namespace test
