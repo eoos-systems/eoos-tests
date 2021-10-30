@@ -1,5 +1,5 @@
 /**
- * @file      lib.test.Align.cpp
+ * @file      lib.AlignTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
@@ -12,10 +12,8 @@ namespace eoos
 {
 namespace lib
 {
-namespace test
-{
     
-class test_lib_Align : public ::testing::Test
+class AlignTest : public ::testing::Test
 {
 
 protected:
@@ -42,7 +40,7 @@ void testSum(T const o1, T const o2)
     EXPECT_TRUE(ares == ores);
 }
 
-TEST_F(test_lib_Align, Sizeof)
+TEST_F(AlignTest, Sizeof)
 {
     testSizeof<int8_t>();
     testSizeof<int16_t>();
@@ -54,13 +52,12 @@ TEST_F(test_lib_Align, Sizeof)
     testSizeof<uint64_t>();
 }
 
-TEST_F(test_lib_Align, Sum)
+TEST_F(AlignTest, Sum)
 {
     testSum<int8_t,int32_t>(-1,2);
     testSum<int16_t,int32_t>(-1,2);
     testSum<int32_t,int64_t>(-1,2);
 }
 
-} // namespace test
 } // namespace lib
 } // namespace eoos

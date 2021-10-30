@@ -1,7 +1,7 @@
 /**
- * @file      test.Object.cpp
+ * @file      ObjectTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `Object`.
  */
@@ -11,10 +11,8 @@
 
 namespace eoos
 {
-namespace test
-{
-    
-class test_Object : public ::testing::Test
+
+class ObjectTest : public ::testing::Test
 {
 
 protected:
@@ -45,13 +43,13 @@ public:
 
 } // namespace
 
-TEST_F(test_Object, Constructor)
+TEST_F(ObjectTest, Constructor)
 {
     Object<> const obj {};
     EXPECT_TRUE(obj.isConstructed())        << "Error: Object is not conctructed";    
 }
 
-TEST_F(test_Object, CopyConstructor)
+TEST_F(ObjectTest, CopyConstructor)
 {
     Object<> const obj1 {};
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not conctructed";
@@ -59,7 +57,7 @@ TEST_F(test_Object, CopyConstructor)
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 2 is not conctructed";
 }
 
-TEST_F(test_Object, MoveConstructor)
+TEST_F(ObjectTest, MoveConstructor)
 {
     // Test if compiler moves an obj to obj1
     Object<> obj1 { createObject() };
@@ -70,7 +68,7 @@ TEST_F(test_Object, MoveConstructor)
     EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is conctructed after movement to object 2";
 }
 
-TEST_F(test_Object, CopyAssignment)
+TEST_F(ObjectTest, CopyAssignment)
 {
     Object<> const obj1 {};
     EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not conctructed";
@@ -80,7 +78,7 @@ TEST_F(test_Object, CopyAssignment)
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not assigned with object 1";
 }
 
-TEST_F(test_Object, MoveAssignment)
+TEST_F(ObjectTest, MoveAssignment)
 {
     Object<> obj1 {};
     Object<> obj2 {};
@@ -99,7 +97,7 @@ TEST_F(test_Object, MoveAssignment)
     EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with rvalue of a moved object";
 }
 
-TEST_F(test_Object, MemoryAllocation)
+TEST_F(ObjectTest, MemoryAllocation)
 {
     Object<>* obj {new Object<>()};
     ASSERT_NE(obj, NULLPTR)             << "Error: Object is not allocated";
@@ -114,7 +112,7 @@ TEST_F(test_Object, MemoryAllocation)
     EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not conctructed, but put on memory";
 }
 
-TEST_F(test_Object, isConstructed)
+TEST_F(ObjectTest, isConstructed)
 {
     Object<> const obj{};
     EXPECT_TRUE(obj.isConstructed())  << "Error: Object is not conctructed";
@@ -122,7 +120,7 @@ TEST_F(test_Object, isConstructed)
     EXPECT_FALSE(obj.isConstructed()) << "Error: Object is conctructed after destruction";
 }
 
-TEST_F(test_Object, isConstructed_obj)
+TEST_F(ObjectTest, isConstructed_obj)
 {
     Object<>* obj {new Object<>()};
     EXPECT_TRUE(Object<>::isConstructed(obj))   << "Error: Object is not conctructed";
@@ -131,7 +129,7 @@ TEST_F(test_Object, isConstructed_obj)
     EXPECT_FALSE(Object<>::isConstructed(obj))  << "Error: Pointer to NULLPTR object is conctructed";
 }
 
-TEST_F(test_Object, setConstructed)
+TEST_F(ObjectTest, setConstructed)
 {
     TestObject obj{};
     EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not conctructed";
@@ -143,5 +141,4 @@ TEST_F(test_Object, setConstructed)
     EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as conctructed if it is unconctructed";
 }
 
-} // namespace test
 } // namespace eoos

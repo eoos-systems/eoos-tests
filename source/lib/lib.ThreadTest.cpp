@@ -1,5 +1,5 @@
 /**
- * @file      lib.test.Thread.cpp
+ * @file      lib.ThreadTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021, Sergey Baigudin, Baigudin Software
  *
@@ -14,10 +14,8 @@ namespace eoos
 {
 namespace lib
 {
-namespace test
-{
 
-class test_lib_Thread : public ::testing::Test
+class ThreadTest : public ::testing::Test
 {
 
 protected:
@@ -112,22 +110,22 @@ private:
     System eoos;
 };  
     
-int32_t test_lib_Thread::TASK_RETURN_ERROR {333};
+int32_t ThreadTest::TASK_RETURN_ERROR {333};
 
-TEST_F(test_lib_Thread, Constructor)
+TEST_F(ThreadTest, Constructor)
 {
     Thread<> obj(task.normal);
     EXPECT_TRUE(obj.isConstructed())                    << "Fatal: Object is not conctructed";
     EXPECT_EQ(obj.getStatus(), api::Thread::STATUS_NEW) << "Fatal: Status of a new thread is not NEW";
 }
 
-TEST_F(test_lib_Thread, isConstructed)
+TEST_F(ThreadTest, isConstructed)
 {
     Thread<> obj(task.normal);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not conctructed";
 }
 
-TEST_F(test_lib_Thread, execute)
+TEST_F(ThreadTest, execute)
 {
     // Execute constructed task
     {
@@ -150,7 +148,7 @@ TEST_F(test_lib_Thread, execute)
     }
 }
 
-TEST_F(test_lib_Thread, join)
+TEST_F(ThreadTest, join)
 {
     Thread<> thread(task.normal);
     EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_NEW) << "Error: Status of a new thread is not NEW";
@@ -159,7 +157,7 @@ TEST_F(test_lib_Thread, join)
     EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of thread is not DEAD";
 }
 
-TEST_F(test_lib_Thread, getId)
+TEST_F(ThreadTest, getId)
 {
     {
         Thread<> thread(task.normal);
@@ -171,7 +169,7 @@ TEST_F(test_lib_Thread, getId)
     }    
 }
 
-TEST_F(test_lib_Thread, getPriority)
+TEST_F(ThreadTest, getPriority)
 {
     {
         Thread<> thread(task.normal);
@@ -183,7 +181,7 @@ TEST_F(test_lib_Thread, getPriority)
     }    
 }
 
-TEST_F(test_lib_Thread, setPriority)
+TEST_F(ThreadTest, setPriority)
 {
     {
         Thread<> thread(task.normal);
@@ -213,7 +211,7 @@ TEST_F(test_lib_Thread, setPriority)
     }      
 }
 
-TEST_F(test_lib_Thread, getExecutionError)
+TEST_F(ThreadTest, getExecutionError)
 {
     {
         Thread<> thread(task.normal);
@@ -229,15 +227,14 @@ TEST_F(test_lib_Thread, getExecutionError)
     } 
 }
 
-TEST_F(test_lib_Thread, sleep)
+TEST_F(ThreadTest, sleep)
 {   
 }
 
-TEST_F(test_lib_Thread, yield)
+TEST_F(ThreadTest, yield)
 {   
 }
 
-} // namespace test
 } // namespace lib
 } // namespace eoos
 

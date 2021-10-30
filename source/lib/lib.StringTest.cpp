@@ -1,5 +1,5 @@
 /**
- * @file      lib.test.String.cpp
+ * @file      lib.StringTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
@@ -14,10 +14,8 @@ namespace eoos
 {
 namespace lib
 {
-namespace test
-{
     
-class test_lib_String : public ::testing::Test
+class StringTest : public ::testing::Test
 {
 
 protected:
@@ -25,13 +23,12 @@ protected:
     System eoos;    
 };    
 
-TEST_F(test_lib_String, Constructor)
+TEST_F(StringTest, Constructor)
 {
     String const obj;
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";    
 }
 
-} // namespace test
 } // namespace lib
 } // namespace eoos
 

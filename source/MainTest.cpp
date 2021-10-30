@@ -1,5 +1,5 @@
 /**
- * @file      test.Main.cpp
+ * @file      MainTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
@@ -11,10 +11,13 @@
 namespace eoos
 {
 
-static const int32_t PROGRAM_OK           {777};
-static const int32_t PROGRAM_WRONG_ARGS   {666};
-    
-int32_t Program::start(const api::List<char_t*>* args)
+static const int32_t PROGRAM_OK           {777}; //< Correct program exit code.
+static const int32_t PROGRAM_WRONG_ARGS   {666}; //< Wrong program exit code.
+
+/**
+ * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)
+ */
+int32_t Program::start(api::List<char_t*> const* args)
 {
     if(args->getLength() != 0)
     {
@@ -22,11 +25,14 @@ int32_t Program::start(const api::List<char_t*>* args)
     }
     return PROGRAM_OK;
 }
-    
-namespace test
-{
-    
-class test_Main : public ::testing::Test
+
+
+/**
+ * @class MainTest
+ * @test Call
+ * @brief Tests an application on EOOS starts sucessfully.
+ */
+class MainTest : public ::testing::Test
 {
 
 protected:
@@ -34,25 +40,38 @@ protected:
     System eoos;    
 };
 
-TEST_F(test_Main, execute)
+/**
+ * @relates MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the system is initialized.
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(MainTest, execute)
 {
     int32_t const error { eoos.execute() };
     ASSERT_TRUE(eoos.isInitialized())  << "Fatal: EOOS was not initialized";
     ASSERT_EQ(PROGRAM_OK, error)       << "Fatal: Program was not started";
 }
 
-} // namespace test
 } // namespace eoos
 
 /**
  * @brief The main function.
  *
- * This function starts all the testsuites and is defined here as the EOOS library defined 
- * its own main() function and this definition will make a linker link this main() function. 
+ * This function starts all the testsuites and is defined here as the EOOS library may have 
+ * its own main() function defined and this definition will make a linker link the main(). 
  *
- * @param argc - The number of arguments passed to the program.
- * @param argv - An array of c-string of arguments where the last one - argc + 1 is null.
- * @return error code or zero.
+ * @param argc  The number of arguments passed to the program.
+ * @param argv  An array of c-string of arguments where the last one - argc + 1 is null.
+ * @return Error code or zero.
  */
 int main(int argc, char** const argv)
 {

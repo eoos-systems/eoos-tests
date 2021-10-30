@@ -4,12 +4,12 @@
 # @copyright 2020, Sergey Baigudin, Baigudin Software
 
 add_executable(target-eoos-unit-tests
-    "${CMAKE_CURRENT_LIST_DIR}/source/test.Main.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/test.Object.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.Align.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.SharedPtr.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.Thread.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.test.String.cpp"    
+    "${CMAKE_CURRENT_LIST_DIR}/source/MainTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/ObjectTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.AlignTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SharedPtrTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ThreadTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StringTest.cpp"    
 )
 
 target_link_libraries(target-eoos-unit-tests
