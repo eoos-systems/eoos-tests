@@ -45,8 +45,6 @@ public:
         return isInitialized_;
     }
 
-    
-
     /**
      * @brief Executes the operating system.
      *
