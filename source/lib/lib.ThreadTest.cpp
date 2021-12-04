@@ -157,18 +157,6 @@ TEST_F(ThreadTest, join)
     EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of thread is not DEAD";
 }
 
-TEST_F(ThreadTest, getId)
-{
-    {
-        Thread<> thread(task.normal);
-        EXPECT_NE(thread.getId(), ID_WRONG) << "Fatal: Thread ID is Wrong";
-    }
-    {
-        Thread<> thread(task.unconstructed);
-        EXPECT_EQ(thread.getId(), ID_WRONG) << "Fatal: Thread ID is not Wrong";
-    }    
-}
-
 TEST_F(ThreadTest, getPriority)
 {
     {
