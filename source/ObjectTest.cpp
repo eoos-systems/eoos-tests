@@ -12,22 +12,38 @@
 namespace eoos
 {
 
+/**
+ * @class ObjectTest
+ * @test Object
+ * @brief Tests root Object class functionality.
+ */
 class ObjectTest : public ::testing::Test
 {
 
 protected:
     
-    System eoos;    
+    System eoos; //< EOOS Operating System.
 };    
     
 namespace 
 {
 
+/**
+ * @brief Creates an object to test it.
+ *
+ * @return an object of Object class. 
+ */
 Object<> createObject()
 {
     Object<> const obj{};
     return obj;
 }
+
+/**
+ * @class TestObject
+ *
+ * @brief Class to provide protect functions to public scope.
+ */
 
 class TestObject : public ::eoos::Object<>
 {
@@ -35,6 +51,9 @@ class TestObject : public ::eoos::Object<>
 
 public:
 
+    /**
+     * @copydoc eoos::Object::setConstructed(bool_t)
+     */
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);
@@ -43,6 +62,19 @@ public:
 
 } // namespace
 
+/**
+ * @relates ObjectTest
+ * @brief Tests the class constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ */
 TEST_F(ObjectTest, Constructor)
 {
     Object<> const obj {};
