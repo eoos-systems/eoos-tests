@@ -1,7 +1,7 @@
 /**
  * @file      lib.SharedPtrTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::SharedPtr`. 
  */
@@ -15,51 +15,86 @@ namespace eoos
 namespace lib
 {
 
+/**
+ * @class SharedPtrTest
+ * @test SharedPtr
+ * @brief Tests SharedPtr class functionality.
+ */
 class SharedPtrTest : public ::testing::Test
 {
 
 protected:
     
-    System eoos;    
+    System eoos; //< EOOS Operating System.
 };    
     
 namespace
 {
     
+/**
+ * @class NullAllocator
+ * @brief No memory allocator.
+ */
 class NullAllocator
 {
 
 public:
 
+    /**
+     * @brief Returns nullptr.
+     *
+     * @return the null pointer.
+     */    
     static void* allocate(size_t)
     {
-        return NULL;
+        return NULLPTR;
     }
 
-    static void free(void* ptr)
+    /**
+     * @brief Does nothing.
+     */    
+    static void free(void*)
     {
     }
 
 };    
-    
+
+/**
+ * @class ManagedObject
+ * @brief Object managed by SharedPtr objects.
+ */
 class ManagedObject : public Object<>
 {
 
 public:
 
-    ManagedObject()
-    {
-    }
-    
+    /**
+     * @brief Constructor.
+     */
+    ManagedObject() = default;
+
+    /**
+     * @brief Constructor.
+     *
+     * @param value A value to containt as member.
+     */
     ManagedObject(int32_t const value) :
         value_ (value){
     }
-    
+
+    /**
+     * @brief Constructor.
+     *
+     * @param isDeleted Flag will be set on destructor call.
+     */
     ManagedObject(bool_t* const isDeleted) :
         isDeleted_ (isDeleted){
     }        
 
-    virtual ~ManagedObject()
+    /**
+     * @brief Destructor.
+     */
+    ~ManagedObject() override
     {
         value_ = -1;
         if(isDeleted_ != NULLPTR)
@@ -68,6 +103,11 @@ public:
         }
     }
     
+    /**
+     * @brief Returns containing value.
+     *
+     * @return The value passed to the constructor.
+     */        
     int32_t getValue() const
     {
         return value_;
@@ -79,12 +119,21 @@ private:
     bool_t* isDeleted_ {NULLPTR};
 };
 
+/**
+ * @brief Creates SharedPtr for ManagedObject.
+ *
+ * @return Created object by rvalue.
+ */        
 SharedPtr<ManagedObject> createObject()
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     return obj;
 }
 
+/**
+ * @class TestSharedPtr<T>
+ * @brief Test class with public members that are protected in the SharedPtr class.
+ */
 template <typename T>
 class TestSharedPtr : public SharedPtr<T>
 {
@@ -92,10 +141,16 @@ class TestSharedPtr : public SharedPtr<T>
     
 public:
 
+    /**
+     * @copydoc eoos::SharedPtr::SharedPtr(T*)
+     */
     explicit TestSharedPtr(T* const pointer) : Parent(pointer)
     {
     }
 
+    /**
+     * @copydoc eoos::Object::setConstructed(bool_t)
+     */
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);

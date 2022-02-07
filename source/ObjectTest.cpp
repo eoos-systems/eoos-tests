@@ -44,7 +44,6 @@ Object<> createObject()
  *
  * @brief Class to provide protect functions to public scope.
  */
-
 class TestObject : public ::eoos::Object<>
 {
     using Parent = ::eoos::Object<>;
