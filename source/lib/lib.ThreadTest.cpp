@@ -115,14 +115,14 @@ int32_t ThreadTest::TASK_RETURN_ERROR {333};
 TEST_F(ThreadTest, Constructor)
 {
     Thread<> obj(task.normal);
-    EXPECT_TRUE(obj.isConstructed())                    << "Fatal: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())                    << "Fatal: Object is not constructed";
     EXPECT_EQ(obj.getStatus(), api::Thread::STATUS_NEW) << "Fatal: Status of a new thread is not NEW";
 }
 
 TEST_F(ThreadTest, isConstructed)
 {
     Thread<> obj(task.normal);
-    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 TEST_F(ThreadTest, execute)
@@ -130,7 +130,7 @@ TEST_F(ThreadTest, execute)
     // Execute constructed task
     {
         Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not conctructed";
+        EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
         thread.execute();
         EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_RUNNABLE) << "Fatal: Status of a new thread is not RUNNABLE";
@@ -140,7 +140,7 @@ TEST_F(ThreadTest, execute)
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.isConstructed()) << "Error: Object is conctructed";
+        EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
         thread.execute();
         EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of a new unconstructed thread is not DEAD";
         EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Fatal: Unconstructed thread was executed";

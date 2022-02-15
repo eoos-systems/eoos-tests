@@ -162,7 +162,7 @@ public:
 TEST_F(SharedPtrTest, Constructor)
 {
     SharedPtr<ManagedObject> const obj {NULLPTR};
-    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";    
+    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";    
     EXPECT_EQ(obj.get(), NULLPTR)        << "Error: Shared pointer does not equal to NULLPTR";
 }
 
@@ -170,16 +170,16 @@ TEST_F(SharedPtrTest, Constructor_pointer)
 {
     ManagedObject* const ptr {new ManagedObject()};
     SharedPtr<ManagedObject> const obj {ptr};
-    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";
     EXPECT_EQ(obj.get(), ptr)            << "Error: Shared pointer does not equal to its raw pointer";
 }
 
 TEST_F(SharedPtrTest, CopyConstructor)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
-    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not conctructed";
+    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
     SharedPtr<ManagedObject> const obj2 { obj1 };
-    EXPECT_TRUE(obj2.isConstructed())       << "Error: Object 2 is not conctructed";
+    EXPECT_TRUE(obj2.isConstructed())       << "Error: Object 2 is not constructed";
     EXPECT_EQ(obj1.get(), obj2.get())       << "Error: Both shared object don't point to the same managed object";
 }
 
@@ -191,22 +191,22 @@ TEST_F(SharedPtrTest, MoveConstructor)
     // Test if cast moves obj1 to obj2
     SharedPtr<ManagedObject> const obj2 { lib::move(obj1) };
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
-    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is conctructed after movement to object 2";
+    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
 }
 
 TEST_F(SharedPtrTest, CopyAssignment)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
-    EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not conctructed";
+    EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not constructed";
     
     SharedPtr<ManagedObject> obj2 {};
-    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not conctructed";
+    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not constructed";
     obj2 = obj1;
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not assigned with object 1";    
     EXPECT_EQ(obj1.get(), obj2.get())   << "Error: Both shared object don't point to the same managed object";
     
     SharedPtr<ManagedObject> obj3 {new ManagedObject()};
-    EXPECT_TRUE(obj3.isConstructed())   << "Error: Object 3 is not conctructed";
+    EXPECT_TRUE(obj3.isConstructed())   << "Error: Object 3 is not constructed";
     obj3 = obj1;
     EXPECT_TRUE(obj3.isConstructed())   << "Error: Object 3 is not assigned with object 1";    
     EXPECT_EQ(obj1.get(), obj3.get())   << "Error: Both shared object don't point to the same managed object";
@@ -235,19 +235,19 @@ TEST_F(SharedPtrTest, MoveAssignment)
 TEST_F(SharedPtrTest, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
-    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";
 }
 
 TEST_F(SharedPtrTest, setConstructed)
 {
     TestSharedPtr<ManagedObject> obj{new ManagedObject()};
-    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";
     obj.setConstructed(true);
-    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not set as conctructed";
+    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not set as constructed";
     obj.setConstructed(false);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is not set as unconctructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is not set as unconstructed";
     obj.setConstructed(true);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as conctructed if it is unconctructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as constructed if it is unconstructed";
 }
 
 TEST_F(SharedPtrTest, isNotConstructed)
@@ -255,18 +255,18 @@ TEST_F(SharedPtrTest, isNotConstructed)
     using SharedPtr = SharedPtr<ManagedObject,SharedPtrDeleter<ManagedObject>,NullAllocator>;
     bool_t isDeleted {false};
     SharedPtr const obj1 {new ManagedObject(&isDeleted)};
-    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object is conctructed";
+    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object is constructed";
     EXPECT_EQ(obj1.getCount(), 0)       << "Error: Number of shared objects is wrong";
     EXPECT_TRUE(isDeleted)              << "Error: Managed object was not deleted";
     
     SharedPtr obj2 {obj1};
-    EXPECT_FALSE(obj2.isConstructed())  << "Error: Object is conctructed";
+    EXPECT_FALSE(obj2.isConstructed())  << "Error: Object is constructed";
     EXPECT_EQ(obj1.getCount(), 0)       << "Error: Number of shared objects is wrong";
     EXPECT_EQ(obj2.getCount(), 0)       << "Error: Number of shared objects is wrong";
 
     SharedPtr obj3 {};
     obj3 = obj1;
-    EXPECT_FALSE(obj3.isConstructed())  << "Error: Object is conctructed";
+    EXPECT_FALSE(obj3.isConstructed())  << "Error: Object is constructed";
     EXPECT_EQ(obj1.getCount(), 0)       << "Error: Number of shared objects is wrong";
     EXPECT_EQ(obj2.getCount(), 0)       << "Error: Number of shared objects is wrong";
     EXPECT_EQ(obj3.getCount(), 0)       << "Error: Number of shared objects is wrong";
@@ -277,14 +277,14 @@ TEST_F(SharedPtrTest, get)
     int32_t const value = 0x12345678;
     ManagedObject* const ptr {new ManagedObject(value)};
     SharedPtr<ManagedObject> obj1 {ptr};
-    ASSERT_TRUE(obj1.isConstructed())        << "Error: Object is not conctructed";
+    ASSERT_TRUE(obj1.isConstructed())        << "Error: Object is not constructed";
     EXPECT_EQ(obj1.get(), ptr)               << "Error: Shared pointer does not equal to its raw pointer";
     EXPECT_EQ(obj1.get()->getValue(), value) << "Error: Value in managed object is wrong";
     SharedPtr<ManagedObject> obj2 {};
-    ASSERT_TRUE(obj2.isConstructed())        << "Error: Object is not conctructed";    
+    ASSERT_TRUE(obj2.isConstructed())        << "Error: Object is not constructed";    
     EXPECT_EQ(obj2.get(), NULLPTR)           << "Error: Shared pointer does not equal to its raw pointer";
     SharedPtr<ManagedObject> obj3 {NULLPTR};
-    ASSERT_TRUE(obj3.isConstructed())        << "Error: Object is not conctructed";
+    ASSERT_TRUE(obj3.isConstructed())        << "Error: Object is not constructed";
     EXPECT_EQ(obj3.get(), NULLPTR)           << "Error: Shared pointer does not equal to its raw pointer";    
 }
 
@@ -323,7 +323,7 @@ TEST_F(SharedPtrTest, operator_arrow)
 {
     int32_t const value = 0x5A5AA5A5;
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
-    ASSERT_TRUE(obj.isConstructed())  << "Error: Object is not conctructed";
+    ASSERT_TRUE(obj.isConstructed())  << "Error: Object is not constructed";
     EXPECT_EQ(obj->getValue(), value) << "Error: Value in managed object is wrong";
 }
 
@@ -331,7 +331,7 @@ TEST_F(SharedPtrTest, operator_star)
 {
     int32_t const value = 0xE763ABCD;
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
-    ASSERT_TRUE(obj.isConstructed())    << "Error: Object is not conctructed";    
+    ASSERT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";    
     EXPECT_EQ((*obj).getValue(), value) << "Error: Value in managed object is wrong";
 }
 
@@ -349,7 +349,7 @@ TEST_F(SharedPtrTest, operator_square_brackets)
 {
     int32_t* const arr = new int32_t[3]{1,2,3};
     SharedPtr< int32_t,SharedPtrDeleterArray<int32_t> > const obj {arr};
-    ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not conctructed";
+    ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj[0], arr[0]) << "Error: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Error: Wrong value of element 1";
     EXPECT_EQ(obj[2], arr[2]) << "Error: Wrong value of element 2";    

@@ -77,15 +77,15 @@ public:
 TEST_F(ObjectTest, Constructor)
 {
     Object<> const obj {};
-    EXPECT_TRUE(obj.isConstructed())        << "Error: Object is not conctructed";    
+    EXPECT_TRUE(obj.isConstructed())        << "Error: Object is not constructed";    
 }
 
 TEST_F(ObjectTest, CopyConstructor)
 {
     Object<> const obj1 {};
-    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not conctructed";
+    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
     Object<> const obj2 { obj1 };
-    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 2 is not conctructed";
+    EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 2 is not constructed";
 }
 
 TEST_F(ObjectTest, MoveConstructor)
@@ -96,15 +96,15 @@ TEST_F(ObjectTest, MoveConstructor)
     // Test if cast moves obj1 to obj2
     Object<> const obj2 { lib::move(obj1) };
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
-    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is conctructed after movement to object 2";
+    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
 }
 
 TEST_F(ObjectTest, CopyAssignment)
 {
     Object<> const obj1 {};
-    EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not conctructed";
+    EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not constructed";
     Object<> obj2 {};
-    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not conctructed";
+    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not constructed";
     obj2 = obj1;
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not assigned with object 1";
 }
@@ -132,7 +132,7 @@ TEST_F(ObjectTest, MemoryAllocation)
 {
     Object<>* obj {new Object<>()};
     ASSERT_NE(obj, NULLPTR)             << "Error: Object is not allocated";
-    EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not conctructed, but allocated";
+    EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not constructed, but allocated";
     delete obj;
     obj = NULLPTR;
     TestObject mem{};
@@ -140,36 +140,36 @@ TEST_F(ObjectTest, MemoryAllocation)
     EXPECT_FALSE(mem.isConstructed())   << "Error: Some memory is not ready to be used";
     obj = new (&mem) Object<>();
     EXPECT_NE(obj, NULLPTR)             << "Error: Object is not put on memory";
-    EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not conctructed, but put on memory";
+    EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not constructed, but put on memory";
 }
 
 TEST_F(ObjectTest, isConstructed)
 {
     Object<> const obj{};
-    EXPECT_TRUE(obj.isConstructed())  << "Error: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())  << "Error: Object is not constructed";
     obj.~Object();
-    EXPECT_FALSE(obj.isConstructed()) << "Error: Object is conctructed after destruction";
+    EXPECT_FALSE(obj.isConstructed()) << "Error: Object is constructed after destruction";
 }
 
 TEST_F(ObjectTest, isConstructed_obj)
 {
     Object<>* obj {new Object<>()};
-    EXPECT_TRUE(Object<>::isConstructed(obj))   << "Error: Object is not conctructed";
+    EXPECT_TRUE(Object<>::isConstructed(obj))   << "Error: Object is not constructed";
     delete obj;
     obj = NULLPTR;
-    EXPECT_FALSE(Object<>::isConstructed(obj))  << "Error: Pointer to NULLPTR object is conctructed";
+    EXPECT_FALSE(Object<>::isConstructed(obj))  << "Error: Pointer to NULLPTR object is constructed";
 }
 
 TEST_F(ObjectTest, setConstructed)
 {
     TestObject obj{};
-    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not conctructed";
+    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";
     obj.setConstructed(true);
-    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not set as conctructed";
+    EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not set as constructed";
     obj.setConstructed(false);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is not set as unconctructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is not set as unconstructed";
     obj.setConstructed(true);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as conctructed if it is unconctructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as constructed if it is unconstructed";
 }
 
 } // namespace eoos

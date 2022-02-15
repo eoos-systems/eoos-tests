@@ -26,7 +26,7 @@ protected:
 TEST_F(StringTest, Constructor)
 {
     String const obj;
-    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not conctructed";    
+    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";    
 }
 
 } // namespace lib
