@@ -107,7 +107,7 @@ protected:
     
 private:
 
-    System eoos;
+    System eoos_; ///< EOOS Operating System.
 };  
     
 int32_t ThreadTest::TASK_RETURN_ERROR {333};

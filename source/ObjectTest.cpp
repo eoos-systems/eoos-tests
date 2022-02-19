@@ -20,9 +20,9 @@ namespace eoos
 class ObjectTest : public ::testing::Test
 {
 
-protected:
+private:
     
-    System eoos; //< EOOS Operating System.
+    System eoos_; ///< EOOS Operating System.
 };    
     
 namespace 

@@ -16,9 +16,9 @@ namespace lib
 class AlignTest : public ::testing::Test
 {
 
-protected:
+private:
     
-    System eoos;    
+    System eoos_; ///< EOOS Operating System.    
 };
     
     

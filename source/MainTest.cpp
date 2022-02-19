@@ -37,7 +37,7 @@ class MainTest : public ::testing::Test
 
 protected:
     
-    System eoos;    
+    System eoos; ///< EOOS Operating System.    
 };
 
 /**

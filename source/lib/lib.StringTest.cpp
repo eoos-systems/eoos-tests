@@ -18,9 +18,9 @@ namespace lib
 class StringTest : public ::testing::Test
 {
 
-protected:
+private:
     
-    System eoos;    
+    System eoos_; ///< EOOS Operating System.    
 };    
 
 TEST_F(StringTest, Constructor)
