@@ -7,7 +7,6 @@
  */
 #include "System.hpp"
 #include "lib.Thread.hpp"
-#include <conio.h>               ///< For kbhit() and getch()
 
 namespace eoos
 {
@@ -55,8 +54,22 @@ private:
 
     System eoos_;
 };  
+    
+static bool_t wait()
+{
+    const uint64_t COUNT {0xFFFF};
+    static uint64_t count {COUNT};
+    count--;
+    bool_t res {true};
+    if( count == 0 )
+    {
+        res = false;
+        count = COUNT;
+    }
+    return res;
+}
 
-TEST_F(DebugTest, DISABLED_threadIsDetached)
+TEST_F(DebugTest, threadIsDetached)
 {
     uint64_t count[] = {0,0};
     lib::Thread<>* thread = new lib::Thread<>(task);
@@ -64,9 +77,8 @@ TEST_F(DebugTest, DISABLED_threadIsDetached)
     std::cout << "Thread object is alive..." << std::endl;
     while(true)
     {
-        if(::kbhit() != 0)
+        if(not wait())
         {
-            ::getch();
             break;
         }
         if(task.count > count[0])
@@ -76,13 +88,17 @@ TEST_F(DebugTest, DISABLED_threadIsDetached)
         count[0] = task.count;
     }
     delete thread;
+    count[1] = count[0] = task.count;
     std::cout << std::endl << "Thread object is dead on count = " << count[0] << std::endl;
-    count[1] = count[0];
+    while( wait() )
+    {
+        std::cout << "~";
+    }
+    std::cout << std::endl << "Waiting thread could be alive completed." << count[0] << std::endl;
     while(true)
     {
-        if(::kbhit() != 0)
+        if(not wait())
         {
-            ::getch();
             break;
         }
         if(task.count > count[1])
