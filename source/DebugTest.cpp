@@ -94,7 +94,7 @@ TEST_F(DebugTest, threadIsDetached)
     {
         std::cout << "~";
     }
-    std::cout << std::endl << "Waiting thread could be alive completed." << count[0] << std::endl;
+    std::cout << std::endl << "Waiting thread could be alive completed." << std::endl;
     while(true)
     {
         if(not wait())
