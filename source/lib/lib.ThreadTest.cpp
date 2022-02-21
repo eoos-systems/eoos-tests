@@ -34,16 +34,7 @@ protected:
         {
             setConstructed(isConstructed);
         }
-    
-        Task(int32_t error) : Parent(),
-            error_ (error){
-        }
         
-        int32_t getCounter() const
-        {
-            return count_;
-        }       
-
         bool waitIsStarted()
         {
             bool_t isStarted {false};
@@ -58,6 +49,11 @@ protected:
             return isStarted;
         }
         
+        bool isDead()
+        {
+            return isDead_;
+        }
+        
     private:    
         
         bool_t isConstructed() const override
@@ -65,13 +61,11 @@ protected:
             return Parent::isConstructed();
         }    
     
-        int32_t start() override
+        void start() override
         {
             isStarted_ = true;
-            count_++;
             Thread<>::yield();
-            count_++;              
-            return error_;
+            isDead_ = true;
         }
         
         size_t getStackSize() const override
@@ -80,8 +74,7 @@ protected:
         }
     
         bool_t isStarted_ {false};
-        int32_t error_ {0};
-        int32_t count_ {0};
+        bool_t isDead_ {false};
     };
     
 protected:    
@@ -92,7 +85,6 @@ protected:
     {
         Task normal;
         Task unconstructed {false};
-        Task error {TASK_RETURN_ERROR};
     } task;
 
     // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
@@ -115,14 +107,14 @@ int32_t ThreadTest::TASK_RETURN_ERROR {333};
 TEST_F(ThreadTest, Constructor)
 {
     Thread<> obj(task.normal);
-    EXPECT_TRUE(obj.isConstructed())                    << "Fatal: Object is not constructed";
-    EXPECT_EQ(obj.getStatus(), api::Thread::STATUS_NEW) << "Fatal: Status of a new thread is not NEW";
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 TEST_F(ThreadTest, isConstructed)
 {
     Thread<> obj(task.normal);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
+    EXPECT_FALSE(task.normal.waitIsStarted()) << "Fatal: Constructed thread was executed";
 }
 
 TEST_F(ThreadTest, execute)
@@ -132,29 +124,27 @@ TEST_F(ThreadTest, execute)
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
-        thread.execute();
-        EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_RUNNABLE) << "Fatal: Status of a new thread is not RUNNABLE";
+        EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
         EXPECT_TRUE(task.normal.waitIsStarted()) << "Fatal: Thread was not executed";
-        thread.join();
+        EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     }
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
-        thread.execute();
-        EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of a new unconstructed thread is not DEAD";
+        EXPECT_FALSE(thread.execute()) << "Error: Thread was executed";
         EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Fatal: Unconstructed thread was executed";
-        thread.join();
+        EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
     }
 }
 
 TEST_F(ThreadTest, join)
 {
     Thread<> thread(task.normal);
-    EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_NEW) << "Error: Status of a new thread is not NEW";
-    thread.execute();
-    thread.join();
-    EXPECT_EQ(thread.getStatus(), api::Thread::STATUS_DEAD) << "Fatal: Status of thread is not DEAD";
+    EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
+    EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
+    EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
+    EXPECT_TRUE(task.normal.isDead()) << "Fatal: Thread is not dead";
 }
 
 TEST_F(ThreadTest, getPriority)
@@ -197,22 +187,6 @@ TEST_F(ThreadTest, setPriority)
         EXPECT_FALSE(thread.setPriority(PRIORITY_MIN - 2)) << "Error: Thread priority is set";
         EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is wrong";
     }      
-}
-
-TEST_F(ThreadTest, getExecutionError)
-{
-    {
-        Thread<> thread(task.normal);
-        thread.execute();
-        thread.join();
-        EXPECT_EQ(thread.getExecutionError(), 0) << "Fatal: Exit code is wrong";
-    }
-    {
-        Thread<> thread(task.error);
-        thread.execute();
-        thread.join();
-        EXPECT_EQ(thread.getExecutionError(), TASK_RETURN_ERROR) << "Fatal: Exit code is wrong";
-    } 
 }
 
 TEST_F(ThreadTest, sleep)
