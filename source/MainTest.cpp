@@ -11,8 +11,8 @@
 namespace eoos
 {
 
-static const int32_t PROGRAM_OK           {777}; //< Correct program exit code.
-static const int32_t PROGRAM_WRONG_ARGS   {666}; //< Wrong program exit code.
+static const int32_t PROGRAM_OK           {777}; ///< Correct program exit code.
+static const int32_t PROGRAM_WRONG_ARGS   {666}; ///< Wrong program exit code.
 
 /**
  * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)

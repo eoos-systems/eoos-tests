@@ -11,6 +11,10 @@
 namespace eoos
 {
 
+/**
+ * @class DebugTest
+ * @brief Tests whatever for debug purposes.
+ */
 class DebugTest : public ::testing::Test
 {
 
@@ -54,6 +58,11 @@ private:
     System eoos_;
 };  
     
+/**
+ * @brief Waits for some cycles.
+ *
+ * @return true if wait is needed.
+ */
 static bool_t wait()
 {
     const uint64_t COUNT {0xFFFF};
@@ -68,6 +77,20 @@ static bool_t wait()
     return res;
 }
 
+/**
+ * @relates DebugTest
+ * @brief Tests thread stays in detached.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an Thread object.
+ *      - Delete the Thread object.
+ *
+ * @b Assert:
+ *      - Test the thread was not scheduled after its object had been deleted.
+ */
 TEST_F(DebugTest, DISABLED_threadIsDetached)
 {
     uint64_t count[] = {0,0};

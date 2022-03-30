@@ -159,13 +159,41 @@ public:
 
 } // namespace
 
-TEST_F(SharedPtrTest, Constructor)
+/**
+ * @relates SharedPtrTest
+ * @brief Tests the class constructor with NULLPTR.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ *      - Test the pointer is NULLPTR. 
+ */
+TEST_F(SharedPtrTest, Constructor_nullptr)
 {
     SharedPtr<ManagedObject> const obj {NULLPTR};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";    
     EXPECT_EQ(obj.get(), NULLPTR)        << "Error: Shared pointer does not equal to NULLPTR";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Tests the class constructor with pointer to an object.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ *      - Test the raw pointer equal to shared pointer.
+ */
 TEST_F(SharedPtrTest, Constructor_pointer)
 {
     ManagedObject* const ptr {new ManagedObject()};
@@ -174,6 +202,21 @@ TEST_F(SharedPtrTest, Constructor_pointer)
     EXPECT_EQ(obj.get(), ptr)            << "Error: Shared pointer does not equal to its raw pointer";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Tests copy constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class with user defined construct.
+ *      - Consctuct an object of the class with copy construct. 
+ *
+ * @b Assert:
+ *      - Test the objects are constructed.
+ *      - Test the pointers equal each other.
+ */
 TEST_F(SharedPtrTest, CopyConstructor)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
@@ -183,17 +226,22 @@ TEST_F(SharedPtrTest, CopyConstructor)
     EXPECT_EQ(obj1.get(), obj2.get())       << "Error: Both shared object don't point to the same managed object";
 }
 
-TEST_F(SharedPtrTest, MoveConstructor)
-{
-    // Test if compiler moves an obj to obj1
-    SharedPtr<ManagedObject> obj1 { createObject() };
-    EXPECT_TRUE(obj1.isConstructed())   << "Error: An object is not moved to object 1 by compiler";
-    // Test if cast moves obj1 to obj2
-    SharedPtr<ManagedObject> const obj2 { lib::move(obj1) };
-    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
-    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
-}
-
+/**
+ * @relates SharedPtrTest
+ * @brief Test copy assignment.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object 1, 2, and 3.
+ *      - Assign the object 1 to the object 2.
+ *      - Assign the object 1 to the object 3. 
+ *
+ * @b Assert:
+ *      - Test the objects are constructed.
+ *      - Test the pointer are correct. 
+ */
 TEST_F(SharedPtrTest, CopyAssignment)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
@@ -210,9 +258,48 @@ TEST_F(SharedPtrTest, CopyAssignment)
     obj3 = obj1;
     EXPECT_TRUE(obj3.isConstructed())   << "Error: Object 3 is not assigned with object 1";    
     EXPECT_EQ(obj1.get(), obj3.get())   << "Error: Both shared object don't point to the same managed object";
-
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Tests move constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object 2 with casting an object 1. 
+ *
+ * @b Assert:
+ *      - Test the object 2 is constructed.
+ *      - Test the object 1 is not constructed after the casting. 
+ */
+TEST_F(SharedPtrTest, MoveConstructor)
+{
+    // Test if compiler moves an obj to obj1
+    SharedPtr<ManagedObject> obj1 { createObject() };
+    EXPECT_TRUE(obj1.isConstructed())   << "Error: An object is not moved to object 1 by compiler";
+    // Test if cast moves obj1 to obj2
+    SharedPtr<ManagedObject> const obj2 { lib::move(obj1) };
+    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
+    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
+}
+
+/**
+ * @relates SharedPtrTest
+ * @brief Test move assignment.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct objects.
+ *      - Move assign objects to objects using NRVO and casting.
+ *
+ * @b Assert:
+ *      - Test new objects are constructed.
+ *      - Test released objects are not constructed.
+ */
 TEST_F(SharedPtrTest, MoveAssignment)
 {
     SharedPtr<ManagedObject> obj1 {new ManagedObject()};
@@ -232,12 +319,42 @@ TEST_F(SharedPtrTest, MoveAssignment)
     EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with rvalue of a moved object";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test if object is constructed. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *      - Destruct the object. 
+ *
+ * @b Assert:
+ *      - Test if the object is constructed and destructed.
+ */
 TEST_F(SharedPtrTest, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";
+    obj.~SharedPtr();
+    EXPECT_FALSE(obj.isConstructed()) << "Error: Object is constructed after destruction";    
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test the protected function changes constructed status of object. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *      - Delete and destruct the object. 
+ *
+ * @b Assert:
+ *      - Test if the object construction flag changes.
+ */
 TEST_F(SharedPtrTest, setConstructed)
 {
     TestSharedPtr<ManagedObject> obj{new ManagedObject()};
@@ -250,6 +367,23 @@ TEST_F(SharedPtrTest, setConstructed)
     EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as constructed if it is unconstructed";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test if object is not constructed. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct SharedPtr with NullAllocator to create ControlBlock using it.
+ *      - Allocate a new ManagedObject.
+ *      - Copy and assign SharedPtr to others SharedPtrs
+ *
+ * @b Assert:
+ *      - Test if ownership on ManagedObject is gotten.
+ *      - Test if SharedPtrDeleter is called for ManagedObject and it is deleted.
+ *      - Test of the others SharedPtrs did not get ownership on ManagedObject.
+ */
 TEST_F(SharedPtrTest, isNotConstructed)
 {
     using SharedPtr = SharedPtr<ManagedObject,SharedPtrDeleter<ManagedObject>,NullAllocator>;
@@ -272,6 +406,19 @@ TEST_F(SharedPtrTest, isNotConstructed)
     EXPECT_EQ(obj3.getCount(), 0)       << "Error: Number of shared objects is wrong";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test stored pointer.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct SharedPtr objects.
+ *
+ * @b Assert:
+ *      - Test if the stored pointes have correct values.
+ */
 TEST_F(SharedPtrTest, get)
 {
     int32_t const value = 0x12345678;
@@ -288,6 +435,19 @@ TEST_F(SharedPtrTest, get)
     EXPECT_EQ(obj3.get(), NULLPTR)           << "Error: Shared pointer does not equal to its raw pointer";    
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test counter of shared objects for the managed object. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct SharedPtr objects.
+ *
+ * @b Assert:
+ *      - Test if counter is correct to number of shared pointers.
+ */
 TEST_F(SharedPtrTest, getCount)
 {
     bool_t isDeleted1 {false};
@@ -319,22 +479,61 @@ TEST_F(SharedPtrTest, getCount)
     EXPECT_TRUE(isDeleted1)         << "Error: Managed object was not deleted";  
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test operator (->). 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *
+ * @b Assert:
+ *      - Test if the operator returns correct pointer.
+ */
 TEST_F(SharedPtrTest, operator_arrow)
 {
-    int32_t const value = 0x5A5AA5A5;
+    int32_t const value {0x5A5AA5A5};
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
     ASSERT_TRUE(obj.isConstructed())  << "Error: Object is not constructed";
     EXPECT_EQ(obj->getValue(), value) << "Error: Value in managed object is wrong";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test operator (*). 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *
+ * @b Assert:
+ *      - Test if the operator returns correct value.
+ */
 TEST_F(SharedPtrTest, operator_star)
 {
-    int32_t const value = 0xE763ABCD;
+    int32_t const value {0xE763ABCD};
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
     ASSERT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";    
     EXPECT_EQ((*obj).getValue(), value) << "Error: Value in managed object is wrong";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test cast operator to bool type. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct objects.
+ *
+ * @b Assert:
+ *      - Test if the operator returns correct value.
+ */
 TEST_F(SharedPtrTest, operator_bool)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
@@ -345,6 +544,19 @@ TEST_F(SharedPtrTest, operator_bool)
     EXPECT_FALSE( obj3 ) << "Error: Object doesn't store NULLPTR";
 }
 
+/**
+ * @relates SharedPtrTest
+ * @brief Test operator ([]) and array managment. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object to manage an array.
+ *
+ * @b Assert:
+ *      - Test if the operator [] returns correct values.
+ */
 TEST_F(SharedPtrTest, operator_square_brackets)
 {
     int32_t* const arr = new int32_t[3]{1,2,3};

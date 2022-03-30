@@ -1,7 +1,7 @@
 /**
  * @file      ObjectTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `Object`.
  */
@@ -80,6 +80,20 @@ TEST_F(ObjectTest, Constructor)
     EXPECT_TRUE(obj.isConstructed())        << "Error: Object is not constructed";    
 }
 
+/**
+ * @relates ObjectTest
+ * @brief Tests the class copy constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class with default construct.
+ *      - Consctuct an object of the class with copy construct. 
+ *
+ * @b Assert:
+ *      - Test the objects are constructed.
+ */
 TEST_F(ObjectTest, CopyConstructor)
 {
     Object<> const obj1 {};
@@ -88,17 +102,20 @@ TEST_F(ObjectTest, CopyConstructor)
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 2 is not constructed";
 }
 
-TEST_F(ObjectTest, MoveConstructor)
-{
-    // Test if compiler moves an obj to obj1
-    Object<> obj1 { createObject() };
-    EXPECT_TRUE(obj1.isConstructed())   << "Error: An object is not moved to object 1 by compiler";
-    // Test if cast moves obj1 to obj2
-    Object<> const obj2 { lib::move(obj1) };
-    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
-    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
-}
-
+/**
+ * @relates ObjectTest
+ * @brief Test copy assignment.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object 1 and 2.
+ *      - Assign the object 1 to the object 2.
+ *
+ * @b Assert:
+ *      - Test the object 2 is constructed.
+ */
 TEST_F(ObjectTest, CopyAssignment)
 {
     Object<> const obj1 {};
@@ -109,25 +126,120 @@ TEST_F(ObjectTest, CopyAssignment)
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not assigned with object 1";
 }
 
-TEST_F(ObjectTest, MoveAssignment)
+/**
+ * @relates ObjectTest
+ * @brief Test if compiler calls move construct.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object of the class with returning an object from a function using NRVO. 
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ *
+ * @todo Be sure the object is constructed by move constructor, so that we have to
+ *       define a child object and flag that the move constructor called.
+ */
+TEST_F(ObjectTest, MoveConstructor_byNrvo)
+{
+    Object<> obj { createObject() };
+    EXPECT_TRUE(obj.isConstructed())   << "Error: An object is not moved to object 1 by compiler";
+}
+
+/**
+ * @relates ObjectTest
+ * @brief Test if casting calls move construct.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object 2 with casting an object 1. 
+ *
+ * @b Assert:
+ *      - Test the object 2 is constructed.
+ *      - Test the object 1 is not constructed after the casting. 
+ */
+TEST_F(ObjectTest, MoveConstructor_byCast)
+{
+    Object<> obj1 {};
+    Object<> const obj2 { lib::move(obj1) };
+    EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 1 is not move casted to object 2";
+    EXPECT_FALSE(obj1.isConstructed())  << "Error: Object 1 is constructed after movement to object 2";
+}
+
+/**
+ * @relates ObjectTest
+ * @brief Test if compiler calls move assignment operator.
+ * 
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object of the class with returning an object from a function using NRVO. 
+ *      - Assign to the object an object returned by a function using NRVO.  
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ *
+ * @todo Be sure the object is assigned by move assignment operator, so that we have to
+ *       define a child object and flag that the move assignment operator called.
+ */
+TEST_F(ObjectTest, MoveAssignment_byNrvo)
+{
+    Object<> obj {};
+    // Test if a returned obj moved to rvalue, and the rvalue assigned to obj
+    obj = createObject();
+    EXPECT_TRUE(obj.isConstructed())   << "Error: An object is not moved to rvalue, and the rvalue is not assigned to object 1";
+}
+
+/**
+ * @relates ObjectTest
+ * @brief Test if casting calls move assignment operator. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct two object. 
+ *
+ * @b Assert:
+ *      - Test if the object 1 moved with lvalue to the object 2.
+ *      - Test if the object 1 cannot be recovered.
+ *      - Test if an object moved with rvalue to the object 2.
+ */
+TEST_F(ObjectTest, MoveAssignment_byCast)
 {
     Object<> obj1 {};
     Object<> obj2 {};
-    // Test if an obj moved to rvalue, and the rvalue assigned to obj1
-    obj1 = createObject();
-    EXPECT_TRUE(obj1.isConstructed())   << "Error: An object is not moved to rvalue, and the rvalue is not assigned to object 1";
     // Test if obj1 moved with lvalue to obj2
     obj2 = lib::move(obj1);  
     EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with lvalue";
     EXPECT_FALSE(obj1.isConstructed())  << "Error: An object 1 is constructed but it was moved with lvalue";
     // Test if an obj1 cannot be recovered
     obj1 = lib::move(Object<>());
-    EXPECT_FALSE(obj1.isConstructed())   << "Error: An object 1 is re-constructed but it was moved"; 
-    // Test if an obj moved with rvalue to obj1
+    EXPECT_FALSE(obj1.isConstructed())   << "Error: An object 1 is re-constructed but it was moved";
+    // Test if an obj moved with rvalue to obj2
     obj2 = lib::move(Object<>());
-    EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with rvalue of a moved object";
+    EXPECT_TRUE(obj2.isConstructed())   << "Error: An object 2 is not constructed with rvalue of a moved object";    
 }
 
+/**
+ * @relates ObjectTest
+ * @brief Test if the new operator and the placement new operator. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object by new.
+ *      - Construct an object by placement new. 
+ *
+ * @b Assert:
+ *      - Test if the objects are constructed.
+ */
 TEST_F(ObjectTest, MemoryAllocation)
 {
     Object<>* obj {new Object<>()};
@@ -143,6 +255,20 @@ TEST_F(ObjectTest, MemoryAllocation)
     EXPECT_TRUE(obj->isConstructed())   << "Error: Object is not constructed, but put on memory";
 }
 
+/**
+ * @relates ObjectTest
+ * @brief Test if object is constructed. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *      - Destruct the object. 
+ *
+ * @b Assert:
+ *      - Test if the object is constructed and destructed.
+ */
 TEST_F(ObjectTest, isConstructed)
 {
     Object<> const obj{};
@@ -151,6 +277,20 @@ TEST_F(ObjectTest, isConstructed)
     EXPECT_FALSE(obj.isConstructed()) << "Error: Object is constructed after destruction";
 }
 
+/**
+ * @relates ObjectTest
+ * @brief Test if object is constructed by static object function. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Allocate and construct an object.
+ *      - Delete and destruct the object. 
+ *
+ * @b Assert:
+ *      - Test if the object is constructed and destructed.
+ */
 TEST_F(ObjectTest, isConstructed_obj)
 {
     Object<>* obj {new Object<>()};
@@ -160,6 +300,20 @@ TEST_F(ObjectTest, isConstructed_obj)
     EXPECT_FALSE(Object<>::isConstructed(obj))  << "Error: Pointer to NULLPTR object is constructed";
 }
 
+/**
+ * @relates ObjectTest
+ * @brief Test the protected function changes constructed status of object. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct an object.
+ *      - Delete and destruct the object. 
+ *
+ * @b Assert:
+ *      - Test if the object construction flag changes.
+ */
 TEST_F(ObjectTest, setConstructed)
 {
     TestObject obj{};

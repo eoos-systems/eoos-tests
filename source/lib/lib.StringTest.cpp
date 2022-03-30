@@ -1,7 +1,7 @@
 /**
  * @file      lib.StringTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::String`. 
  */
@@ -15,6 +15,11 @@ namespace eoos
 namespace lib
 {
     
+/**
+ * @class StringTest
+ * @test String
+ * @brief Tests String class functionality.
+ */
 class StringTest : public ::testing::Test
 {
 
@@ -23,6 +28,19 @@ private:
     System eoos_; ///< EOOS Operating System.    
 };    
 
+/**
+ * @relates StringTest
+ * @brief Tests the class constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the object is constructed.
+ */
 TEST_F(StringTest, Constructor)
 {
     String const obj;
