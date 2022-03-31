@@ -554,13 +554,13 @@ TEST_F(ThreadTest, yield_reactionOnInitiation)
  */
 TEST_F(ThreadTest, sleep)
 {
-    int64_t ms[2] = {100, 400};
+    int64_t ms[2] = {300, 1200};
     uint32_t counter[2] = {100, 100};
     for(int32_t i=0; i<2; i++)
     {
         Thread<> count(task.counter[i]);
         EXPECT_TRUE(count.execute()) << "Error: Thread was not executed";
-        Thread<>::sleep(ms[i]);
+        EXPECT_TRUE(Thread<>::sleep(ms[i])) << "Error: Thread sleep got a system error";
         task.counter[i].stopCounter();
         EXPECT_TRUE(count.join()) << "Error: Thread was not joined";
         counter[i] += task.counter[i].getCounter();
