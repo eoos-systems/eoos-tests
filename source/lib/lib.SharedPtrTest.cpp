@@ -337,8 +337,6 @@ TEST_F(SharedPtrTest, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";
-    obj.~SharedPtr();
-    EXPECT_FALSE(obj.isConstructed()) << "Error: Object is constructed after destruction";    
 }
 
 /**
@@ -515,7 +513,7 @@ TEST_F(SharedPtrTest, operator_arrow)
  */
 TEST_F(SharedPtrTest, operator_star)
 {
-    int32_t const value {0xE763ABCD};
+    int32_t const value {0x7E63ABCD};
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
     ASSERT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";    
     EXPECT_EQ((*obj).getValue(), value) << "Error: Value in managed object is wrong";
