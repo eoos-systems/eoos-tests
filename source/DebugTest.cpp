@@ -5,17 +5,17 @@
  *
  * @brief Unit tests of `lib::Thread`. 
  */
-#include "System.hpp"
 #include "lib.Thread.hpp"
+#include "System.hpp"
 
 namespace eoos
 {
 
 /**
- * @class DebugTest
+ * @class glb_DebugTest
  * @brief Tests whatever for debug purposes.
  */
-class DebugTest : public ::testing::Test
+class glb_DebugTest : public ::testing::Test
 {
 
 protected:
@@ -78,7 +78,7 @@ static bool_t wait()
 }
 
 /**
- * @relates DebugTest
+ * @relates glb_DebugTest
  * @brief Tests thread stays in detached.
  *
  * @b Arrange:
@@ -91,7 +91,7 @@ static bool_t wait()
  * @b Assert:
  *      - Test the thread was not scheduled after its object had been deleted.
  */
-TEST_F(DebugTest, DISABLED_threadIsDetached)
+TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
 {
     uint64_t count[] = {0,0};
     lib::Thread<>* thread = new lib::Thread<>(task);

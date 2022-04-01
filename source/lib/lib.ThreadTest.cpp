@@ -5,8 +5,8 @@
  *
  * @brief Unit tests of `lib::Thread`. 
  */
-#include "System.hpp"
 #include "lib.Thread.hpp"
+#include "System.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
 
@@ -16,11 +16,11 @@ namespace lib
 {
 
 /**
- * @class ThreadTest
+ * @class lib_ThreadTest
  * @test Thread
  * @brief Tests Thread class functionality.
  */
-class ThreadTest : public ::testing::Test
+class lib_ThreadTest : public ::testing::Test
 {
 
 protected:
@@ -304,11 +304,11 @@ private:
     System eoos_; ///< EOOS Operating System.
 };  
 
-int32_t ThreadTest::Task::channelItoR_ {ThreadTest::Task::MSG_IDLE};
-int32_t ThreadTest::Task::channelRtoI_ {ThreadTest::Task::MSG_IDLE};
+int32_t lib_ThreadTest::Task::channelItoR_ {lib_ThreadTest::Task::MSG_IDLE};
+int32_t lib_ThreadTest::Task::channelRtoI_ {lib_ThreadTest::Task::MSG_IDLE};
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Tests the class constructor.
  *
  * @b Arrange:
@@ -320,14 +320,14 @@ int32_t ThreadTest::Task::channelRtoI_ {ThreadTest::Task::MSG_IDLE};
  * @b Assert:
  *      - Test the object is constructed.
  */
-TEST_F(ThreadTest, Constructor)
+TEST_F(lib_ThreadTest, Constructor)
 {
     Thread<> obj(task.normal);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if object is constructed. 
  *
  * @b Arrange:
@@ -340,7 +340,7 @@ TEST_F(ThreadTest, Constructor)
  *      - Test the object is constructed.
  *      - Test the object is not constructed. 
  */
-TEST_F(ThreadTest, isConstructed)
+TEST_F(lib_ThreadTest, isConstructed)
 {
     // Test constructed
     {
@@ -355,7 +355,7 @@ TEST_F(ThreadTest, isConstructed)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread can be executed. 
  *
  * @b Arrange:
@@ -368,7 +368,7 @@ TEST_F(ThreadTest, isConstructed)
  *      - Test the constructed object is executed.
  *      - Test the unconstructed object is not executed.
  */
-TEST_F(ThreadTest, execute)
+TEST_F(lib_ThreadTest, execute)
 {
     // Execute constructed task
     {
@@ -390,7 +390,7 @@ TEST_F(ThreadTest, execute)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread is joined.
  *
  * @b Arrange:
@@ -403,7 +403,7 @@ TEST_F(ThreadTest, execute)
  *      - Test the constructed object is joined and dead after that.
  *      - Test the unconstructed object is not joined and not dead meaning it was not started.
  */
-TEST_F(ThreadTest, join)
+TEST_F(lib_ThreadTest, join)
 {
     {
         Thread<> thread(task.normal);
@@ -422,7 +422,7 @@ TEST_F(ThreadTest, join)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread priority can be gotten right.
  *
  * @b Arrange:
@@ -435,7 +435,7 @@ TEST_F(ThreadTest, join)
  *      - Test the constructed object has Normal priority.
  *      - Test the unconstructed object has Wrong priority.
  */
-TEST_F(ThreadTest, getPriority)
+TEST_F(lib_ThreadTest, getPriority)
 {
     {
         Thread<> thread(task.normal);
@@ -448,7 +448,7 @@ TEST_F(ThreadTest, getPriority)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread priority can be set.
  *
  * @b Arrange:
@@ -462,7 +462,7 @@ TEST_F(ThreadTest, getPriority)
  *      - Test priorities in valid range are set.
  *      - Test priorities out of valid range are not set.
  */
-TEST_F(ThreadTest, setPriority)
+TEST_F(lib_ThreadTest, setPriority)
 {
     {
         Thread<> thread(task.normal);
@@ -493,7 +493,7 @@ TEST_F(ThreadTest, setPriority)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread yields its time slice.
  *
  * @b Arrange:
@@ -513,7 +513,7 @@ TEST_F(ThreadTest, setPriority)
  * @b Assert:
  *      - Test no errors during the ping-pong communication.
  */
-TEST_F(ThreadTest, yield_reactionOnInitiation)
+TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
 {
     Thread<> re(task.re);
     Thread<> in(task.in);
@@ -535,7 +535,7 @@ TEST_F(ThreadTest, yield_reactionOnInitiation)
 }
 
 /**
- * @relates ThreadTest
+ * @relates lib_ThreadTest
  * @brief Test if thread sleeps.
  *
  * @b Arrange:
@@ -552,7 +552,7 @@ TEST_F(ThreadTest, yield_reactionOnInitiation)
  * @b Assert:
  *      - Test two values of counter 1 less than a value of counter 2.
  */
-TEST_F(ThreadTest, sleep)
+TEST_F(lib_ThreadTest, sleep)
 {
     int64_t ms[2] = {300, 1200};
     uint32_t counter[2] = {100, 100};

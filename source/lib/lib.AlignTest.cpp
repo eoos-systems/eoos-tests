@@ -5,8 +5,8 @@
  *
  * @brief Unit tests of `lib::Align`. 
  */
-#include "System.hpp"
 #include "lib.Align.hpp"
+#include "System.hpp"
 
 namespace eoos
 {
@@ -14,11 +14,11 @@ namespace lib
 {
     
 /**
- * @class AlignTest
+ * @class lib_AlignTest
  * @test Align
  * @brief Tests Align class functionality.
  */
-class AlignTest : public ::testing::Test
+class lib_AlignTest : public ::testing::Test
 {
 
 private:
@@ -59,7 +59,7 @@ bool_t testSum(T const o1, T const o2)
 }
 
 /**
- * @relates AlignTest
+ * @relates lib_AlignTest
  * @brief Tests sizeof types.
  *
  * @b Arrange:
@@ -71,7 +71,7 @@ bool_t testSum(T const o1, T const o2)
  * @b Assert:
  *      - Test size of types are equal to each other.
  */
-TEST_F(AlignTest, Sizeof)
+TEST_F(lib_AlignTest, Sizeof)
 {
     EXPECT_TRUE(testSizeof<int8_t>())   << "Error: Size of int8_t types are not equal";  
     EXPECT_TRUE(testSizeof<int16_t>())  << "Error: Size of int16_t types are not equal";
@@ -84,7 +84,7 @@ TEST_F(AlignTest, Sizeof)
 }
 
 /**
- * @relates AlignTest
+ * @relates lib_AlignTest
  * @brief Tests sum of variables.
  *
  * @b Arrange:
@@ -96,7 +96,7 @@ TEST_F(AlignTest, Sizeof)
  * @b Assert:
  *      - Test sums are equal to each other.
  */
-TEST_F(AlignTest, Sum)
+TEST_F(lib_AlignTest, Sum)
 {
     bool_t res {testSum<int8_t,int32_t>(-1,2)};
     EXPECT_TRUE( res )  << "Error: Sums are not equal";

@@ -5,8 +5,8 @@
  *
  * @brief Unit tests of `lib::SharedPtr`. 
  */
-#include "System.hpp"
 #include "lib.SharedPtr.hpp"
+#include "System.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
 
@@ -16,11 +16,11 @@ namespace lib
 {
 
 /**
- * @class SharedPtrTest
+ * @class lib_SharedPtrTest
  * @test SharedPtr
  * @brief Tests SharedPtr class functionality.
  */
-class SharedPtrTest : public ::testing::Test
+class lib_SharedPtrTest : public ::testing::Test
 {
 
 private:
@@ -160,7 +160,7 @@ public:
 } // namespace
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Tests the class constructor with NULLPTR.
  *
  * @b Arrange:
@@ -173,7 +173,7 @@ public:
  *      - Test the object is constructed.
  *      - Test the pointer is NULLPTR. 
  */
-TEST_F(SharedPtrTest, Constructor_nullptr)
+TEST_F(lib_SharedPtrTest, Constructor_nullptr)
 {
     SharedPtr<ManagedObject> const obj {NULLPTR};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";    
@@ -181,7 +181,7 @@ TEST_F(SharedPtrTest, Constructor_nullptr)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Tests the class constructor with pointer to an object.
  *
  * @b Arrange:
@@ -194,7 +194,7 @@ TEST_F(SharedPtrTest, Constructor_nullptr)
  *      - Test the object is constructed.
  *      - Test the raw pointer equal to shared pointer.
  */
-TEST_F(SharedPtrTest, Constructor_pointer)
+TEST_F(lib_SharedPtrTest, Constructor_pointer)
 {
     ManagedObject* const ptr {new ManagedObject()};
     SharedPtr<ManagedObject> const obj {ptr};
@@ -203,7 +203,7 @@ TEST_F(SharedPtrTest, Constructor_pointer)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Tests copy constructor.
  *
  * @b Arrange:
@@ -217,7 +217,7 @@ TEST_F(SharedPtrTest, Constructor_pointer)
  *      - Test the objects are constructed.
  *      - Test the pointers equal each other.
  */
-TEST_F(SharedPtrTest, CopyConstructor)
+TEST_F(lib_SharedPtrTest, CopyConstructor)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
@@ -227,7 +227,7 @@ TEST_F(SharedPtrTest, CopyConstructor)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test copy assignment.
  *
  * @b Arrange:
@@ -242,7 +242,7 @@ TEST_F(SharedPtrTest, CopyConstructor)
  *      - Test the objects are constructed.
  *      - Test the pointer are correct. 
  */
-TEST_F(SharedPtrTest, CopyAssignment)
+TEST_F(lib_SharedPtrTest, CopyAssignment)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not constructed";
@@ -261,7 +261,7 @@ TEST_F(SharedPtrTest, CopyAssignment)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Tests move constructor.
  *
  * @b Arrange:
@@ -274,7 +274,7 @@ TEST_F(SharedPtrTest, CopyAssignment)
  *      - Test the object 2 is constructed.
  *      - Test the object 1 is not constructed after the casting. 
  */
-TEST_F(SharedPtrTest, MoveConstructor)
+TEST_F(lib_SharedPtrTest, MoveConstructor)
 {
     // Test if compiler moves an obj to obj1
     SharedPtr<ManagedObject> obj1 { createObject() };
@@ -286,7 +286,7 @@ TEST_F(SharedPtrTest, MoveConstructor)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test move assignment.
  *
  * @b Arrange:
@@ -300,7 +300,7 @@ TEST_F(SharedPtrTest, MoveConstructor)
  *      - Test new objects are constructed.
  *      - Test released objects are not constructed.
  */
-TEST_F(SharedPtrTest, MoveAssignment)
+TEST_F(lib_SharedPtrTest, MoveAssignment)
 {
     SharedPtr<ManagedObject> obj1 {new ManagedObject()};
     SharedPtr<ManagedObject> obj2 {new ManagedObject()};
@@ -320,7 +320,7 @@ TEST_F(SharedPtrTest, MoveAssignment)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test if object is constructed. 
  *
  * @b Arrange:
@@ -333,14 +333,14 @@ TEST_F(SharedPtrTest, MoveAssignment)
  * @b Assert:
  *      - Test if the object is constructed and destructed.
  */
-TEST_F(SharedPtrTest, isConstructed)
+TEST_F(lib_SharedPtrTest, isConstructed)
 {
     SharedPtr<ManagedObject> const obj {new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test the protected function changes constructed status of object. 
  *
  * @b Arrange:
@@ -353,7 +353,7 @@ TEST_F(SharedPtrTest, isConstructed)
  * @b Assert:
  *      - Test if the object construction flag changes.
  */
-TEST_F(SharedPtrTest, setConstructed)
+TEST_F(lib_SharedPtrTest, setConstructed)
 {
     TestSharedPtr<ManagedObject> obj{new ManagedObject()};
     EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";
@@ -366,7 +366,7 @@ TEST_F(SharedPtrTest, setConstructed)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test if object is not constructed. 
  *
  * @b Arrange:
@@ -382,7 +382,7 @@ TEST_F(SharedPtrTest, setConstructed)
  *      - Test if SharedPtrDeleter is called for ManagedObject and it is deleted.
  *      - Test of the others SharedPtrs did not get ownership on ManagedObject.
  */
-TEST_F(SharedPtrTest, isNotConstructed)
+TEST_F(lib_SharedPtrTest, isNotConstructed)
 {
     using SharedPtr = SharedPtr<ManagedObject,SharedPtrDeleter<ManagedObject>,NullAllocator>;
     bool_t isDeleted {false};
@@ -405,7 +405,7 @@ TEST_F(SharedPtrTest, isNotConstructed)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test stored pointer.
  *
  * @b Arrange:
@@ -417,7 +417,7 @@ TEST_F(SharedPtrTest, isNotConstructed)
  * @b Assert:
  *      - Test if the stored pointes have correct values.
  */
-TEST_F(SharedPtrTest, get)
+TEST_F(lib_SharedPtrTest, get)
 {
     int32_t const value = 0x12345678;
     ManagedObject* const ptr {new ManagedObject(value)};
@@ -434,7 +434,7 @@ TEST_F(SharedPtrTest, get)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test counter of shared objects for the managed object. 
  *
  * @b Arrange:
@@ -446,7 +446,7 @@ TEST_F(SharedPtrTest, get)
  * @b Assert:
  *      - Test if counter is correct to number of shared pointers.
  */
-TEST_F(SharedPtrTest, getCount)
+TEST_F(lib_SharedPtrTest, getCount)
 {
     bool_t isDeleted1 {false};
     SharedPtr<ManagedObject>* obj1 { new SharedPtr<ManagedObject>(new ManagedObject(&isDeleted1)) };
@@ -478,7 +478,7 @@ TEST_F(SharedPtrTest, getCount)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test operator (->). 
  *
  * @b Arrange:
@@ -490,7 +490,7 @@ TEST_F(SharedPtrTest, getCount)
  * @b Assert:
  *      - Test if the operator returns correct pointer.
  */
-TEST_F(SharedPtrTest, operator_arrow)
+TEST_F(lib_SharedPtrTest, operator_arrow)
 {
     int32_t const value {0x5A5AA5A5};
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
@@ -499,7 +499,7 @@ TEST_F(SharedPtrTest, operator_arrow)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test operator (*). 
  *
  * @b Arrange:
@@ -511,7 +511,7 @@ TEST_F(SharedPtrTest, operator_arrow)
  * @b Assert:
  *      - Test if the operator returns correct value.
  */
-TEST_F(SharedPtrTest, operator_star)
+TEST_F(lib_SharedPtrTest, operator_star)
 {
     int32_t const value {0x7E63ABCD};
     SharedPtr<ManagedObject> const obj {new ManagedObject(value)};
@@ -520,7 +520,7 @@ TEST_F(SharedPtrTest, operator_star)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test cast operator to bool type. 
  *
  * @b Arrange:
@@ -532,7 +532,7 @@ TEST_F(SharedPtrTest, operator_star)
  * @b Assert:
  *      - Test if the operator returns correct value.
  */
-TEST_F(SharedPtrTest, operator_bool)
+TEST_F(lib_SharedPtrTest, operator_bool)
 {
     SharedPtr<ManagedObject> const obj1 {new ManagedObject()};
     EXPECT_TRUE( obj1 )  << "Error: Object stores NULLPTR";
@@ -543,7 +543,7 @@ TEST_F(SharedPtrTest, operator_bool)
 }
 
 /**
- * @relates SharedPtrTest
+ * @relates lib_SharedPtrTest
  * @brief Test operator ([]) and array managment. 
  *
  * @b Arrange:
@@ -555,7 +555,7 @@ TEST_F(SharedPtrTest, operator_bool)
  * @b Assert:
  *      - Test if the operator [] returns correct values.
  */
-TEST_F(SharedPtrTest, operator_square_brackets)
+TEST_F(lib_SharedPtrTest, operator_square_brackets)
 {
     int32_t* const arr = new int32_t[3]{1,2,3};
     SharedPtr< int32_t,SharedPtrDeleterArray<int32_t> > const obj {arr};

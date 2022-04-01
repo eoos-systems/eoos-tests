@@ -5,8 +5,8 @@
  *
  * @brief Unit tests of `lib::String`. 
  */
-#include "System.hpp"
 #include "lib.String.hpp"
+#include "System.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
 
@@ -16,11 +16,11 @@ namespace lib
 {
     
 /**
- * @class StringTest
+ * @class lib_StringTest
  * @test String
  * @brief Tests String class functionality.
  */
-class StringTest : public ::testing::Test
+class lib_StringTest : public ::testing::Test
 {
 
 private:
@@ -29,7 +29,7 @@ private:
 };    
 
 /**
- * @relates StringTest
+ * @relates lib_StringTest
  * @brief Tests the class constructor.
  *
  * @b Arrange:
@@ -41,10 +41,10 @@ private:
  * @b Assert:
  *      - Test the object is constructed.
  */
-TEST_F(StringTest, Constructor)
+TEST_F(lib_StringTest, Constructor)
 {
     String const obj;
-    EXPECT_TRUE(obj.isConstructed())     << "Error: Object is not constructed";    
+    EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";    
 }
 
 } // namespace lib

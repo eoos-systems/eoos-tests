@@ -5,8 +5,8 @@
  *
  * @brief Unit tests of `main`. 
  */
-#include "System.hpp"
 #include "Program.hpp"
+#include "System.hpp"
 
 namespace eoos
 {
@@ -28,11 +28,11 @@ int32_t Program::start(api::List<char_t*> const* args)
 
 
 /**
- * @class MainTest
+ * @class glb_MainTest
  * @test Call
  * @brief Tests an application on EOOS starts sucessfully.
  */
-class MainTest : public ::testing::Test
+class glb_MainTest : public ::testing::Test
 {
 
 protected:
@@ -41,7 +41,7 @@ protected:
 };
 
 /**
- * @relates MainTest
+ * @relates glb_MainTest
  * @brief Tests the system starts a user program and is initialiezed.
  *
  * @b Arrange:
@@ -54,7 +54,7 @@ protected:
  *      - Test the system is initialized.
  *      - Test the program is executed with correcet exit code.
  */
-TEST_F(MainTest, execute)
+TEST_F(glb_MainTest, execute)
 {
     int32_t const error { eoos.execute() };
     ASSERT_TRUE(eoos.isInitialized())  << "Fatal: EOOS was not initialized";

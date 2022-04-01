@@ -1,23 +1,24 @@
 /**
- * @file      ObjectTest.cpp
+ * @file      lib.ObjectTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `Object`.
+ * @brief Unit tests of `lib::Object`.
  */
-#include "Object.hpp"
-#include "lib.Types.hpp"
+#include "lib.Object.hpp"
 #include "System.hpp"
 
 namespace eoos
 {
+namespace lib
+{
 
 /**
- * @class glb_ObjectTest
+ * @class lib_ObjectTest
  * @test Object
  * @brief Tests root Object class functionality.
  */
-class glb_ObjectTest : public ::testing::Test
+class lib_ObjectTest : public ::testing::Test
 {
 
 private:
@@ -62,7 +63,7 @@ public:
 } // namespace
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Tests the class constructor.
  *
  * @b Arrange:
@@ -74,14 +75,14 @@ public:
  * @b Assert:
  *      - Test the object is constructed.
  */
-TEST_F(glb_ObjectTest, Constructor)
+TEST_F(lib_ObjectTest, Constructor)
 {
     Object<> const obj {};
     EXPECT_TRUE(obj.isConstructed())        << "Error: Object is not constructed";    
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Tests the class copy constructor.
  *
  * @b Arrange:
@@ -94,7 +95,7 @@ TEST_F(glb_ObjectTest, Constructor)
  * @b Assert:
  *      - Test the objects are constructed.
  */
-TEST_F(glb_ObjectTest, CopyConstructor)
+TEST_F(lib_ObjectTest, CopyConstructor)
 {
     Object<> const obj1 {};
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
@@ -103,7 +104,7 @@ TEST_F(glb_ObjectTest, CopyConstructor)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test copy assignment.
  *
  * @b Arrange:
@@ -116,7 +117,7 @@ TEST_F(glb_ObjectTest, CopyConstructor)
  * @b Assert:
  *      - Test the object 2 is constructed.
  */
-TEST_F(glb_ObjectTest, CopyAssignment)
+TEST_F(lib_ObjectTest, CopyAssignment)
 {
     Object<> const obj1 {};
     EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not constructed";
@@ -127,7 +128,7 @@ TEST_F(glb_ObjectTest, CopyAssignment)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if compiler calls move construct.
  *
  * @b Arrange:
@@ -142,14 +143,14 @@ TEST_F(glb_ObjectTest, CopyAssignment)
  * @todo Be sure the object is constructed by move constructor, so that we have to
  *       define a child object and flag that the move constructor called.
  */
-TEST_F(glb_ObjectTest, MoveConstructor_byNrvo)
+TEST_F(lib_ObjectTest, MoveConstructor_byNrvo)
 {
     Object<> obj { createObject() };
     EXPECT_TRUE(obj.isConstructed())   << "Error: An object is not moved to object 1 by compiler";
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if casting calls move construct.
  *
  * @b Arrange:
@@ -162,7 +163,7 @@ TEST_F(glb_ObjectTest, MoveConstructor_byNrvo)
  *      - Test the object 2 is constructed.
  *      - Test the object 1 is not constructed after the casting. 
  */
-TEST_F(glb_ObjectTest, MoveConstructor_byCast)
+TEST_F(lib_ObjectTest, MoveConstructor_byCast)
 {
     Object<> obj1 {};
     Object<> const obj2 { lib::move(obj1) };
@@ -171,7 +172,7 @@ TEST_F(glb_ObjectTest, MoveConstructor_byCast)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if compiler calls move assignment operator.
  * 
  * @b Arrange:
@@ -187,7 +188,7 @@ TEST_F(glb_ObjectTest, MoveConstructor_byCast)
  * @todo Be sure the object is assigned by move assignment operator, so that we have to
  *       define a child object and flag that the move assignment operator called.
  */
-TEST_F(glb_ObjectTest, MoveAssignment_byNrvo)
+TEST_F(lib_ObjectTest, MoveAssignment_byNrvo)
 {
     Object<> obj {};
     // Test if a returned obj moved to rvalue, and the rvalue assigned to obj
@@ -196,7 +197,7 @@ TEST_F(glb_ObjectTest, MoveAssignment_byNrvo)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if casting calls move assignment operator. 
  *
  * @b Arrange:
@@ -210,7 +211,7 @@ TEST_F(glb_ObjectTest, MoveAssignment_byNrvo)
  *      - Test if the object 1 cannot be recovered.
  *      - Test if an object moved with rvalue to the object 2.
  */
-TEST_F(glb_ObjectTest, MoveAssignment_byCast)
+TEST_F(lib_ObjectTest, MoveAssignment_byCast)
 {
     Object<> obj1 {};
     Object<> obj2 {};
@@ -227,7 +228,7 @@ TEST_F(glb_ObjectTest, MoveAssignment_byCast)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if the new operator and the placement new operator. 
  *
  * @b Arrange:
@@ -240,7 +241,7 @@ TEST_F(glb_ObjectTest, MoveAssignment_byCast)
  * @b Assert:
  *      - Test if the objects are constructed.
  */
-TEST_F(glb_ObjectTest, MemoryAllocation)
+TEST_F(lib_ObjectTest, MemoryAllocation)
 {
     Object<>* obj {new Object<>()};
     ASSERT_NE(obj, NULLPTR)             << "Error: Object is not allocated";
@@ -256,7 +257,7 @@ TEST_F(glb_ObjectTest, MemoryAllocation)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if object is constructed. 
  *
  * @b Arrange:
@@ -269,7 +270,7 @@ TEST_F(glb_ObjectTest, MemoryAllocation)
  * @b Assert:
  *      - Test if the object is constructed and destructed.
  */
-TEST_F(glb_ObjectTest, isConstructed)
+TEST_F(lib_ObjectTest, isConstructed)
 {
     Object<> const obj{};
     EXPECT_TRUE(obj.isConstructed())  << "Error: Object is not constructed";
@@ -278,7 +279,7 @@ TEST_F(glb_ObjectTest, isConstructed)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test if object is constructed by static object function. 
  *
  * @b Arrange:
@@ -291,7 +292,7 @@ TEST_F(glb_ObjectTest, isConstructed)
  * @b Assert:
  *      - Test if the object is constructed and destructed.
  */
-TEST_F(glb_ObjectTest, isConstructed_obj)
+TEST_F(lib_ObjectTest, isConstructed_obj)
 {
     Object<>* obj {new Object<>()};
     EXPECT_TRUE(Object<>::isConstructed(obj))   << "Error: Object is not constructed";
@@ -301,7 +302,7 @@ TEST_F(glb_ObjectTest, isConstructed_obj)
 }
 
 /**
- * @relates glb_ObjectTest
+ * @relates lib_ObjectTest
  * @brief Test the protected function changes constructed status of object. 
  *
  * @b Arrange:
@@ -314,7 +315,7 @@ TEST_F(glb_ObjectTest, isConstructed_obj)
  * @b Assert:
  *      - Test if the object construction flag changes.
  */
-TEST_F(glb_ObjectTest, setConstructed)
+TEST_F(lib_ObjectTest, setConstructed)
 {
     TestObject obj{};
     EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";
@@ -326,4 +327,5 @@ TEST_F(glb_ObjectTest, setConstructed)
     EXPECT_FALSE(obj.isConstructed())   << "Error: Object is set as constructed if it is unconstructed";
 }
 
+} // namespace lib
 } // namespace eoos
