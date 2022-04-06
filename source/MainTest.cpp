@@ -57,7 +57,7 @@ protected:
 TEST_F(glb_MainTest, execute)
 {
     int32_t const error { eoos.execute() };
-    ASSERT_TRUE(eoos.isInitialized())  << "Fatal: EOOS was not initialized";
+    ASSERT_TRUE(eoos.isInitialized())  << "Error: EOOS was not initialized";
     ASSERT_EQ(PROGRAM_OK, error)       << "Fatal: Program was not started";
 }
 

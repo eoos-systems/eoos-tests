@@ -73,14 +73,14 @@ bool_t testSum(T const o1, T const o2)
  */
 TEST_F(lib_AlignTest, Sizeof)
 {
-    EXPECT_TRUE(testSizeof<int8_t>())   << "Error: Size of int8_t types are not equal";  
-    EXPECT_TRUE(testSizeof<int16_t>())  << "Error: Size of int16_t types are not equal";
-    EXPECT_TRUE(testSizeof<int32_t>())  << "Error: Size of int32_t types are not equal";
-    EXPECT_TRUE(testSizeof<int64_t>())  << "Error: Size of int64_t types are not equal";
-    EXPECT_TRUE(testSizeof<uint8_t>())  << "Error: Size of uint8_t types are not equal";
-    EXPECT_TRUE(testSizeof<uint16_t>()) << "Error: Size of uint16_t types are not equal";
-    EXPECT_TRUE(testSizeof<uint32_t>()) << "Error: Size of uint32_t types are not equal";
-    EXPECT_TRUE(testSizeof<uint64_t>()) << "Error: Size of uint64_t types are not equal";
+    EXPECT_TRUE(testSizeof<int8_t>())   << "Fatal: Size of int8_t types are not equal";  
+    EXPECT_TRUE(testSizeof<int16_t>())  << "Fatal: Size of int16_t types are not equal";
+    EXPECT_TRUE(testSizeof<int32_t>())  << "Fatal: Size of int32_t types are not equal";
+    EXPECT_TRUE(testSizeof<int64_t>())  << "Fatal: Size of int64_t types are not equal";
+    EXPECT_TRUE(testSizeof<uint8_t>())  << "Fatal: Size of uint8_t types are not equal";
+    EXPECT_TRUE(testSizeof<uint16_t>()) << "Fatal: Size of uint16_t types are not equal";
+    EXPECT_TRUE(testSizeof<uint32_t>()) << "Fatal: Size of uint32_t types are not equal";
+    EXPECT_TRUE(testSizeof<uint64_t>()) << "Fatal: Size of uint64_t types are not equal";
 }
 
 /**
@@ -99,11 +99,11 @@ TEST_F(lib_AlignTest, Sizeof)
 TEST_F(lib_AlignTest, Sum)
 {
     bool_t res {testSum<int8_t,int32_t>(-1,2)};
-    EXPECT_TRUE( res )  << "Error: Sums are not equal";
+    EXPECT_TRUE( res )  << "Fatal: Sums are not equal";
     res = testSum<int16_t,int32_t>(-1,2);
-    EXPECT_TRUE( res ) << "Error: Sums are not equal";
+    EXPECT_TRUE( res ) << "Fatal: Sums are not equal";
     res = testSum<int32_t,int64_t>(-1,2);
-    EXPECT_TRUE( res ) << "Error: Sums are not equal";
+    EXPECT_TRUE( res ) << "Fatal: Sums are not equal";
 }
 
 } // namespace lib

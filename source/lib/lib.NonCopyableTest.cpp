@@ -67,7 +67,7 @@ public:
 TEST_F(lib_NonCopyableTest, Constructor)
 {
     NonCopyable<> const obj {};
-    EXPECT_TRUE(obj.isConstructed())        << "Error: NonCopyable is not constructed";    
+    EXPECT_TRUE(obj.isConstructed())        << "Fatal: NonCopyable is not constructed";    
 }
 
 /**
@@ -88,7 +88,7 @@ TEST_F(lib_NonCopyableTest, MemoryAllocation)
 {
     NonCopyable<>* obj {new NonCopyable<>()};
     ASSERT_NE(obj, NULLPTR)             << "Error: NonCopyable is not allocated";
-    EXPECT_TRUE(obj->isConstructed())   << "Error: NonCopyable is not constructed, but allocated";
+    EXPECT_TRUE(obj->isConstructed())   << "Fatal: NonCopyable is not constructed, but allocated";
     delete obj;
     obj = NULLPTR;
     TestNonCopyable mem{};
@@ -96,7 +96,7 @@ TEST_F(lib_NonCopyableTest, MemoryAllocation)
     EXPECT_FALSE(mem.isConstructed())   << "Error: Some memory is not ready to be used";
     obj = new (&mem) NonCopyable<>();
     EXPECT_NE(obj, NULLPTR)             << "Error: NonCopyable is not put on memory";
-    EXPECT_TRUE(obj->isConstructed())   << "Error: NonCopyable is not constructed, but put on memory";
+    EXPECT_TRUE(obj->isConstructed())   << "Fatal: NonCopyable is not constructed, but put on memory";
 }
 
 /**
@@ -116,9 +116,9 @@ TEST_F(lib_NonCopyableTest, MemoryAllocation)
 TEST_F(lib_NonCopyableTest, isConstructed)
 {
     NonCopyable<> const obj{};
-    EXPECT_TRUE(obj.isConstructed())  << "Error: NonCopyable is not constructed";
+    EXPECT_TRUE(obj.isConstructed())  << "Fatal: NonCopyable is not constructed";
     obj.~NonCopyable();
-    EXPECT_FALSE(obj.isConstructed()) << "Error: NonCopyable is constructed after destruction";
+    EXPECT_FALSE(obj.isConstructed()) << "Fatal: NonCopyable is constructed after destruction";
 }
 
 /**
@@ -138,10 +138,10 @@ TEST_F(lib_NonCopyableTest, isConstructed)
 TEST_F(lib_NonCopyableTest, isConstructed_obj)
 {
     NonCopyable<>* obj {new NonCopyable<>()};
-    EXPECT_TRUE(NonCopyable<>::isConstructed(obj))   << "Error: NonCopyable is not constructed";
+    EXPECT_TRUE(NonCopyable<>::isConstructed(obj))   << "Fatal: NonCopyable is not constructed";
     delete obj;
     obj = NULLPTR;
-    EXPECT_FALSE(NonCopyable<>::isConstructed(obj))  << "Error: Pointer to NULLPTR object is constructed";
+    EXPECT_FALSE(NonCopyable<>::isConstructed(obj))  << "Fatal: Pointer to NULLPTR object is constructed";
 }
 
 /**
@@ -163,11 +163,11 @@ TEST_F(lib_NonCopyableTest, setConstructed)
     TestNonCopyable obj{};
     EXPECT_TRUE(obj.isConstructed())    << "Error: NonCopyable is not constructed";
     obj.setConstructed(true);
-    EXPECT_TRUE(obj.isConstructed())    << "Error: NonCopyable is not set as constructed";
+    EXPECT_TRUE(obj.isConstructed())    << "Fatal: NonCopyable is not set as constructed";
     obj.setConstructed(false);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: NonCopyable is not set as unconstructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Fatal: NonCopyable is not set as unconstructed";
     obj.setConstructed(true);
-    EXPECT_FALSE(obj.isConstructed())   << "Error: NonCopyable is set as constructed if it is unconstructed";
+    EXPECT_FALSE(obj.isConstructed())   << "Fatal: NonCopyable is set as constructed if it is unconstructed";
 }
 
 } // namespace lib

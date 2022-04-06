@@ -6,6 +6,7 @@
  * @brief Unit tests of `lib::Thread`. 
  */
 #include "lib.Thread.hpp"
+#include "lib.AbstractTask.hpp"
 #include "System.hpp"
 
 #ifdef EOOS_NO_STRICT_MISRA_RULES
@@ -27,11 +28,11 @@ protected:
 
     /**
      * @class Task
-     * @brief Thread task for the test.
+     * @brief Semaphore task for the test.
      */
-    class Task : public ::eoos::Object<>, public api::Task
+    class Task : public AbstractTask<>
     {
-        using Parent = ::eoos::Object<>;
+        using Parent = AbstractTask<>;
       
     public:
 
@@ -141,15 +142,7 @@ protected:
         }
         
     private:    
-        
-        /**
-         * @copydoc eoos::api::Object::isConstructed()
-         */        
-        bool_t isConstructed() const override
-        {
-            return Parent::isConstructed();
-        }    
-    
+            
         /**
          * @copydoc eoos::api::Task::start()
          */        
@@ -164,14 +157,6 @@ protected:
                 case Story::Initiator: playInitiator(); break;                
             }
             isDead_ = true;            
-        }
-
-        /**
-         * @copydoc eoos::api::Task::getStackSize()
-         */
-        size_t getStackSize() const override
-        {
-            return 0;
         }
 
         /**
@@ -275,8 +260,6 @@ protected:
         int32_t error_ {ERROR_UNDEF};  ///< Execution error.
         bool_t toWait_ {true};         ///< Task wait and executed.
     };
-    
-protected:    
 
     /**
      * @struct Tasks
@@ -350,7 +333,7 @@ TEST_F(lib_ThreadTest, isConstructed)
     // Test unconstructed
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
+        EXPECT_FALSE(thread.isConstructed()) << "Fatal: Object is constructed";
     }
 }
 
@@ -375,16 +358,16 @@ TEST_F(lib_ThreadTest, execute)
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
-        EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
-        EXPECT_TRUE(task.normal.waitIsStarted()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not executed";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     }
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
-        EXPECT_FALSE(thread.execute()) << "Error: Thread was executed";
-        EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Fatal: Unconstructed thread was executed";
+        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
+        EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Error: Unconstructed thread was executed";
         EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
     }
 }
@@ -409,15 +392,15 @@ TEST_F(lib_ThreadTest, join)
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
-        EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-        EXPECT_TRUE(task.normal.isDead()) << "Fatal: Thread is not dead";
+        EXPECT_TRUE(thread.join()) << "Fatal: Thread was not joined";
+        EXPECT_TRUE(task.normal.isDead()) << "Error: Thread is not dead";
     }
     {
         Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
         EXPECT_FALSE(thread.execute()) << "Error: Thread was executed";
-        EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
-        EXPECT_FALSE(task.unconstructed.isDead()) << "Fatal: Thread is dead";        
+        EXPECT_FALSE(thread.join()) << "Fatal: Thread was joined";
+        EXPECT_FALSE(task.unconstructed.isDead()) << "Error: Thread is dead";        
     }
 }
 
@@ -466,29 +449,29 @@ TEST_F(lib_ThreadTest, setPriority)
 {
     {
         Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.setPriority(PRIORITY_LOCK)) << "Error: Thread priority is not set";
-        EXPECT_EQ(thread.getPriority(), PRIORITY_LOCK) << "Fatal: Thread priority is wrong";
+        EXPECT_TRUE(thread.setPriority(PRIORITY_LOCK)) << "Fatal: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_LOCK) << "Error: Thread priority is wrong";
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.setPriority(PRIORITY_LOCK)) << "Error`: Thread priority is set"; 
-        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Fatal: Thread priority is not wrong";        
+        EXPECT_FALSE(thread.setPriority(PRIORITY_LOCK)) << "Fatal: Thread priority is set"; 
+        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Error: Thread priority is not wrong";        
     }
     for(int32_t priority=PRIORITY_MIN; priority<=PRIORITY_MAX; priority++)
     {
         Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.setPriority(priority)) << "Error: Thread priority is not set";
-        EXPECT_EQ(thread.getPriority(), priority) << "Fatal: Thread priority is wrong";
+        EXPECT_TRUE(thread.setPriority(priority)) << "Fatal: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), priority) << "Error: Thread priority is wrong";
     }
     {
         Thread<> thread(task.normal);
-        EXPECT_FALSE(thread.setPriority(PRIORITY_MAX + 1)) << "Error: Thread priority is set";
-        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+        EXPECT_FALSE(thread.setPriority(PRIORITY_MAX + 1)) << "Fatal: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Error: Thread priority is wrong";
     }  
     {
         Thread<> thread(task.normal);
-        EXPECT_FALSE(thread.setPriority(PRIORITY_MIN - 2)) << "Error: Thread priority is set";
-        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Fatal: Thread priority is wrong";
+        EXPECT_FALSE(thread.setPriority(PRIORITY_MIN - 2)) << "Fatal: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Error: Thread priority is wrong";
     }      
 }
 
@@ -524,14 +507,14 @@ TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
     EXPECT_TRUE(re.join()) << "Error: Reactor thread was not joined";
     EXPECT_TRUE(in.join()) << "Error: Initiator thread was not joined";
 
-    EXPECT_NE(task.in.getError(), Task::ERROR_UNDEF) << "Error: Initiator was not started";    
-    EXPECT_NE(task.in.getError(), Task::ERROR_TIMEOUT) << "Error: Initiator didn't get confirmation Reactor started";
-    EXPECT_NE(task.in.getError(), Task::ERROR_NORESPONSE) << "Error: Initiator didn't get reactor response";
-    EXPECT_EQ(task.in.getError(), Task::ERROR_OK) << "Error: Initiator unexpected error";
+    EXPECT_NE(task.in.getError(), Task::ERROR_UNDEF) << "Fatal: Initiator was not started";    
+    EXPECT_NE(task.in.getError(), Task::ERROR_TIMEOUT) << "Fatal: Initiator didn't get confirmation Reactor started";
+    EXPECT_NE(task.in.getError(), Task::ERROR_NORESPONSE) << "Fatal: Initiator didn't get reactor response";
+    EXPECT_EQ(task.in.getError(), Task::ERROR_OK) << "Fatal: Initiator unexpected error";
     
-    EXPECT_NE(task.re.getError(), Task::ERROR_UNDEF) << "Error: Reactor was not started";    
-    EXPECT_NE(task.re.getError(), Task::ERROR_TIMEOUT) << "Error: Reactor didn't get initiator request";
-    EXPECT_EQ(task.re.getError(), Task::ERROR_OK) << "Error: Reactor unexpected error";
+    EXPECT_NE(task.re.getError(), Task::ERROR_UNDEF) << "Fatal: Reactor was not started";    
+    EXPECT_NE(task.re.getError(), Task::ERROR_TIMEOUT) << "Fatal: Reactor didn't get initiator request";
+    EXPECT_EQ(task.re.getError(), Task::ERROR_OK) << "Fatal: Reactor unexpected error";
 }
 
 /**
@@ -565,7 +548,30 @@ TEST_F(lib_ThreadTest, sleep)
         EXPECT_TRUE(count.join()) << "Error: Thread was not joined";
         counter[i] += task.counter[i].getCounter();
     }
-    EXPECT_LT(counter[0] + counter[0], counter[1]) << "Error: Thread was not joined";
+    EXPECT_LT(counter[0] + counter[0], counter[1]) << "Fatal: Thread was not joined";
+}
+
+/**
+ * @relates lib_ThreadTest
+ * @brief Test if thread sleeps.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Initialize begin values of counters to non-zero (100) value to be sure if sleep was not performed,
+ *        two values of counter 1 would be great than a value of counter 2.
+ *      - Run a task counter 1.
+ *      - Sleep for N milliseconds.
+ *      - Run a task counter 2.
+ *      - Sleep for N*4 milliseconds.
+ *
+ * @b Assert:
+ *      - Test two values of counter 1 less than a value of counter 2.
+ */
+TEST_F(lib_ThreadTest, sleep_wrongArgs)
+{
+    EXPECT_FALSE(Thread<>::sleep(-1)) << "Fatal: Thread sleep with negate time argument";
 }
 
 } // namespace lib
