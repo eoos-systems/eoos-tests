@@ -6,6 +6,7 @@
  * @brief Unit tests of `lib::MutexGuard`. 
  */
 #include "lib.MutexGuard.hpp"
+#include "lib.AbstractThreadTask.hpp"
 #include "System.hpp"
 
 namespace eoos
@@ -15,11 +16,89 @@ namespace lib
     
 /**
  * @class lib_MutexGuardTest
- * @test MutexGuard
- * @brief Tests MutexGuard class functionality.
+ * @test Mutex
+ * @brief Tests Mutex class functionality.
  */
 class lib_MutexGuardTest : public ::testing::Test
 {
+
+protected:
+
+    /**
+     * @class Task
+     * @brief Semaphore task for the test.
+     */
+    class ThreadTask : public AbstractThreadTask<>
+    {
+        using Parent = AbstractThreadTask<>;
+    
+    public:
+    
+        static const int64_t MUTEX_LOCKED     {0x5555555555555555};
+        static const int64_t MUTEX_NOT_LOCKED {0x5AAAAAAAAAAAAAAA};    
+        static const int64_t TIMEOUT          {0x7FFFFFFFFFFFFFFF};
+        static const int64_t INIT_VALUE       {0x0000000000000000};
+        
+        /**
+         * @brief Constructor.
+         *
+         * @param permits The initial number of permits available.
+         */
+        ThreadTask(api::Mutex& mutex) : Parent(),
+            mutex_ (mutex){
+        }
+
+        /**
+         * @brief Reads the register.
+         *
+         * @return Register value.
+         */
+        int64_t readRegister()
+        {
+            return register_;
+        }
+
+        /**
+         * @brief Set register read.
+         */        
+        void setRegisterRead()
+        {
+            isRegisterRead_ = true;
+        }
+        
+    private:    
+            
+        /**
+         * @copydoc eoos::api::Task::start()
+         */        
+        void start() override
+        {
+            MutexGuard<> guard(mutex_);
+            if(guard.isConstructed())
+            {
+                register_ = MUTEX_LOCKED;
+                for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
+                {
+                    if(isRegisterRead_)
+                    {
+                        break;
+                    }
+                }
+                if( not isRegisterRead_ )
+                {
+                    register_ = TIMEOUT;
+                }
+            }
+            else
+            {
+                register_ = MUTEX_NOT_LOCKED;
+            }
+        }
+        
+        bool_t isRegisterRead_ {false}; ///< Register is read by primary thread.
+        int64_t register_ {INIT_VALUE}; ///< Register to access.
+        api::Mutex& mutex_;             ///< Mutex to lock.
+    };
 
 private:
     
@@ -41,6 +120,50 @@ private:
  */
 TEST_F(lib_MutexGuardTest, Constructor)
 {
+    Mutex<> obj;
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
+}
+
+/**
+ * @relates lib_MutexGuardTest
+ * @brief Semaphore acquire test. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Create a child thread
+ *      - Lock mutex in the child thread
+ *
+ * @b Assert:
+ *      - Check the mutex cannot be locked in the primary thread.
+ */
+TEST_F(lib_MutexGuardTest, lock)
+{
+    Mutex<> mutex;
+    ASSERT_TRUE(mutex.tryLock()) << "Fatal: New mutex cannot be locked";
+    mutex.unlock();
+    ThreadTask thread(mutex);
+    ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
+    ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
+    int64_t registerRo {ThreadTask::INIT_VALUE};
+    for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
+    {
+        registerRo = thread.readRegister();
+        if(registerRo == ThreadTask::MUTEX_LOCKED)
+        {
+            break;
+        }
+    }
+    ASSERT_EQ(registerRo, ThreadTask::MUTEX_LOCKED) << "Fatal: Mutex was not locked";
+    ASSERT_NE(registerRo, ThreadTask::MUTEX_NOT_LOCKED) << "Fatal: Mutex was not locked";
+    ASSERT_NE(registerRo, ThreadTask::TIMEOUT) << "Fatal: Time is out";
+    ASSERT_NE(registerRo, ThreadTask::INIT_VALUE) << "Fatal: Child thread control not gotten";        
+    ASSERT_FALSE(mutex.tryLock()) << "Fatal: Locked mutex can be locked";
+    thread.setRegisterRead();
+    EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
+    ASSERT_TRUE(mutex.lock()) << "Fatal: Mutex cannot be locked";
+    mutex.unlock();
 }
 
 } // namespace lib

@@ -37,7 +37,8 @@ protected:
         /**
          * @brief Constructor.
          *
-         * @param permits The initial number of permits available.
+         * @param semAcquire Semaphore to acquire in the thread.
+         * @param semRelease Semaphore to release in the thread after the acquirement.
          */
         ThreadTask(api::Semaphore& semAcquire, api::Semaphore& semRelease) : Parent(),
             semAcquire_ (semAcquire),

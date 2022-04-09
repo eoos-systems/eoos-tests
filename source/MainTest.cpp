@@ -1,7 +1,7 @@
 /**
  * @file      MainTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `main`. 
  */
@@ -19,11 +19,12 @@ static const int32_t PROGRAM_WRONG_ARGS   {666}; ///< Wrong program exit code.
  */
 int32_t Program::start(api::List<char_t*> const* args)
 {
-    if(args->getLength() != 0)
+    int32_t error {PROGRAM_WRONG_ARGS}
+    if(args->getLength() == 0)
     {
-        return PROGRAM_WRONG_ARGS;
+        error = PROGRAM_OK;
     }
-    return PROGRAM_OK;
+    return error;
 }
 
 
