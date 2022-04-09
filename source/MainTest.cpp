@@ -19,7 +19,7 @@ static const int32_t PROGRAM_WRONG_ARGS   {666}; ///< Wrong program exit code.
  */
 int32_t Program::start(api::List<char_t*> const* args)
 {
-    int32_t error {PROGRAM_WRONG_ARGS}
+    int32_t error {PROGRAM_WRONG_ARGS};
     if(args->getLength() == 0)
     {
         error = PROGRAM_OK;

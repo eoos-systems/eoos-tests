@@ -269,9 +269,15 @@ protected:
     {
         Task normal;
         Task unconstructed {false};
-        Task counter[2] = {Task::Story::Counter, Task::Story::Counter};
         Task in {Task::Story::Initiator};
-        Task re {Task::Story::Reactor};        
+        Task re {Task::Story::Reactor};
+        // @note G++ compiler creates templorary objects and move them
+        // by calling move constructors of objects in Task[2] array.
+        // Move semantic of the Task class is prohibited by  inhiring 
+        // of NonCopyable<A> class. Therefore, will use Task*[2] here:
+        Task counter0 {Task::Story::Counter};
+        Task counter1 {Task::Story::Counter};
+        Task* const counter[2] {&counter0, &counter1};
     } task;
 
     // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
@@ -541,12 +547,12 @@ TEST_F(lib_ThreadTest, sleep)
     uint32_t counter[2] = {100, 100};
     for(int32_t i=0; i<2; i++)
     {
-        Thread<> count(task.counter[i]);
+        Thread<> count(*task.counter[i]);
         EXPECT_TRUE(count.execute()) << "Error: Thread was not executed";
         EXPECT_TRUE(Thread<>::sleep(ms[i])) << "Error: Thread sleep got a system error";
-        task.counter[i].stopCounter();
+        task.counter[i]->stopCounter();
         EXPECT_TRUE(count.join()) << "Error: Thread was not joined";
-        counter[i] += task.counter[i].getCounter();
+        counter[i] += task.counter[i]->getCounter();
     }
     EXPECT_LT(counter[0] + counter[0], counter[1]) << "Fatal: Thread was not joined";
 }

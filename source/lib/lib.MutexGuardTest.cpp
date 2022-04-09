@@ -13,6 +13,15 @@ namespace eoos
 {
 namespace lib
 {
+namespace
+{
+    
+const int64_t GUARD_LOCKED     {0x5555555555555555};
+const int64_t GUARD_NOT_LOCKED {0x5AAAAAAAAAAAAAAA};    
+const int64_t GUARD_TIMEOUT    {0x7FFFFFFFFFFFFFFF};
+const int64_t GUARD_INIT_VALUE {0x0000000000000000};
+
+} // namespace
     
 /**
  * @class lib_MutexGuardTest
@@ -33,12 +42,7 @@ protected:
         using Parent = AbstractThreadTask<>;
     
     public:
-    
-        static const int64_t MUTEX_LOCKED     {0x5555555555555555};
-        static const int64_t MUTEX_NOT_LOCKED {0x5AAAAAAAAAAAAAAA};    
-        static const int64_t TIMEOUT          {0x7FFFFFFFFFFFFFFF};
-        static const int64_t INIT_VALUE       {0x0000000000000000};
-        
+            
         /**
          * @brief Constructor.
          *
@@ -76,7 +80,7 @@ protected:
             MutexGuard<> guard(mutex_);
             if(guard.isConstructed())
             {
-                register_ = MUTEX_LOCKED;
+                register_ = GUARD_LOCKED;
                 for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
                 {
                     if(isRegisterRead_)
@@ -86,17 +90,17 @@ protected:
                 }
                 if( not isRegisterRead_ )
                 {
-                    register_ = TIMEOUT;
+                    register_ = GUARD_TIMEOUT;
                 }
             }
             else
             {
-                register_ = MUTEX_NOT_LOCKED;
+                register_ = GUARD_NOT_LOCKED;
             }
         }
         
         bool_t isRegisterRead_ {false}; ///< Register is read by primary thread.
-        int64_t register_ {INIT_VALUE}; ///< Register to access.
+        int64_t register_ {GUARD_INIT_VALUE}; ///< Register to access.
         api::Mutex& mutex_;             ///< Mutex to lock.
     };
 
@@ -104,7 +108,7 @@ private:
     
     System eoos_; ///< EOOS Operating System.    
 };    
-
+    
 /**
  * @relates lib_MutexGuardTest
  * @brief Tests the class constructor.
@@ -146,19 +150,19 @@ TEST_F(lib_MutexGuardTest, lock)
     ThreadTask thread(mutex);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    int64_t registerRo {ThreadTask::INIT_VALUE};
+    int64_t registerRo {GUARD_INIT_VALUE};
     for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
         registerRo = thread.readRegister();
-        if(registerRo == ThreadTask::MUTEX_LOCKED)
+        if(registerRo == GUARD_LOCKED)
         {
             break;
         }
     }
-    ASSERT_EQ(registerRo, ThreadTask::MUTEX_LOCKED) << "Fatal: Mutex was not locked";
-    ASSERT_NE(registerRo, ThreadTask::MUTEX_NOT_LOCKED) << "Fatal: Mutex was not locked";
-    ASSERT_NE(registerRo, ThreadTask::TIMEOUT) << "Fatal: Time is out";
-    ASSERT_NE(registerRo, ThreadTask::INIT_VALUE) << "Fatal: Child thread control not gotten";        
+    ASSERT_EQ(registerRo, GUARD_LOCKED) << "Fatal: Mutex was not locked";
+    ASSERT_NE(registerRo, GUARD_NOT_LOCKED) << "Fatal: Mutex was not locked";
+    ASSERT_NE(registerRo, GUARD_TIMEOUT) << "Fatal: Time is out";
+    ASSERT_NE(registerRo, GUARD_INIT_VALUE) << "Fatal: Child thread control not gotten";        
     ASSERT_FALSE(mutex.tryLock()) << "Fatal: Locked mutex can be locked";
     thread.setRegisterRead();
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
