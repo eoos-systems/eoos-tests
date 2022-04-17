@@ -992,6 +992,52 @@ TEST_F(lib_SharedPointerTest, smartPointer)
     EXPECT_FALSE(smrt.isNull()) << "Fatal: Shared pointer is null";    
 }
 
+/**
+ * @relates lib_SharedPointerTest
+ * @brief Test operator equal. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct objects.
+ *
+ * @b Assert:
+ *      - Test if the operator returns correct value.
+ */
+TEST_F(lib_SharedPointerTest, operator_equal)
+{
+    ManagedObject* ptr {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj1 {ptr};
+    SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj3 {ptr};    
+    EXPECT_FALSE( obj1 == obj2 ) << "Fatal: Objects equal each other";
+    EXPECT_TRUE( obj1 == obj3 ) << "Fatal: Objects don't equal each other";
+}
+
+/**
+ * @relates lib_SharedPointerTest
+ * @brief Test operator equal. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct objects.
+ *
+ * @b Assert:
+ *      - Test if the operator returns correct value.
+ */
+TEST_F(lib_SharedPointerTest, operator_unequal)
+{
+    ManagedObject* ptr {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj1 {ptr};
+    SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj3 {ptr};    
+    EXPECT_TRUE( obj1 != obj2 ) << "Fatal: Objects equal each other";
+    EXPECT_FALSE( obj1 != obj3 ) << "Fatal: Objects don't equal each other";
+}
+
 } // namespace lib
 } // namespace eoos
 
