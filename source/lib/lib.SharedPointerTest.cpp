@@ -150,8 +150,7 @@ private:
  */        
 SharedPointer<ManagedObject> createObject(int32_t const value = 0, ManagedAction* const action = NULLPTR)
 {
-    SharedPointer<ManagedObject> const obj {new ManagedObject(value, action)};
-    return obj;
+    return SharedPointer<ManagedObject>(new ManagedObject(value, action));
 }
 
 /**
@@ -366,7 +365,7 @@ TEST_F(lib_SharedPointerTest, MoveConstructor)
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";
     // Test if cast moves obj1 to obj2
-    ManagedObject* ptr1 = obj1.get();
+    ManagedObject* const ptr1 { obj1.get() };
     SharedPointer<ManagedObject> const obj2 { lib::move(obj1) };
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: Object 1 is not move casted to object 2";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
@@ -519,12 +518,12 @@ TEST_F(lib_SharedPointerTest, setConstructed)
  *
  * @b Assert:
  *      - Test if ownership on ManagedObject is gotten.
- *      - Test if SharedPointerDeleter is called for ManagedObject and it is deleted.
+ *      - Test if SmartPointerDeleter is called for ManagedObject and it is deleted.
  *      - Test of the others SharedPointers did not get ownership on ManagedObject.
  */
 TEST_F(lib_SharedPointerTest, isNotConstructed)
 {
-    using SharedPointer = SharedPointer<ManagedObject,SharedPointerDeleter<ManagedObject>,NullAllocator>;
+    using SharedPointer = SharedPointer<ManagedObject,SmartPointerDeleter<ManagedObject>,NullAllocator>;
     ManagedAction action;
     SharedPointer const obj1 {new ManagedObject(&action)};
     EXPECT_FALSE(obj1.isConstructed()) << "Error: Object is constructed";
@@ -851,7 +850,6 @@ TEST_F(lib_SharedPointerTest, isNull)
 
 /**
  * @relates lib_SharedPointerTest
- * @relates lib_SharedPointerTest
  * @brief Tests if shared pointer is only one manages an object 
  *
  * @b Arrange:
@@ -955,7 +953,7 @@ TEST_F(lib_SharedPointerTest, operator_bool)
 TEST_F(lib_SharedPointerTest, operator_squareBrackets)
 {
     int32_t* const arr = new int32_t[3]{1,2,3};
-    SharedPointer< int32_t,SharedPointerDeleterArray<int32_t> > const obj {arr};
+    SharedPointer< int32_t,SmartPointerDeleterArray<int32_t> > const obj {arr};
     ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj[0], arr[0]) << "Fatal: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Fatal: Wrong value of element 1";
@@ -966,30 +964,6 @@ TEST_F(lib_SharedPointerTest, operator_squareBrackets)
     EXPECT_EQ(obj[0], arr[0]) << "Fatal: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Fatal: Wrong value of element 1";
     EXPECT_EQ(obj[2], arr[2]) << "Fatal: Wrong value of element 2";        
-}
-
-/**
- * @relates lib_SharedPointerTest
- * @brief Test operator ([]) and array managment. 
- *
- * @b Arrange:
- *      - Initialize the EOOS system.
- *
- * @b Act:
- *      - Construct an object to manage an array.
- *
- * @b Assert:
- *      - Test if the operator [] returns correct values.
- */
-TEST_F(lib_SharedPointerTest, smartPointer)
-{
-    ManagedObject* const ptr {new ManagedObject()};    
-    SharedPointer<ManagedObject> obj {ptr};
-    api::SmartPointer<ManagedObject>& smrt {obj};
-    EXPECT_TRUE(smrt.isConstructed()) << "Fatal: Object is not constructed";
-    EXPECT_EQ(smrt.get(), ptr) << "Fatal: Shared pointer does not equal to its raw pointer";
-    EXPECT_EQ(smrt.getCount(), 1) << "Fatal: Amount of shared objects managing object is wrong";
-    EXPECT_FALSE(smrt.isNull()) << "Fatal: Shared pointer is null";    
 }
 
 /**
@@ -1007,10 +981,9 @@ TEST_F(lib_SharedPointerTest, smartPointer)
  */
 TEST_F(lib_SharedPointerTest, operator_equal)
 {
-    ManagedObject* ptr {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj1 {ptr};
+    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
     SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj3 {ptr};    
+    SharedPointer<ManagedObject> const obj3 {obj1};    
     EXPECT_FALSE( obj1 == obj2 ) << "Fatal: Objects equal each other";
     EXPECT_TRUE( obj1 == obj3 ) << "Fatal: Objects don't equal each other";
 }
@@ -1030,12 +1003,35 @@ TEST_F(lib_SharedPointerTest, operator_equal)
  */
 TEST_F(lib_SharedPointerTest, operator_unequal)
 {
-    ManagedObject* ptr {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj1 {ptr};
+    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
     SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj3 {ptr};    
+    SharedPointer<ManagedObject> const obj3 {obj1};
     EXPECT_TRUE( obj1 != obj2 ) << "Fatal: Objects equal each other";
     EXPECT_FALSE( obj1 != obj3 ) << "Fatal: Objects don't equal each other";
+}
+
+/**
+ * @relates lib_SharedPointerTest
+ * @brief Test SmartPointer interface. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct objects.
+ *
+ * @b Assert:
+ *      - Test if return values are correct.
+ */
+TEST_F(lib_SharedPointerTest, smartPointer)
+{
+    ManagedObject* const ptr {new ManagedObject()};    
+    SharedPointer<ManagedObject> obj {ptr};
+    api::SmartPointer<ManagedObject>& smrt {obj};
+    EXPECT_TRUE(smrt.isConstructed()) << "Fatal: Object is not constructed";
+    EXPECT_EQ(smrt.get(), ptr) << "Fatal: Shared pointer does not equal to its raw pointer";
+    EXPECT_EQ(smrt.getCount(), 1) << "Fatal: Amount of shared objects managing object is wrong";
+    EXPECT_FALSE(smrt.isNull()) << "Fatal: Shared pointer is null";    
 }
 
 } // namespace lib

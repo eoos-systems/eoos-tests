@@ -23,6 +23,7 @@ add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StringTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ThreadTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ToggleTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.UniquePointerTest.cpp"
 )
 
 target_link_libraries(target-eoos-unit-tests
