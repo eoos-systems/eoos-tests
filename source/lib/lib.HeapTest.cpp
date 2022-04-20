@@ -6,12 +6,23 @@
  * @brief Unit tests of `lib::Heap`. 
  */
 #include "lib.Heap.hpp"
+#include "lib.Memory.hpp"
 #include "System.hpp"
 
 namespace eoos
 {
 namespace lib
 {
+
+/**
+ * @brief Heap size in Bytes.
+ */    
+const int32_t MEMORY_SIZE(4096);
+
+/**
+ * @brief Heap memory.
+ */
+static uint64_t memory_[MEMORY_SIZE / 8];
     
 /**
  * @class lib_HeapTest
@@ -20,6 +31,23 @@ namespace lib
  */
 class lib_HeapTest : public ::testing::Test
 {
+
+protected:
+
+    /**
+     * @brief Sets a test up before the test run
+     */
+    virtual void SetUp() 
+    {
+        Memory::memset(memory_, 0xFF, sizeof(memory_));
+    }
+
+    /**
+     * @brief Tears a test down after the test done
+     */
+    virtual void TearDown() 
+    {
+    }    
 
 private:
     
@@ -41,6 +69,9 @@ private:
  */
 TEST_F(lib_HeapTest, Constructor)
 {
+    uintptr_t address( reinterpret_cast<uintptr_t>(memory_) );
+    Heap* heap( new (address) Heap(MEMORY_SIZE) );
+    EXPECT_TRUE(heap->isConstructed()) << "Fatal: Object is not constructed";    
 }
 
 } // namespace lib

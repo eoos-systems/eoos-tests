@@ -21,6 +21,10 @@ namespace lib
 class lib_StackTest : public ::testing::Test
 {
 
+protected:
+
+    typedef uint64_t Type;
+
 private:
     
     System eoos_; ///< EOOS Operating System.    
@@ -41,6 +45,8 @@ private:
  */
 TEST_F(lib_StackTest, Constructor)
 {
+    Stack<Type> obj(api::Stack<Type>::Operation::ED, 8);
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";        
 }
 
 } // namespace lib

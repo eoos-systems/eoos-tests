@@ -36,7 +36,7 @@ namespace
  */
 class TestNonCopyable : public NonCopyable<>
 {
-    using Parent = NonCopyable<>;
+    typedef NonCopyable<> Parent;
 
 public:
 
@@ -66,7 +66,7 @@ public:
  */
 TEST_F(lib_NonCopyableTest, Constructor)
 {
-    NonCopyable<> const obj {};
+    NonCopyable<> const obj;
     EXPECT_TRUE(obj.isConstructed())        << "Fatal: NonCopyable is not constructed";    
 }
 
@@ -86,12 +86,12 @@ TEST_F(lib_NonCopyableTest, Constructor)
  */
 TEST_F(lib_NonCopyableTest, MemoryAllocation)
 {
-    NonCopyable<>* obj {new NonCopyable<>()};
+    NonCopyable<>* obj(new NonCopyable<>());
     ASSERT_NE(obj, NULLPTR)             << "Error: NonCopyable is not allocated";
     EXPECT_TRUE(obj->isConstructed())   << "Fatal: NonCopyable is not constructed, but allocated";
     delete obj;
     obj = NULLPTR;
-    TestNonCopyable mem{};
+    TestNonCopyable mem;
     mem.setConstructed(false);
     EXPECT_FALSE(mem.isConstructed())   << "Error: Some memory is not ready to be used";
     obj = new (&mem) NonCopyable<>();
@@ -115,7 +115,7 @@ TEST_F(lib_NonCopyableTest, MemoryAllocation)
  */
 TEST_F(lib_NonCopyableTest, isConstructed)
 {
-    NonCopyable<> const obj{};
+    NonCopyable<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: NonCopyable is not constructed";
     obj.~NonCopyable();
     EXPECT_FALSE(obj.isConstructed()) << "Fatal: NonCopyable is constructed after destruction";
@@ -137,7 +137,7 @@ TEST_F(lib_NonCopyableTest, isConstructed)
  */
 TEST_F(lib_NonCopyableTest, isConstructed_obj)
 {
-    NonCopyable<>* obj {new NonCopyable<>()};
+    NonCopyable<>* obj(new NonCopyable<>());
     EXPECT_TRUE(NonCopyable<>::isConstructed(obj))   << "Fatal: NonCopyable is not constructed";
     delete obj;
     obj = NULLPTR;
@@ -160,7 +160,7 @@ TEST_F(lib_NonCopyableTest, isConstructed_obj)
  */
 TEST_F(lib_NonCopyableTest, setConstructed)
 {
-    TestNonCopyable obj{};
+    TestNonCopyable obj;
     EXPECT_TRUE(obj.isConstructed())    << "Error: NonCopyable is not constructed";
     obj.setConstructed(true);
     EXPECT_TRUE(obj.isConstructed())    << "Fatal: NonCopyable is not set as constructed";

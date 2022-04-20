@@ -35,7 +35,7 @@ namespace
  */
 Object<> createObject()
 {
-    Object<> const obj{};
+    Object<> const obj;
     return obj;
 }
 
@@ -46,7 +46,7 @@ Object<> createObject()
  */
 class TestObject : public ::eoos::Object<>
 {
-    using Parent = ::eoos::Object<>;
+    typedef ::eoos::Object<> Parent;
 
 public:
 
@@ -76,7 +76,7 @@ public:
  */
 TEST_F(glb_ObjectTest, Constructor)
 {
-    Object<> const obj {};
+    Object<> const obj;
     EXPECT_TRUE(obj.isConstructed())        << "Fatal: Object is not constructed";    
 }
 
@@ -96,9 +96,9 @@ TEST_F(glb_ObjectTest, Constructor)
  */
 TEST_F(glb_ObjectTest, CopyConstructor)
 {
-    Object<> const obj1 {};
+    Object<> const obj1;
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
-    Object<> const obj2 { obj1 };
+    Object<> const obj2( obj1 );
     EXPECT_TRUE(obj1.isConstructed())       << "Fatal: Object 2 is not constructed";
 }
 
@@ -118,9 +118,9 @@ TEST_F(glb_ObjectTest, CopyConstructor)
  */
 TEST_F(glb_ObjectTest, CopyAssignment)
 {
-    Object<> const obj1 {};
+    Object<> const obj1;
     EXPECT_TRUE(obj1.isConstructed())   << "Error: Object 1 is not constructed";
-    Object<> obj2 {};
+    Object<> obj2;
     EXPECT_TRUE(obj2.isConstructed())   << "Error: Object 2 is not constructed";
     obj2 = obj1;
     EXPECT_TRUE(obj2.isConstructed())   << "Fatal: Object 2 is not assigned with object 1";
@@ -144,7 +144,7 @@ TEST_F(glb_ObjectTest, CopyAssignment)
  */
 TEST_F(glb_ObjectTest, MoveConstructor_byNrvo)
 {
-    Object<> obj { createObject() };
+    Object<> obj( createObject() );
     EXPECT_TRUE(obj.isConstructed())   << "Fatal: An object is not moved to object 1 by compiler";
 }
 
@@ -164,8 +164,8 @@ TEST_F(glb_ObjectTest, MoveConstructor_byNrvo)
  */
 TEST_F(glb_ObjectTest, MoveConstructor_byCast)
 {
-    Object<> obj1 {};
-    Object<> const obj2 { lib::move(obj1) };
+    Object<> obj1;
+    Object<> const obj2( lib::move(obj1) );
     EXPECT_TRUE(obj2.isConstructed())   << "Fatal: Object 1 is not move casted to object 2";
     EXPECT_FALSE(obj1.isConstructed())  << "Fatal: Object 1 is constructed after movement to object 2";
 }
@@ -189,7 +189,7 @@ TEST_F(glb_ObjectTest, MoveConstructor_byCast)
  */
 TEST_F(glb_ObjectTest, MoveAssignment_byNrvo)
 {
-    Object<> obj {};
+    Object<> obj;
     // Test if a returned obj moved to rvalue, and the rvalue assigned to obj
     obj = createObject();
     EXPECT_TRUE(obj.isConstructed())   << "Fatal: An object is not moved to rvalue, and the rvalue is not assigned to object 1";
@@ -212,8 +212,8 @@ TEST_F(glb_ObjectTest, MoveAssignment_byNrvo)
  */
 TEST_F(glb_ObjectTest, MoveAssignment_byCast)
 {
-    Object<> obj1 {};
-    Object<> obj2 {};
+    Object<> obj1;
+    Object<> obj2;
     // Test if obj1 moved with lvalue to obj2
     obj2 = lib::move(obj1);  
     EXPECT_TRUE(obj2.isConstructed())   << "Fatal: An object 2 is not constructed with lvalue";
@@ -242,12 +242,12 @@ TEST_F(glb_ObjectTest, MoveAssignment_byCast)
  */
 TEST_F(glb_ObjectTest, MemoryAllocation)
 {
-    Object<>* obj {new Object<>()};
+    Object<>* obj(new Object<>());
     ASSERT_NE(obj, NULLPTR)             << "Error: Object is not allocated";
     EXPECT_TRUE(obj->isConstructed())   << "Fatal: Object is not constructed, but allocated";
     delete obj;
     obj = NULLPTR;
-    TestObject mem{};
+    TestObject mem;
     mem.setConstructed(false);
     EXPECT_FALSE(mem.isConstructed())   << "Error: Some memory is not ready to be used";
     obj = new (&mem) Object<>();
@@ -271,7 +271,7 @@ TEST_F(glb_ObjectTest, MemoryAllocation)
  */
 TEST_F(glb_ObjectTest, isConstructed)
 {
-    Object<> const obj{};
+    Object<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: Object is not constructed";
     obj.~Object();
     EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed after destruction";
@@ -293,7 +293,7 @@ TEST_F(glb_ObjectTest, isConstructed)
  */
 TEST_F(glb_ObjectTest, isConstructed_obj)
 {
-    Object<>* obj {new Object<>()};
+    Object<>* obj(new Object<>());
     EXPECT_TRUE(Object<>::isConstructed(obj))   << "Fatal: Object is not constructed";
     delete obj;
     obj = NULLPTR;
@@ -316,7 +316,7 @@ TEST_F(glb_ObjectTest, isConstructed_obj)
  */
 TEST_F(glb_ObjectTest, setConstructed)
 {
-    TestObject obj{};
+    TestObject obj;
     EXPECT_TRUE(obj.isConstructed())    << "Error: Object is not constructed";
     obj.setConstructed(true);
     EXPECT_TRUE(obj.isConstructed())    << "Fatal: Object is not set as constructed";

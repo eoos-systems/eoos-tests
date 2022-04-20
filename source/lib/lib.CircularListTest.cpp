@@ -20,6 +20,9 @@ namespace lib
  */
 class lib_CircularListTest : public ::testing::Test
 {
+protected:
+
+    typedef int32_t Type;
 
 private:
     
@@ -41,6 +44,8 @@ private:
  */
 TEST_F(lib_CircularListTest, Constructor)
 {
+    CircularList<Type> obj;
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 } // namespace lib

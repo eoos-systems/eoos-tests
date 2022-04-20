@@ -22,21 +22,26 @@ protected:
 
     class Task : public ::eoos::Object<>, public api::Task
     {
-        using Parent = ::eoos::Object<>;
+        typedef ::eoos::Object<> Parent;
       
     public:
 
-        bool_t isDone {false};
-        uint64_t count {0};
+        bool_t isDone;
+        uint64_t count;
+    
+        Task() : Parent(),
+            isDone(false),
+            count(0){
+        }
         
     private:    
         
-        bool_t isConstructed() const override
+        virtual bool_t isConstructed() const
         {
             return Parent::isConstructed();
         }    
     
-        void start() override
+        virtual void start()
         {
             while(not isDone)
             {
@@ -44,7 +49,7 @@ protected:
             }
         }
         
-        size_t getStackSize() const override
+        virtual size_t getStackSize() const
         {
             return 0;
         }
@@ -65,10 +70,10 @@ private:
  */
 static bool_t wait()
 {
-    const uint64_t COUNT {0xFFFF};
-    static uint64_t count {COUNT};
+    const uint64_t COUNT(0xFFFF);
+    static uint64_t count(COUNT);
     count--;
-    bool_t res {true};
+    bool_t res(true);
     if( count == 0 )
     {
         res = false;
@@ -94,7 +99,7 @@ static bool_t wait()
 TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
 {
     uint64_t count[] = {0,0};
-    lib::Thread<>* thread = new lib::Thread<>(task);
+    lib::Thread<>* thread( new lib::Thread<>(task) );
     thread->execute();
     std::cout << "Thread object is alive..." << std::endl;
     while(true)

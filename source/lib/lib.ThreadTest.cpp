@@ -32,7 +32,7 @@ protected:
      */
     class Task : public AbstractTask<>
     {
-        using Parent = AbstractTask<>;
+        typedef AbstractTask<> Parent;
       
     public:
 
@@ -52,19 +52,25 @@ protected:
          * @enum Story
          * @brief Task story to play
          */
-        enum class Story : int32_t
+        enum Story
         {
-            Default,
-            Counter,            
-            Reactor,
-            Initiator            
+            STORY_DEFAULT,
+            STORY_COUNTER,            
+            STORY_REACTOR,
+            STORY_INITIATOR            
         };
     
         /**
          * @brief Constructor.
          */
-        Task() : Parent()
-        {
+        Task() : Parent(),
+            count_ (0),
+            toCount_ (true),
+            isStarted_ (false),
+            isDead_ (false),
+            story_ (STORY_DEFAULT),
+            error_ (ERROR_UNDEF),
+            toWait_ (true){
         }
         
         /**
@@ -72,8 +78,14 @@ protected:
          *
          * @param isConstructed Flag the object will be constructed.
          */
-        Task(bool_t isConstructed) : Parent()
-        {
+        Task(bool_t isConstructed) : Parent(),
+            count_ (0),
+            toCount_ (true),
+            isStarted_ (false),
+            isDead_ (false),
+            story_ (STORY_DEFAULT),
+            error_ (ERROR_UNDEF),
+            toWait_ (true){
             setConstructed(isConstructed);
         }
         
@@ -83,7 +95,13 @@ protected:
          * @param isConstructed Flag the object will be constructed.
          */
         Task(Story story) : Parent(),
-            story_ (story){
+            count_ (0),
+            toCount_ (true),
+            isStarted_ (false),
+            isDead_ (false),
+            story_ (story),
+            error_ (ERROR_UNDEF),
+            toWait_ (true){        
         }
         
         /**
@@ -93,7 +111,7 @@ protected:
          */
         bool waitIsStarted() const
         {
-            bool_t isStarted {false};
+            bool_t isStarted(false);
             for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
             {
                 isStarted = isStarted_;
@@ -146,15 +164,15 @@ protected:
         /**
          * @copydoc eoos::api::Task::start()
          */        
-        void start() override
+        virtual void start()
         {
             isStarted_ = true;            
             switch (story_)
             {
-                case Story::Default:   playDefault();   break;
-                case Story::Counter:   playCounter();   break;
-                case Story::Reactor:   playReactor();   break;
-                case Story::Initiator: playInitiator(); break;                
+                case STORY_DEFAULT:   playDefault();   break;
+                case STORY_COUNTER:   playCounter();   break;
+                case STORY_REACTOR:   playReactor();   break;
+                case STORY_INITIATOR: playInitiator(); break;                
             }
             isDead_ = true;            
         }
@@ -190,7 +208,7 @@ protected:
             // Inform the initiator the reactor is ready to react
             channelRtoI_ = MSG_READY;
             // Wait the initiator initiated
-            int32_t count {TESTS_WAIT_CYCLE_TIME};
+            int32_t count(TESTS_WAIT_CYCLE_TIME);
             while(true)
             {   
                 if(channelItoR_ == MSG_PING)
@@ -215,7 +233,7 @@ protected:
         void playInitiator()
         {
             // Wait the reactor is ready
-            int32_t count {TESTS_WAIT_CYCLE_TIME};
+            int32_t count(TESTS_WAIT_CYCLE_TIME);
             while(true)
             {   
                 if(channelRtoI_ == MSG_READY)
@@ -252,13 +270,13 @@ protected:
         static int32_t channelItoR_;   ///< Channel Initiator to Reactor direction.
         static int32_t channelRtoI_;   ///< Channel Reactor to Initiator direction.
         
-        uint32_t count_ {0};           ///< Counter.
-        bool_t toCount_ {true};        ///< Has to count flag.
-        bool_t isStarted_ {false};     ///< Task started flag.
-        bool_t isDead_ {false};        ///< Task dead flag.
-        Story story_ {Story::Default}; ///< Task story to play.
-        int32_t error_ {ERROR_UNDEF};  ///< Execution error.
-        bool_t toWait_ {true};         ///< Task wait and executed.
+        uint32_t count_;    ///< Counter.
+        bool_t toCount_;    ///< Has to count flag.
+        bool_t isStarted_;  ///< Task started flag.
+        bool_t isDead_;     ///< Task dead flag.
+        Story story_;       ///< Task story to play.
+        int32_t error_;     ///< Execution error.
+        bool_t toWait_;     ///< Task wait and executed.
     };
 
     /**
@@ -267,34 +285,46 @@ protected:
      */
     struct Tasks
     {
+        Tasks() :
+            normal (),
+            unconstructed (false),
+            in (Task::STORY_INITIATOR),
+            re (Task::STORY_REACTOR),
+            counter0 (Task::STORY_COUNTER),
+            counter1 (Task::STORY_COUNTER){
+            counters[0] = &counter0;
+            counters[1] = &counter1;
+        }
+        
         Task normal;
-        Task unconstructed {false};
-        Task in {Task::Story::Initiator};
-        Task re {Task::Story::Reactor};
+        Task unconstructed;
+        Task in;
+        Task re;
         // @note G++ compiler creates templorary objects and move them
         // by calling move constructors of objects in Task[2] array.
         // Move semantic of the Task class is prohibited by  inhiring 
         // of NonCopyable<A> class. Therefore, will use Task*[2] here:
-        Task counter0 {Task::Story::Counter};
-        Task counter1 {Task::Story::Counter};
-        Task* const counter[2] {&counter0, &counter1};
+        Task counter0;
+        Task counter1;
+        Task* counters[2];
     } task;
-
-    // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
-    // and constants defined in scope of fixture classes as well as in scope of tested classes.    
-    int32_t const PRIORITY_WRONG {api::Thread::PRIORITY_WRONG};
-    int32_t const PRIORITY_MAX {api::Thread::PRIORITY_MAX};
-    int32_t const PRIORITY_MIN {api::Thread::PRIORITY_MIN};
-    int32_t const PRIORITY_NORM {api::Thread::PRIORITY_NORM};
-    int32_t const PRIORITY_LOCK  {api::Thread::PRIORITY_LOCK};
     
 private:
 
     System eoos_; ///< EOOS Operating System.
 };  
 
-int32_t lib_ThreadTest::Task::channelItoR_ {lib_ThreadTest::Task::MSG_IDLE};
-int32_t lib_ThreadTest::Task::channelRtoI_ {lib_ThreadTest::Task::MSG_IDLE};
+int32_t lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
+int32_t lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
+
+// @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
+// and constants defined in scope of fixture classes as well as in scope of tested classes.    
+static const int32_t PRIORITY_WRONG(api::Thread::PRIORITY_WRONG);
+static const int32_t PRIORITY_MAX(api::Thread::PRIORITY_MAX);
+static const int32_t PRIORITY_MIN(api::Thread::PRIORITY_MIN);
+static const int32_t PRIORITY_NORM(api::Thread::PRIORITY_NORM);
+static const int32_t PRIORITY_LOCK(api::Thread::PRIORITY_LOCK);
+
 
 /**
  * @relates lib_ThreadTest
@@ -544,17 +574,17 @@ TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
 TEST_F(lib_ThreadTest, sleep)
 {
     int64_t ms[2] = {300, 1200};
-    uint32_t counter[2] = {100, 100};
+    uint32_t counters[2] = {100, 100};
     for(int32_t i=0; i<2; i++)
     {
-        Thread<> count(*task.counter[i]);
+        Thread<> count(*task.counters[i]);
         EXPECT_TRUE(count.execute()) << "Error: Thread was not executed";
         EXPECT_TRUE(Thread<>::sleep(ms[i])) << "Error: Thread sleep got a system error";
-        task.counter[i]->stopCounter();
+        task.counters[i]->stopCounter();
         EXPECT_TRUE(count.join()) << "Error: Thread was not joined";
-        counter[i] += task.counter[i]->getCounter();
+        counters[i] += task.counters[i]->getCounter();
     }
-    EXPECT_LT(counter[0] + counter[0], counter[1]) << "Fatal: Thread was not joined";
+    EXPECT_LT(counters[0] + counters[0], counters[1]) << "Fatal: Thread was not joined";
 }
 
 /**

@@ -11,15 +11,15 @@
 namespace eoos
 {
 
-static const int32_t PROGRAM_OK           {777}; ///< Correct program exit code.
-static const int32_t PROGRAM_WRONG_ARGS   {666}; ///< Wrong program exit code.
+static const int32_t PROGRAM_OK          (777); ///< Correct program exit code.
+static const int32_t PROGRAM_WRONG_ARGS  (666); ///< Wrong program exit code.
 
 /**
  * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)
  */
 int32_t Program::start(api::List<char_t*> const* args)
 {
-    int32_t error {PROGRAM_WRONG_ARGS};
+    int32_t error(PROGRAM_WRONG_ARGS);
     if(args->getLength() == 0)
     {
         error = PROGRAM_OK;
@@ -57,7 +57,7 @@ protected:
  */
 TEST_F(glb_MainTest, execute)
 {
-    int32_t const error { eoos.execute() };
+    int32_t const error( eoos.execute() );
     ASSERT_TRUE(eoos.isInitialized())  << "Error: EOOS was not initialized";
     ASSERT_EQ(PROGRAM_OK, error)       << "Fatal: Program was not started";
 }
@@ -112,6 +112,6 @@ int main(int argc, char** const argv)
     #endif
     
     ::testing::InitGoogleTest(&argc, argv);
-    int const error { RUN_ALL_TESTS() };
+    int const error( RUN_ALL_TESTS() );
     return error;
 }

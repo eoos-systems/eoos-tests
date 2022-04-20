@@ -25,7 +25,7 @@ namespace eoos
 /**
  * @brief Number of cycles when a test would wait a result.
  */
-static const uint32_t TESTS_WAIT_CYCLE_TIME { EOOS_TESTS_WAIT_CYCLE_TIME };
+static const uint32_t TESTS_WAIT_CYCLE_TIME( EOOS_TESTS_WAIT_CYCLE_TIME );
 
 } // namespace eoos
 

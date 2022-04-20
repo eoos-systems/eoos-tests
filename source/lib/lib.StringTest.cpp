@@ -44,7 +44,7 @@ private:
 TEST_F(lib_StringTest, Constructor)
 {
     String const obj;
-    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";    
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 } // namespace lib

@@ -51,10 +51,10 @@ bool_t testSizeof()
 template<typename T, typename R>
 bool_t testSum(T const o1, T const o2)
 {
-    lib::Align<T> const a1 {o1};
-    lib::Align<T> const a2 {o2};
-    lib::Align<R> const ares {a1 + a2};
-    R const ores {o1 + o2};
+    lib::Align<T> const a1(o1);
+    lib::Align<T> const a2(o2);
+    lib::Align<R> const ares(a1 + a2);
+    R const ores (o1 + o2);
     return ares == ores;
 }
 
@@ -98,7 +98,7 @@ TEST_F(lib_AlignTest, Sizeof)
  */
 TEST_F(lib_AlignTest, Sum)
 {
-    bool_t res {testSum<int8_t,int32_t>(-1,2)};
+    bool_t res(testSum<int8_t,int32_t>(-1,2));
     EXPECT_TRUE( res )  << "Fatal: Sums are not equal";
     res = testSum<int16_t,int32_t>(-1,2);
     EXPECT_TRUE( res ) << "Fatal: Sums are not equal";

@@ -65,7 +65,11 @@ public:
  */
 struct ManagedAction
 {
-    bool_t isDeleted {false};
+    ManagedAction() : 
+        isDeleted (false) {
+    }
+    
+    bool_t isDeleted;
 };
 
 /**
@@ -82,7 +86,10 @@ public:
     /**
      * @brief Constructor.
      */
-    ManagedObject() = default;
+    ManagedObject() : Parent(),
+        value_ (0),
+        action_ (NULLPTR){
+    }
 
     /**
      * @brief Constructor.
@@ -90,7 +97,8 @@ public:
      * @param value A value to containt as member.
      */
     ManagedObject(int32_t const value) : Parent(),
-        value_ (value){
+        value_ (value),
+        action_ (NULLPTR){
     }
 
     /**
@@ -99,6 +107,7 @@ public:
      * @param action Flags will be set on actions.
      */
     ManagedObject(ManagedAction* const action) : Parent(),
+        value_ (0),
         action_ (action){
     }
     
@@ -111,12 +120,12 @@ public:
     ManagedObject(int32_t const value, ManagedAction* const action) : Parent(),
         value_  (value),
         action_ (action){
-    }    
+    }
 
     /**
      * @brief Destructor.
      */
-    ~ManagedObject() override
+    virtual ~ManagedObject()
     {
         value_ = -1;
         if(action_ != NULLPTR)
@@ -137,8 +146,8 @@ public:
     
 private:
 
-    int32_t value_ {0};
-    ManagedAction* action_ {NULLPTR};
+    int32_t value_;
+    ManagedAction* action_;
 };
 
 /**
@@ -160,7 +169,7 @@ SharedPointer<ManagedObject> createObject(int32_t const value = 0, ManagedAction
 template <typename T>
 class TestSharedPointer : public SharedPointer<T>
 {
-    using Parent = SharedPointer<T>;
+    typedef SharedPointer<T> Parent;
     
 public:
 
@@ -196,7 +205,7 @@ public:
  */
 TEST_F(lib_SharedPointerTest, Constructor_nullptr)
 {
-    SharedPointer<ManagedObject> const obj {NULLPTR};
+    SharedPointer<ManagedObject> const obj(NULLPTR);
     EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";    
     EXPECT_EQ(obj.get(), NULLPTR) << "Fatal: Shared pointer does not equal to NULLPTR";
 }
@@ -217,9 +226,9 @@ TEST_F(lib_SharedPointerTest, Constructor_nullptr)
  */
 TEST_F(lib_SharedPointerTest, Constructor_pointer)
 {
-    const int32_t VALUE {1};
-    ManagedObject* const ptr {new ManagedObject(VALUE)};
-    SharedPointer<ManagedObject> const obj {ptr};
+    const int32_t VALUE(1);
+    ManagedObject* const ptr(new ManagedObject(VALUE));
+    SharedPointer<ManagedObject> const obj(ptr);
     EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     ASSERT_EQ(obj.get(), ptr) << "Fatal: Shared pointer does not equal to its raw pointer";
     EXPECT_EQ(obj->getValue(), VALUE) << "Fatal: Wrong value containing in managed object";
@@ -242,12 +251,12 @@ TEST_F(lib_SharedPointerTest, Constructor_pointer)
  */
 TEST_F(lib_SharedPointerTest, CopyConstructor)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject(VALUE1, &action1)};
+    SharedPointer<ManagedObject> const obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object 1 is not constructed";
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of shared objects managing object is wrong";    
-    SharedPointer<ManagedObject> const obj2 { obj1 };
+    SharedPointer<ManagedObject> const obj2( obj1 );
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: Object 2 is not constructed";
     ASSERT_EQ(obj1.get(), obj2.get()) << "Fatal: Both shared object don't point to the same managed object";
     EXPECT_EQ(obj1.getCount(), 2) << "Fatal: Amount of shared objects managing object is wrong";    
@@ -260,7 +269,7 @@ TEST_F(lib_SharedPointerTest, CopyConstructor)
     EXPECT_TRUE(obj3.isConstructed()) << "Error: Object 2 is not constructed";
     EXPECT_EQ(obj3.get(), NULLPTR) << "Fatal: Shared pointer does not equal to null";
     EXPECT_EQ(obj3.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
-    SharedPointer<ManagedObject> obj4 {obj3};
+    SharedPointer<ManagedObject> obj4(obj3);
     EXPECT_TRUE(obj4.isConstructed()) << "Error: Object 2 is not constructed";
     EXPECT_EQ(obj4.get(), NULLPTR) << "Fatal: Shared pointer does not equal to null";
     EXPECT_EQ(obj4.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
@@ -287,9 +296,9 @@ TEST_F(lib_SharedPointerTest, CopyConstructor)
  */
 TEST_F(lib_SharedPointerTest, CopyAssignment)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject(VALUE1, &action1)};
+    SharedPointer<ManagedObject> const obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object 1 is not constructed";
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of shared objects managing object is wrong";
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
@@ -308,9 +317,9 @@ TEST_F(lib_SharedPointerTest, CopyAssignment)
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";    
     EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";
     
-    const int32_t VALUE3 {3};
+    const int32_t VALUE3(3);
     ManagedAction action3;
-    SharedPointer<ManagedObject> obj3 {new ManagedObject(VALUE3, &action3)};
+    SharedPointer<ManagedObject> obj3(new ManagedObject(VALUE3, &action3));
     EXPECT_TRUE(obj3.isConstructed()) << "Error: Object 3 is not constructed";
     EXPECT_EQ(obj3->getValue(), VALUE3) << "Fatal: Wrong value containing in managed object";    
     obj3 = obj2;   
@@ -355,9 +364,9 @@ TEST_F(lib_SharedPointerTest, CopyAssignment)
 TEST_F(lib_SharedPointerTest, MoveConstructor)
 {
     // Test if compiler moves an obj to obj1
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> obj1 { createObject(VALUE1, &action1) };
+    SharedPointer<ManagedObject> obj1( createObject(VALUE1, &action1) );
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj1.isNull()) << "Error: object 1 is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: object 1 is not unique";
@@ -365,8 +374,8 @@ TEST_F(lib_SharedPointerTest, MoveConstructor)
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";
     // Test if cast moves obj1 to obj2
-    ManagedObject* const ptr1 { obj1.get() };
-    SharedPointer<ManagedObject> const obj2 { lib::move(obj1) };
+    ManagedObject* const ptr1( obj1.get() );
+    SharedPointer<ManagedObject> const obj2( lib::move(obj1) );
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: Object 1 is not move casted to object 2";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
@@ -397,13 +406,13 @@ TEST_F(lib_SharedPointerTest, MoveConstructor)
  */
 TEST_F(lib_SharedPointerTest, MoveAssignment)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> obj1 {new ManagedObject(VALUE1, &action1)};
+    SharedPointer<ManagedObject> obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";        
     // Test if an obj moved to rvalue, and the rvalue assigned to obj1
-    const int32_t VALUE3 {3};       
+    const int32_t VALUE3(3);       
     ManagedAction action3;    
     obj1 = createObject(VALUE3, &action3);
     EXPECT_TRUE(obj1.isConstructed()) << "Fatal: An object is not moved to rvalue, and the rvalue is not assigned to object 1";
@@ -414,9 +423,9 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     EXPECT_TRUE(action1.isDeleted) << "Fatal: Managed object was not deleted";
     EXPECT_FALSE(action3.isDeleted) << "Fatal: Managed object was deleted";    
     // Test if obj1 moved with lvalue to obj2
-    const int32_t VALUE2 {2};    
+    const int32_t VALUE2(2);    
     ManagedAction action2;    
-    SharedPointer<ManagedObject> obj2 {new ManagedObject(VALUE2, &action2)};
+    SharedPointer<ManagedObject> obj2(new ManagedObject(VALUE2, &action2));
     EXPECT_EQ(obj2->getValue(), VALUE2) << "Fatal: Wrong value containing in managed object";        
     obj2 = lib::move(obj1);
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with lvalue";
@@ -439,7 +448,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
     EXPECT_TRUE(action4.isDeleted) << "Fatal: Managed object was not deleted";    
     // Test if an obj moved with rvalue to obj2
-    const int32_t VALUE5 {5};
+    const int32_t VALUE5(5);
     ManagedAction action5;
     obj2 = lib::move(SharedPointer<ManagedObject>(new ManagedObject(VALUE5, &action5)));
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with rvalue of a moved object";
@@ -474,7 +483,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
  */
 TEST_F(lib_SharedPointerTest, isConstructed)
 {
-    SharedPointer<ManagedObject> const obj {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj(new ManagedObject());
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
@@ -494,7 +503,7 @@ TEST_F(lib_SharedPointerTest, isConstructed)
  */
 TEST_F(lib_SharedPointerTest, setConstructed)
 {
-    TestSharedPointer<ManagedObject> obj{new ManagedObject()};
+    TestSharedPointer<ManagedObject> obj(new ManagedObject());
     EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     obj.setConstructed(true);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not set as constructed";
@@ -523,14 +532,14 @@ TEST_F(lib_SharedPointerTest, setConstructed)
  */
 TEST_F(lib_SharedPointerTest, isNotConstructed)
 {
-    using SharedPointer = SharedPointer<ManagedObject,SmartPointerDeleter<ManagedObject>,NullAllocator>;
+    typedef SharedPointer<ManagedObject,SmartPointerDeleter<ManagedObject>,NullAllocator> SharedPointer;
     ManagedAction action;
-    SharedPointer const obj1 {new ManagedObject(&action)};
+    SharedPointer const obj1(new ManagedObject(&action));
     EXPECT_FALSE(obj1.isConstructed()) << "Error: Object is constructed";
     EXPECT_EQ(obj1.getCount(), 0) << "Fatal: Amount of shared objects managing object is wrong";
     EXPECT_TRUE(action.isDeleted) << "Fatal: Managed object was not deleted";
     
-    SharedPointer obj2 {obj1};
+    SharedPointer obj2(obj1);
     EXPECT_FALSE(obj2.isConstructed()) << "Error: Object is constructed";
     EXPECT_EQ(obj1.getCount(), 0) << "Fatal: Amount of shared objects managing object is wrong";
     EXPECT_EQ(obj2.getCount(), 0) << "Fatal: Amount of shared objects managing object is wrong";
@@ -558,16 +567,16 @@ TEST_F(lib_SharedPointerTest, isNotConstructed)
  */
 TEST_F(lib_SharedPointerTest, get)
 {
-    const int32_t VALUE {0x12345678};
-    ManagedObject* const ptr {new ManagedObject(VALUE)};
-    SharedPointer<ManagedObject> obj1 {ptr};
+    const int32_t VALUE(0x12345678);
+    ManagedObject* const ptr(new ManagedObject(VALUE));
+    SharedPointer<ManagedObject> obj1(ptr);
     ASSERT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj1.get(), ptr) << "Fatal: Shared pointer does not equal to its raw pointer";
     EXPECT_EQ(obj1.get()->getValue(), VALUE) << "Fatal: Value in managed object is wrong";
     SharedPointer<ManagedObject> obj2;
     ASSERT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";    
     EXPECT_EQ(obj2.get(), NULLPTR) << "Fatal: Shared pointer does not equal to its raw pointer";
-    SharedPointer<ManagedObject> obj3 {NULLPTR};
+    SharedPointer<ManagedObject> obj3(NULLPTR);
     ASSERT_TRUE(obj3.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj3.get(), NULLPTR) << "Fatal: Shared pointer does not equal to its raw pointer";    
 }
@@ -587,9 +596,9 @@ TEST_F(lib_SharedPointerTest, get)
  */
 TEST_F(lib_SharedPointerTest, reset)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> obj1 {new ManagedObject(VALUE1, &action1)};
+    SharedPointer<ManagedObject> obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj1.isNull()) << "Error: object 1 is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: object 1 is not unique";
@@ -619,9 +628,9 @@ TEST_F(lib_SharedPointerTest, reset)
  */
 TEST_F(lib_SharedPointerTest, reset_withOther)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    SharedPointer<ManagedObject> obj1 {new ManagedObject(VALUE1, &action1)};
+    SharedPointer<ManagedObject> obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj1.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: Object is not unique";
@@ -629,7 +638,7 @@ TEST_F(lib_SharedPointerTest, reset_withOther)
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
     
-    SharedPointer<ManagedObject> obj2 {obj1};        
+    SharedPointer<ManagedObject> obj2(obj1);        
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj2.isNull()) << "Error: Object is null";
     EXPECT_FALSE(obj2.isUnique()) << "Error: Object is unique";
@@ -637,7 +646,7 @@ TEST_F(lib_SharedPointerTest, reset_withOther)
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
 
-    const int32_t VALUE2 {2};
+    const int32_t VALUE2(2);
     ManagedAction action2;
     obj1.reset(new ManagedObject(VALUE2, &action2));
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
@@ -654,7 +663,7 @@ TEST_F(lib_SharedPointerTest, reset_withOther)
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
 
-    const int32_t VALUE3 {2};
+    const int32_t VALUE3(2);
     ManagedAction action3;
     obj2.reset(new ManagedObject(VALUE3, &action3));
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
@@ -681,10 +690,10 @@ TEST_F(lib_SharedPointerTest, reset_withOther)
  */
 TEST_F(lib_SharedPointerTest, swap)
 {
-    const int32_t VALUE1 {1};
+    const int32_t VALUE1(1);
     ManagedAction action1;
-    ManagedObject* ptr1 {new ManagedObject(VALUE1, &action1)};
-    SharedPointer<ManagedObject> obj1 {ptr1};
+    ManagedObject* ptr1(new ManagedObject(VALUE1, &action1));
+    SharedPointer<ManagedObject> obj1(ptr1);
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj1.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: Object is not unique";
@@ -692,10 +701,10 @@ TEST_F(lib_SharedPointerTest, swap)
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
 
-    const int32_t VALUE2 {2};
+    const int32_t VALUE2(2);
     ManagedAction action2;
-    ManagedObject* ptr2 {new ManagedObject(VALUE2, &action2)};    
-    SharedPointer<ManagedObject> obj2 {ptr2};
+    ManagedObject* ptr2(new ManagedObject(VALUE2, &action2));    
+    SharedPointer<ManagedObject> obj2(ptr2);
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj2.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: Object is not unique";
@@ -771,14 +780,14 @@ TEST_F(lib_SharedPointerTest, getCount)
     {
         SharedPointer<ManagedObject> obj1;
         EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
-        SharedPointer<ManagedObject> obj2 { obj1 };
+        SharedPointer<ManagedObject> obj2( obj1 );
         EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
         EXPECT_EQ(obj2.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
         SharedPointer<ManagedObject> obj3;
         EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
         EXPECT_EQ(obj2.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
         EXPECT_EQ(obj3.getCount(), 0) << "Error: Amount of shared objects managing object is wrong";
-        SharedPointer<ManagedObject> obj4 {new ManagedObject()};
+        SharedPointer<ManagedObject> obj4(new ManagedObject());
         EXPECT_EQ(obj4.getCount(), 1) << "Error: Amount of shared objects managing object is wrong";
         obj3 = obj4;
         EXPECT_EQ(obj4.getCount(), 2) << "Error: Amount of shared objects managing object is wrong";
@@ -795,9 +804,9 @@ TEST_F(lib_SharedPointerTest, getCount)
     }
     {
         ManagedAction action1;
-        SharedPointer<ManagedObject>* obj1 { new SharedPointer<ManagedObject>(new ManagedObject(&action1)) };
+        SharedPointer<ManagedObject>* obj1( new SharedPointer<ManagedObject>(new ManagedObject(&action1)) );
         EXPECT_EQ(obj1->getCount(), 1) << "Error: Amount of shared objects managing object is wrong";
-        SharedPointer<ManagedObject>* obj2 { new SharedPointer<ManagedObject>(*obj1) };
+        SharedPointer<ManagedObject>* obj2( new SharedPointer<ManagedObject>(*obj1) );
         EXPECT_EQ(obj1->getCount(), 2) << "Error: Amount of shared objects managing object is wrong";
         EXPECT_EQ(obj2->getCount(), 2) << "Error: Amount of shared objects managing object is wrong";    
         delete obj2;
@@ -809,9 +818,9 @@ TEST_F(lib_SharedPointerTest, getCount)
     {
         ManagedAction action1;
         ManagedAction action2;        
-        SharedPointer<ManagedObject>* obj1 { new SharedPointer<ManagedObject>(new ManagedObject(&action1)) };
+        SharedPointer<ManagedObject>* obj1( new SharedPointer<ManagedObject>(new ManagedObject(&action1)) );
         EXPECT_EQ(obj1->getCount(), 1) << "Error: Amount of shared objects managing object is wrong";
-        SharedPointer<ManagedObject>* obj2 { new SharedPointer<ManagedObject>(new ManagedObject(&action2)) };
+        SharedPointer<ManagedObject>* obj2( new SharedPointer<ManagedObject>(new ManagedObject(&action2)) );
         EXPECT_EQ(obj2->getCount(), 1) << "Error: Amount of shared objects managing object is wrong";    
         *obj2 = *obj1;
         EXPECT_TRUE(action2.isDeleted) << "Error: Managed object was not deleted";
@@ -840,11 +849,11 @@ TEST_F(lib_SharedPointerTest, getCount)
  */
 TEST_F(lib_SharedPointerTest, isNull)
 {
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj1(new ManagedObject());
     EXPECT_FALSE( obj1.isNull() ) << "Fatal: Object stores NULLPTR";
     SharedPointer<ManagedObject> const obj2;
     EXPECT_TRUE( obj2.isNull() ) << "Fatal: Object doesn't store NULLPTR";
-    SharedPointer<ManagedObject> const obj3 {NULLPTR};
+    SharedPointer<ManagedObject> const obj3(NULLPTR);
     EXPECT_TRUE( obj3.isNull() ) << "Fatal: Object doesn't store NULLPTR";
 }
 
@@ -865,7 +874,7 @@ TEST_F(lib_SharedPointerTest, isUnique)
 {
     SharedPointer<ManagedObject> obj1;
     EXPECT_FALSE( obj1.isUnique() ) << "Fatal: Object is unique";
-    SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj2(new ManagedObject());
     EXPECT_TRUE( obj2.isUnique() ) << "Fatal: Object is not unique";
     obj1 = obj2;
     EXPECT_FALSE( obj1.isUnique() ) << "Fatal: Object is unique";
@@ -887,8 +896,8 @@ TEST_F(lib_SharedPointerTest, isUnique)
  */
 TEST_F(lib_SharedPointerTest, operator_arrow)
 {
-    int32_t const value {0x5A5AA5A5};
-    SharedPointer<ManagedObject> const obj {new ManagedObject(value)};
+    int32_t const value(0x5A5AA5A5);
+    SharedPointer<ManagedObject> const obj(new ManagedObject(value));
     ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj->getValue(), value) << "Fatal: Value in managed object is wrong";
 }
@@ -908,8 +917,8 @@ TEST_F(lib_SharedPointerTest, operator_arrow)
  */
 TEST_F(lib_SharedPointerTest, operator_star)
 {
-    int32_t const value {0x7E63ABCD};
-    SharedPointer<ManagedObject> const obj {new ManagedObject(value)};
+    int32_t const value(0x7E63ABCD);
+    SharedPointer<ManagedObject> const obj(new ManagedObject(value));
     ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";    
     EXPECT_EQ((*obj).getValue(), value) << "Fatal: Value in managed object is wrong";
 }
@@ -929,11 +938,11 @@ TEST_F(lib_SharedPointerTest, operator_star)
  */
 TEST_F(lib_SharedPointerTest, operator_bool)
 {
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
+    SharedPointer<ManagedObject> const obj1(new ManagedObject());
     EXPECT_TRUE( obj1 ) << "Fatal: Object stores NULLPTR";
     SharedPointer<ManagedObject> const obj2;
     EXPECT_FALSE( obj2 ) << "Fatal: Object doesn't store NULLPTR";
-    SharedPointer<ManagedObject> const obj3 {NULLPTR};
+    SharedPointer<ManagedObject> const obj3(NULLPTR);
     EXPECT_FALSE( obj3 ) << "Fatal: Object doesn't store NULLPTR";
 }
 
@@ -952,8 +961,11 @@ TEST_F(lib_SharedPointerTest, operator_bool)
  */
 TEST_F(lib_SharedPointerTest, operator_squareBrackets)
 {
-    int32_t* const arr = new int32_t[3]{1,2,3};
-    SharedPointer< int32_t,SmartPointerDeleterArray<int32_t> > const obj {arr};
+    int32_t* const arr = new int32_t[3];
+    arr[0] = 1;
+    arr[1] = 2;
+    arr[2] = 3;        
+    SharedPointer< int32_t,SmartPointerDeleterArray<int32_t> > const obj(arr);
     ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj[0], arr[0]) << "Fatal: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Fatal: Wrong value of element 1";
@@ -981,9 +993,9 @@ TEST_F(lib_SharedPointerTest, operator_squareBrackets)
  */
 TEST_F(lib_SharedPointerTest, operator_equal)
 {
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj3 {obj1};    
+    SharedPointer<ManagedObject> const obj1(new ManagedObject());
+    SharedPointer<ManagedObject> const obj2(new ManagedObject());
+    SharedPointer<ManagedObject> const obj3(obj1);    
     EXPECT_FALSE( obj1 == obj2 ) << "Fatal: Objects equal each other";
     EXPECT_TRUE( obj1 == obj3 ) << "Fatal: Objects don't equal each other";
 }
@@ -1003,9 +1015,9 @@ TEST_F(lib_SharedPointerTest, operator_equal)
  */
 TEST_F(lib_SharedPointerTest, operator_unequal)
 {
-    SharedPointer<ManagedObject> const obj1 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj2 {new ManagedObject()};
-    SharedPointer<ManagedObject> const obj3 {obj1};
+    SharedPointer<ManagedObject> const obj1(new ManagedObject());
+    SharedPointer<ManagedObject> const obj2(new ManagedObject());
+    SharedPointer<ManagedObject> const obj3(obj1);
     EXPECT_TRUE( obj1 != obj2 ) << "Fatal: Objects equal each other";
     EXPECT_FALSE( obj1 != obj3 ) << "Fatal: Objects don't equal each other";
 }
@@ -1025,9 +1037,9 @@ TEST_F(lib_SharedPointerTest, operator_unequal)
  */
 TEST_F(lib_SharedPointerTest, smartPointer)
 {
-    ManagedObject* const ptr {new ManagedObject()};    
-    SharedPointer<ManagedObject> obj {ptr};
-    api::SmartPointer<ManagedObject>& smrt {obj};
+    ManagedObject* const ptr(new ManagedObject());    
+    SharedPointer<ManagedObject> obj(ptr);
+    api::SmartPointer<ManagedObject>& smrt(obj);
     EXPECT_TRUE(smrt.isConstructed()) << "Fatal: Object is not constructed";
     EXPECT_EQ(smrt.get(), ptr) << "Fatal: Shared pointer does not equal to its raw pointer";
     EXPECT_EQ(smrt.getCount(), 1) << "Fatal: Amount of shared objects managing object is wrong";

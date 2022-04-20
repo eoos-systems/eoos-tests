@@ -16,7 +16,7 @@ namespace eoos
  * @class System
  * @brief Operating system for Unit Tests.
  */
-class System final
+class System
 {
 public:
 

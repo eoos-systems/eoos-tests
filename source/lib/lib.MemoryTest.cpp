@@ -34,6 +34,10 @@ class lib_MemoryTest : public ::testing::Test
  */
 TEST_F(lib_MemoryTest, memcpy)
 {
+    uint32_t src (0x89ABCDEF);
+    uint32_t dst;
+    Memory::memcpy(&dst, &src, sizeof(uint32_t));
+    EXPECT_EQ(src, dst) << "Fatal: Memory is not copied";
 }
 
 } // namespace lib

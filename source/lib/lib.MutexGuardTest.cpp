@@ -16,10 +16,10 @@ namespace lib
 namespace
 {
     
-const int64_t GUARD_LOCKED     {0x5555555555555555};
-const int64_t GUARD_NOT_LOCKED {0x5AAAAAAAAAAAAAAA};    
-const int64_t GUARD_TIMEOUT    {0x7FFFFFFFFFFFFFFF};
-const int64_t GUARD_INIT_VALUE {0x0000000000000000};
+const int64_t GUARD_LOCKED     (0x5555555555555555);
+const int64_t GUARD_NOT_LOCKED (0x5AAAAAAAAAAAAAAA);    
+const int64_t GUARD_TIMEOUT    (0x7FFFFFFFFFFFFFFF);
+const int64_t GUARD_INIT_VALUE (0x0000000000000000);
 
 } // namespace
     
@@ -39,7 +39,7 @@ protected:
      */
     class ThreadTask : public AbstractThreadTask<>
     {
-        using Parent = AbstractThreadTask<>;
+        typedef AbstractThreadTask<> Parent;
     
     public:
             
@@ -49,6 +49,8 @@ protected:
          * @param permits The initial number of permits available.
          */
         ThreadTask(api::Mutex& mutex) : Parent(),
+            isRegisterRead_ (false),
+            register_ (GUARD_INIT_VALUE),
             mutex_ (mutex){
         }
 
@@ -75,7 +77,7 @@ protected:
         /**
          * @copydoc eoos::api::Task::start()
          */        
-        void start() override
+        virtual void start()
         {
             MutexGuard<> guard(mutex_);
             if(guard.isConstructed())
@@ -99,9 +101,9 @@ protected:
             }
         }
         
-        bool_t isRegisterRead_ {false}; ///< Register is read by primary thread.
-        int64_t register_ {GUARD_INIT_VALUE}; ///< Register to access.
-        api::Mutex& mutex_;             ///< Mutex to lock.
+        bool_t isRegisterRead_; ///< Register is read by primary thread.
+        int64_t register_;      ///< Register to access.
+        api::Mutex& mutex_;     ///< Mutex to lock.
     };
 
 private:
@@ -150,7 +152,7 @@ TEST_F(lib_MutexGuardTest, lock)
     ThreadTask thread(mutex);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    int64_t registerRo {GUARD_INIT_VALUE};
+    int64_t registerRo (GUARD_INIT_VALUE);
     for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
         registerRo = thread.readRegister();

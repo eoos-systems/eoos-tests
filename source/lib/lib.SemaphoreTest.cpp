@@ -30,7 +30,7 @@ protected:
      */
     class ThreadTask : public AbstractThreadTask<>
     {
-        using Parent = AbstractThreadTask<>;
+        typedef AbstractThreadTask<> Parent;
     
     public:
         
@@ -41,6 +41,7 @@ protected:
          * @param semRelease Semaphore to release in the thread after the acquirement.
          */
         ThreadTask(api::Semaphore& semAcquire, api::Semaphore& semRelease) : Parent(),
+            isAcquired_ (false),
             semAcquire_ (semAcquire),
             semRelease_ (semRelease){
         }
@@ -60,13 +61,13 @@ protected:
         /**
          * @copydoc eoos::api::Task::start()
          */        
-        void start() override
+        virtual void start()
         {
             isAcquired_ = semAcquire_.acquire();
             semRelease_.release();
         }
         
-        bool_t isAcquired_ {false};  ///< Acquirement flag.
+        bool_t isAcquired_;          ///< Acquirement flag.
         api::Semaphore& semAcquire_; ///< Semaphore to acquire in the thread.
         api::Semaphore& semRelease_; ///< Semaphore to release in the thread after the acquirement.
     };
@@ -91,7 +92,7 @@ private:
  */
 TEST_F(lib_SemaphoreTest, Constructor)
 {
-    Semaphore<> obj {0};
+    Semaphore<> obj(0);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
 }
 
@@ -111,23 +112,23 @@ TEST_F(lib_SemaphoreTest, Constructor)
 TEST_F(lib_SemaphoreTest, isConstructed)
 {
     {
-        Semaphore<> obj {0};
+        Semaphore<> obj(0);
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed with permits 0";
     }
     {
-        Semaphore<> obj {1};
+        Semaphore<> obj(1);
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed with permits 1";
     }
     {
-        Semaphore<> obj {0x7FFFFFFF};
+        Semaphore<> obj(0x7FFFFFFF);
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed with permits 0x7FFFFFFF";
     }    
     {
-        Semaphore<> obj {-1};
+        Semaphore<> obj(-1);
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed with permits -1";
     }
     {
-        Semaphore<> obj {0 - 0x7FFFFFFF -1};
+        Semaphore<> obj(0 - 0x7FFFFFFF -1);
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed with minimal negative permits";
     }
 }

@@ -21,6 +21,10 @@ namespace lib
 class lib_LinkedListTest : public ::testing::Test
 {
 
+protected:
+
+    typedef int32_t Type;
+
 private:
     
     System eoos_; ///< EOOS Operating System.    
@@ -41,6 +45,8 @@ private:
  */
 TEST_F(lib_LinkedListTest, Constructor)
 {
+    LinkedList<Type> obj;
+    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";    
 }
 
 } // namespace lib

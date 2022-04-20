@@ -41,6 +41,8 @@ private:
  */
 TEST_F(lib_ToggleTest, Constructor)
 {
+    Toggle<> obj;
+    EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is not constructed";        
 }
 
 } // namespace lib
