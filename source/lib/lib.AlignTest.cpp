@@ -35,27 +35,9 @@ private:
 template<typename T>
 bool_t testSizeof()
 {
-    lib::Align<T> a;
+    Align<T> a;
     T v;
     return sizeof(a) == sizeof(v);
-}
-
-/**
- * @brief Tests sum of two variables of T types and lib::Align<T> types.
- *
- * @tparam T Base type to test.
- * @param o1 A variable to sum.
- * @param o2 A variable to sum.
- * @return Comparation result. 
- */
-template<typename T, typename R>
-bool_t testSum(T const o1, T const o2)
-{
-    lib::Align<T> const a1(o1);
-    lib::Align<T> const a2(o2);
-    lib::Align<R> const ares(a1 + a2);
-    R const ores (o1 + o2);
-    return ares == ores;
 }
 
 /**
@@ -66,7 +48,7 @@ bool_t testSum(T const o1, T const o2)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Get size of T and sizeof lib::Align<T>.
+ *      - Get size of T and sizeof Align<T>.
  *
  * @b Assert:
  *      - Test size of types are equal to each other.
@@ -82,6 +64,24 @@ TEST_F(lib_AlignTest, Sizeof)
     EXPECT_TRUE(testSizeof<uint32_t>()) << "Fatal: Size of uint32_t types are not equal";
     EXPECT_TRUE(testSizeof<uint64_t>()) << "Fatal: Size of uint64_t types are not equal";
 }
+    
+/**
+ * @brief Tests sum of two variables of T types and Align<T> types.
+ *
+ * @tparam T Base type to test.
+ * @param o1 A variable to sum.
+ * @param o2 A variable to sum.
+ * @return Comparation result. 
+ */
+template<typename T, typename R>
+bool_t testSum(T const o1, T const o2)
+{
+    Align<T> const a1(o1);
+    Align<T> const a2(o2);
+    Align<R> const ares(a1 + a2);
+    R const ores (o1 + o2);
+    return ares == ores;
+}
 
 /**
  * @relates lib_AlignTest
@@ -91,14 +91,15 @@ TEST_F(lib_AlignTest, Sizeof)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Sum two variables of T types and lib::Align<T> types.
+ *      - Sum two variables of T types and Align<T> types.
  *
  * @b Assert:
  *      - Test sums are equal to each other.
  */
 TEST_F(lib_AlignTest, Sum)
 {
-    bool_t res(testSum<int8_t,int32_t>(-1,2));
+    bool_t res( false );
+    res = testSum<int8_t,int32_t>(-1,2);
     EXPECT_TRUE( res )  << "Fatal: Sums are not equal";
     res = testSum<int16_t,int32_t>(-1,2);
     EXPECT_TRUE( res ) << "Fatal: Sums are not equal";
@@ -106,5 +107,79 @@ TEST_F(lib_AlignTest, Sum)
     EXPECT_TRUE( res ) << "Fatal: Sums are not equal";
 }
 
+/**
+ * @brief Tests sum of two variables of T types and Align<T> types.
+ *
+ * @tparam T Base type to test.
+ * @param o1 A variable to sum.
+ * @param o2 A variable to sum.
+ * @return Comparation result. 
+ */
+template<typename T>
+T getTypecast(T const o1)
+{
+    Align<T> const a1(o1);
+    T const c1 (a1);
+    return c1;
+}
+    
+/**
+ * @relates lib_AlignTest
+ * @brief Tests of typecast.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Sum two variables of T types and Align<T> types.
+ *
+ * @b Assert:
+ *      - Test sums are equal to each other.
+ */
+TEST_F(lib_AlignTest, Typecast_int)
+{
+    {
+        int8_t exp( 0x8F );
+        int8_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        uint8_t exp( 0x8F );
+        uint8_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        int16_t exp( 0x8FA5 );
+        int16_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        uint16_t exp( 0x8FA5 );
+        uint16_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        int32_t exp( 0x8FA5A5A5 );
+        int32_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        uint32_t exp( 0x8FA5A5A5 );
+        uint32_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+
+    {
+        int64_t exp( 0x8FA5A5A5 );
+        int64_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }
+    {
+        uint64_t exp( 0x8FA5A5A5 );
+        uint64_t act( getTypecast(exp) );
+        EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }    
+}
+    
 } // namespace lib
 } // namespace eoos
