@@ -48,6 +48,26 @@ TEST_F(lib_StackTest, Constructor)
     Stack<Type> obj(api::Stack<Type>::Operation::ED, 8);
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";        
 }
+	
+
+/**
+ * @relates lib_StackTest
+ * @brief Tests the class constructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the stack is not empty.
+ */
+TEST_F(lib_StackTest, isEmpty)
+{
+    Stack<Type> obj(api::Stack<Type>::Operation::ED, 8);
+    EXPECT_FALSE(obj.isEmpty()) << "Fatal: Object is empty";        
+}
 
 } // namespace lib
 } // namespace eoos
