@@ -192,7 +192,7 @@ protected:
         {
             while(true)
             {
-                if( not toCount_ )
+                if( !toCount_ )
                 {
                     break;
                 }

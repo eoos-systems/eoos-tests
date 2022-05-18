@@ -43,7 +43,7 @@ protected:
     
         virtual void start()
         {
-            while(not isDone)
+            while(!isDone)
             {
                 count++;
             }
@@ -104,7 +104,7 @@ TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
     std::cout << "Thread object is alive..." << std::endl;
     while(true)
     {
-        if(not wait())
+        if(!wait())
         {
             break;
         }
@@ -124,7 +124,7 @@ TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
     std::cout << std::endl << "Waiting thread could be alive completed." << std::endl;
     while(true)
     {
-        if(not wait())
+        if(!wait())
         {
             break;
         }

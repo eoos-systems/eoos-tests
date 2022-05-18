@@ -90,7 +90,7 @@ protected:
                         break;
                     }
                 }
-                if( not isRegisterRead_ )
+                if( !isRegisterRead_ )
                 {
                     register_ = MUTEX_TIMEOUT;
                 }
