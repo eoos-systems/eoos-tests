@@ -16,10 +16,11 @@ namespace lib
 namespace
 {
     
-const int64_t GUARD_LOCKED     (0x5555555555555555);
-const int64_t GUARD_NOT_LOCKED (0x5AAAAAAAAAAAAAAA);    
-const int64_t GUARD_TIMEOUT    (0x7FFFFFFFFFFFFFFF);
-const int64_t GUARD_INIT_VALUE (0x0000000000000000);
+const int64_t GUARD_LOCKED        (0x5555555555555555);
+const int64_t GUARD_NOT_LOCKED    (0x5AAAAAAAAAAAAAAA);    
+const int64_t GUARD_TIMEOUT       (0x7FFFFFFFFFFFFFFF);
+const int64_t GUARD_UNKNOWN_VALUE (0x7EEEEEEEEEEEEEEE);
+const int64_t GUARD_INIT_VALUE    (0x0000000000000000);
 
 } // namespace
     
@@ -101,9 +102,9 @@ protected:
             }
         }
         
-        bool_t isRegisterRead_; ///< Register is read by primary thread.
-        int64_t register_;      ///< Register to access.
-        api::Mutex& mutex_;     ///< Mutex to lock.
+        volatile bool_t isRegisterRead_; ///< Register is read by primary thread.
+        int64_t register_;               ///< Register to access.
+        api::Mutex& mutex_;              ///< Mutex to lock.
     };
 
 private:
@@ -132,7 +133,7 @@ TEST_F(lib_MutexGuardTest, Constructor)
 
 /**
  * @relates lib_MutexGuardTest
- * @brief Semaphore acquire test. 
+ * @brief Mutex lock test. 
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -152,7 +153,7 @@ TEST_F(lib_MutexGuardTest, lock)
     ThreadTask thread(mutex);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    int64_t registerRo (GUARD_INIT_VALUE);
+    volatile int64_t registerRo(GUARD_UNKNOWN_VALUE);
     for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
         registerRo = thread.readRegister();
@@ -161,10 +162,11 @@ TEST_F(lib_MutexGuardTest, lock)
             break;
         }
     }
-    ASSERT_EQ(registerRo, GUARD_LOCKED) << "Fatal: Mutex was not locked";
+    ASSERT_NE(registerRo, GUARD_UNKNOWN_VALUE) << "Fatal: Register has not read";
     ASSERT_NE(registerRo, GUARD_NOT_LOCKED) << "Fatal: Mutex was not locked";
     ASSERT_NE(registerRo, GUARD_TIMEOUT) << "Fatal: Time is out";
-    ASSERT_NE(registerRo, GUARD_INIT_VALUE) << "Fatal: Child thread control not gotten";        
+    ASSERT_NE(registerRo, GUARD_INIT_VALUE) << "Fatal: Child thread control not gotten";
+    ASSERT_EQ(registerRo, GUARD_LOCKED) << "Fatal: Mutex was not locked";
     ASSERT_FALSE(mutex.tryLock()) << "Fatal: Locked mutex can be locked";
     thread.setRegisterRead();
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";

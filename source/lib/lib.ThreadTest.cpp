@@ -169,10 +169,26 @@ protected:
             isStarted_ = true;            
             switch (story_)
             {
-                case STORY_DEFAULT:   playDefault();   break;
-                case STORY_COUNTER:   playCounter();   break;
-                case STORY_REACTOR:   playReactor();   break;
-                case STORY_INITIATOR: playInitiator(); break;                
+                case STORY_DEFAULT:
+                {
+                    playDefault();
+                    break;
+                }
+                case STORY_COUNTER:
+                {
+                    playCounter();
+                    break;
+                }
+                case STORY_REACTOR:
+                {
+                    playReactor();
+                    break;
+                }
+                case STORY_INITIATOR:
+                {
+                    playInitiator();
+                    break;
+                }
             }
             isDead_ = true;            
         }
@@ -267,16 +283,16 @@ protected:
             MSG_PONG
         };
         
-        static int32_t channelItoR_;   ///< Channel Initiator to Reactor direction.
-        static int32_t channelRtoI_;   ///< Channel Reactor to Initiator direction.
+        static volatile int32_t channelItoR_;   ///< Channel Initiator to Reactor direction.
+        static volatile int32_t channelRtoI_;   ///< Channel Reactor to Initiator direction.
         
-        uint32_t count_;    ///< Counter.
-        bool_t toCount_;    ///< Has to count flag.
-        bool_t isStarted_;  ///< Task started flag.
-        bool_t isDead_;     ///< Task dead flag.
-        Story story_;       ///< Task story to play.
-        int32_t error_;     ///< Execution error.
-        bool_t toWait_;     ///< Task wait and executed.
+        uint32_t count_;            ///< Counter.
+        volatile bool_t toCount_;   ///< Has to count flag.
+        volatile bool_t isStarted_; ///< Task started flag.
+        bool_t isDead_;             ///< Task dead flag.
+        Story story_;               ///< Task story to play.
+        int32_t error_;             ///< Execution error.
+        bool_t toWait_;             ///< Task wait and executed.
     };
 
     /**
@@ -314,8 +330,8 @@ private:
     System eoos_; ///< EOOS Operating System.
 };  
 
-int32_t lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
-int32_t lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
+volatile int32_t lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
+volatile int32_t lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
 
 // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
 // and constants defined in scope of fixture classes as well as in scope of tested classes.    
@@ -394,15 +410,15 @@ TEST_F(lib_ThreadTest, execute)
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
-        EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
-        EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not executed";
+        ASSERT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     }
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
-        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
+        ASSERT_FALSE(thread.execute()) << "Fatal: Thread was executed";
         EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Error: Unconstructed thread was executed";
         EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
     }
