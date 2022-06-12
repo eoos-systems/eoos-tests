@@ -17,10 +17,10 @@ static const int32_t PROGRAM_WRONG_ARGS  (666); ///< Wrong program exit code.
 /**
  * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)
  */
-int32_t Program::start(api::List<char_t*> const* args)
+int32_t Program::start(api::List<char_t*> const& args)
 {
     int32_t error(PROGRAM_WRONG_ARGS);
-    if(args->getLength() == 0)
+    if(args.getLength() == 0)
     {
         error = PROGRAM_OK;
     }
@@ -57,9 +57,8 @@ protected:
  */
 TEST_F(glb_MainTest, execute)
 {
-    int32_t const error( eoos.execute() );
-    ASSERT_TRUE(eoos.isInitialized())  << "Error: EOOS was not initialized";
-    ASSERT_EQ(PROGRAM_OK, error)       << "Fatal: Program was not started";
+    ASSERT_TRUE(eoos.isConstructed())     << "Error: EOOS was not constructed";
+    ASSERT_EQ(PROGRAM_OK, eoos.execute()) << "Fatal: Program was not started";
 }
 
 } // namespace eoos

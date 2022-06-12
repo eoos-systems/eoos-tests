@@ -42,10 +42,10 @@ protected:
          */    
         enum Error
         {
-            ERROR_OK,
-            ERROR_UNDEF,
-            ERROR_TIMEOUT,
-            ERROR_NORESPONSE
+            ERROR_TEST_OK,
+            ERROR_TEST_UNDEF,
+            ERROR_TEST_TIMEOUT,
+            ERROR_TEST_NORESPONSE
         };
     
         /**
@@ -69,7 +69,7 @@ protected:
             isStarted_ (false),
             isDead_ (false),
             story_ (STORY_DEFAULT),
-            error_ (ERROR_UNDEF),
+            error_ (ERROR_TEST_UNDEF),
             toWait_ (true){
         }
         
@@ -84,7 +84,7 @@ protected:
             isStarted_ (false),
             isDead_ (false),
             story_ (STORY_DEFAULT),
-            error_ (ERROR_UNDEF),
+            error_ (ERROR_TEST_UNDEF),
             toWait_ (true){
             setConstructed(isConstructed);
         }
@@ -100,7 +100,7 @@ protected:
             isStarted_ (false),
             isDead_ (false),
             story_ (story),
-            error_ (ERROR_UNDEF),
+            error_ (ERROR_TEST_UNDEF),
             toWait_ (true){        
         }
         
@@ -234,13 +234,13 @@ protected:
                 }
                 if(--count == 0)
                 {
-                    error_ = ERROR_TIMEOUT;
+                    error_ = ERROR_TEST_TIMEOUT;
                     return;
                 }
             }
             // The initiator has initiated, the reactor has the reacted
             // Complete with own success
-            error_ = ERROR_OK;
+            error_ = ERROR_TEST_OK;
         }
 
         /**
@@ -258,7 +258,7 @@ protected:
                 }
                 if(--count == 0)
                 {
-                    error_ = ERROR_TIMEOUT;
+                    error_ = ERROR_TEST_TIMEOUT;
                     return;
                 }
             }
@@ -268,7 +268,7 @@ protected:
             // relying the reactor will be called
             Thread<>::yield();
             // Check the reactor reacted 
-            error_ = (channelRtoI_ == MSG_PONG) ? ERROR_OK : ERROR_NORESPONSE;
+            error_ = (channelRtoI_ == MSG_PONG) ? ERROR_TEST_OK : ERROR_TEST_NORESPONSE;
         }
 
         /**
@@ -559,14 +559,14 @@ TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
     EXPECT_TRUE(re.join()) << "Error: Reactor thread was not joined";
     EXPECT_TRUE(in.join()) << "Error: Initiator thread was not joined";
 
-    EXPECT_NE(task.in.getError(), Task::ERROR_UNDEF) << "Fatal: Initiator was not started";    
-    EXPECT_NE(task.in.getError(), Task::ERROR_TIMEOUT) << "Fatal: Initiator didn't get confirmation Reactor started";
-    EXPECT_NE(task.in.getError(), Task::ERROR_NORESPONSE) << "Fatal: Initiator didn't get reactor response";
-    EXPECT_EQ(task.in.getError(), Task::ERROR_OK) << "Fatal: Initiator unexpected error";
+    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Initiator was not started";    
+    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_TIMEOUT) << "Fatal: Initiator didn't get confirmation Reactor started";
+    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_NORESPONSE) << "Fatal: Initiator didn't get reactor response";
+    EXPECT_EQ(task.in.getError(), Task::ERROR_TEST_OK) << "Fatal: Initiator unexpected error";
     
-    EXPECT_NE(task.re.getError(), Task::ERROR_UNDEF) << "Fatal: Reactor was not started";    
-    EXPECT_NE(task.re.getError(), Task::ERROR_TIMEOUT) << "Fatal: Reactor didn't get initiator request";
-    EXPECT_EQ(task.re.getError(), Task::ERROR_OK) << "Fatal: Reactor unexpected error";
+    EXPECT_NE(task.re.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Reactor was not started";    
+    EXPECT_NE(task.re.getError(), Task::ERROR_TEST_TIMEOUT) << "Fatal: Reactor didn't get initiator request";
+    EXPECT_EQ(task.re.getError(), Task::ERROR_TEST_OK) << "Fatal: Reactor unexpected error";
 }
 
 /**

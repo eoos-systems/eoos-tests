@@ -7,6 +7,7 @@
 #define SYSTEM_HPP_
 
 #include "sys.Call.hpp"
+#include "sys.System.hpp"
 #include "Tests.hpp"
 
 namespace eoos
@@ -24,7 +25,7 @@ public:
      * @brief Constructor.
      */
     System()
-        : isInitialized_ (sys::Call::initialize()) {
+    {
     }
 
     /**
@@ -32,17 +33,14 @@ public:
      */
     ~System()
     {
-        sys::Call::deinitialize();
     }
     
     /**
-     * @brief Tests if the OS has been initialized.
-     *
-     * @return True if the OS has been initialized successfully.
+     * @copydoc eoos::api::Object::isConstructed()
      */
-    bool_t isInitialized() const
+    bool_t isConstructed() const
     {
-        return isInitialized_;
+        return eoos_.isConstructed();
     }
 
     /**
@@ -52,12 +50,12 @@ public:
      */
     int32_t execute()
     {
-        return sys::Call::execute();
+        return eoos_.execute();
     }
 	
 private:
     
-    bool_t isInitialized_;
+    sys::System eoos_;
 
 };
 

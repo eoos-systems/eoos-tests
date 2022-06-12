@@ -5,7 +5,6 @@
 
 add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/MainTest.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/ObjectTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.AlignTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.BufferTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.CircularListTest.cpp"

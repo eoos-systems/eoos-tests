@@ -45,9 +45,9 @@ Object<> createObject()
  *
  * @brief Class to provide protect functions to public scope.
  */
-class TestObject : public ::eoos::Object<>
+class TestObject : public Object<>
 {
-    typedef ::eoos::Object<> Parent;
+    typedef Object<> Parent;
 
 public:
 
@@ -99,7 +99,7 @@ TEST_F(lib_ObjectTest, CopyConstructor)
 {
     Object<> const obj1;
     EXPECT_TRUE(obj1.isConstructed())       << "Error: Object 1 is not constructed";
-    Object<> const obj2(obj1);
+    Object<> const obj2( obj1 );
     EXPECT_TRUE(obj1.isConstructed())       << "Fatal: Object 2 is not constructed";
 }
 
@@ -294,7 +294,7 @@ TEST_F(lib_ObjectTest, isConstructed)
  */
 TEST_F(lib_ObjectTest, isConstructed_obj)
 {
-    Object<>* obj(new Object<>());
+    Object<>* obj( new Object<>() );
     EXPECT_TRUE(Object<>::isConstructed(obj))   << "Fatal: Object is not constructed";
     delete obj;
     obj = NULLPTR;
