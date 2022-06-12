@@ -40,7 +40,7 @@ set_target_properties(target-eoos-unit-tests PROPERTIES
 )
 
 add_test(
-    NAME test-state-client-test-serialization
+    NAME test-eoos-unit-tests
     COMMAND target-eoos-unit-tests
 )
 
