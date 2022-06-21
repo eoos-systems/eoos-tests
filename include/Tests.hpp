@@ -8,7 +8,6 @@
 #ifndef TESTS_HPP_
 #define TESTS_HPP_
 
-#include <iostream>
 #include "gtest/gtest.h"
 #include "Types.hpp"
 

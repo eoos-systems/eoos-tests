@@ -6,6 +6,8 @@
  * @brief Unit tests of `lib::Thread`. 
  */
 #include "lib.Thread.hpp"
+#include "lib.String.hpp"
+#include "lib.Stream.hpp"
 #include "System.hpp"
 
 namespace eoos
@@ -20,9 +22,9 @@ class glb_DebugTest : public ::testing::Test
 
 protected:
 
-    class Task : public ::eoos::Object<>, public api::Task
+    class Task : public lib::Object<>, public api::Task
     {
-        typedef ::eoos::Object<> Parent;
+        typedef lib::Object<> Parent;
       
     public:
 
@@ -101,7 +103,7 @@ TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
     uint64_t count[] = {0,0};
     lib::Thread<>* thread( new lib::Thread<>(task) );
     thread->execute();
-    std::cout << "Thread object is alive..." << std::endl;
+    lib::Stream::cout() << "Thread object is alive...\n";
     while(true)
     {
         if(!wait())
@@ -110,18 +112,20 @@ TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
         }
         if(task.count > count[0])
         {
-            std::cout << ".";
+            lib::Stream::cout() << ".";
         }
         count[0] = task.count;
     }
     delete thread;
     count[1] = count[0] = task.count;
-    std::cout << std::endl << "Thread object is dead on count = " << count[0] << std::endl;
+    lib::String str;
+    str.convert(count[0]);
+    lib::Stream::cout() << "\n" << "Thread object is dead on count = " << str.getChar() << "\n";
     while( wait() )
     {
-        std::cout << "~";
+        lib::Stream::cout() << "~";
     }
-    std::cout << std::endl << "Waiting thread could be alive completed." << std::endl;
+    lib::Stream::cout() << "\n" << "Waiting thread could be alive completed.\n";
     while(true)
     {
         if(!wait())
@@ -130,18 +134,19 @@ TEST_F(glb_DebugTest, DISABLED_threadIsDetached)
         }
         if(task.count > count[1])
         {
-            std::cout << ".";
+            lib::Stream::cout() << ".";
         }
         count[1] = task.count;
     }
-    std::cout << std::endl << "Test is finished on count = " << count[1] << std::endl;
+    str.convert(count[0]);
+    lib::Stream::cout() << "\n" << "Test is finished on count = " << str.getChar() << "\n";
     if(count[0] == count[1])
     {
-        std::cout << "Thread was not scheduled after its object had been deleted - it's good case" << std::endl;
+        lib::Stream::cout() << "Thread was not scheduled after its object had been deleted - it's good case\n";
     }
     else
     {
-        std::cout << "Thread was detached and continued executing after its object had been deleted - it's bad case" << std::endl;
+        lib::Stream::cout() << "Thread was detached and continued executing after its object had been deleted - it's bad case\n";
     }
     task.isDone = true;
     ASSERT_EQ(count[1], count[0]) << "Fatal: Thread stayed in detach mode";
