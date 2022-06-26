@@ -103,8 +103,8 @@ protected:
             }
         }
         
-        volatile bool_t isRegisterRead_; ///< Register is read by primary thread.
-        int64_t register_;               ///< Register to access.
+        bool_t volatile isRegisterRead_; ///< Register is read by primary thread.
+        int64_t volatile register_;      ///< Register to access.
         api::Mutex& mutex_;              ///< Mutex to lock.
     };
 
@@ -154,7 +154,7 @@ TEST_F(lib_MutexTest, lock)
     ThreadTask thread(mutex);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    volatile int64_t registerRo(MUTEX_UNKNOWN_VALUE);
+    int64_t volatile registerRo(MUTEX_UNKNOWN_VALUE);
     for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
         registerRo = thread.readRegister();

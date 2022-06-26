@@ -274,8 +274,10 @@ TEST_F(lib_ObjectTest, isConstructed)
 {
     Object<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: Object is not constructed";
-    obj.~Object();
-    EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed after destruction";
+    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~Object()` 
+    // for example and check if the object is not constructed after destruction.
+    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning 
+    // `isConstructed_’ may be used uninitialized in this function isConstructed().
 }
 
 /**

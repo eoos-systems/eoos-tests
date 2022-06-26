@@ -117,8 +117,10 @@ TEST_F(lib_NonCopyableTest, isConstructed)
 {
     NonCopyable<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: NonCopyable is not constructed";
-    obj.~NonCopyable();
-    EXPECT_FALSE(obj.isConstructed()) << "Fatal: NonCopyable is constructed after destruction";
+    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~NonCopyable()` 
+    // for example and check if the object is not constructed after destruction.
+    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning 
+    // `isConstructed_’ may be used uninitialized in this function isConstructed().
 }
 
 /**

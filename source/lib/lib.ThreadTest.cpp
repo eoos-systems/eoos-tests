@@ -283,12 +283,12 @@ protected:
             MSG_PONG
         };
         
-        static volatile int32_t channelItoR_;   ///< Channel Initiator to Reactor direction.
-        static volatile int32_t channelRtoI_;   ///< Channel Reactor to Initiator direction.
+        static int32_t volatile channelItoR_;   ///< Channel Initiator to Reactor direction.
+        static int32_t volatile channelRtoI_;   ///< Channel Reactor to Initiator direction.
         
         uint32_t count_;            ///< Counter.
-        volatile bool_t toCount_;   ///< Has to count flag.
-        volatile bool_t isStarted_; ///< Task started flag.
+        bool_t volatile toCount_;   ///< Has to count flag.
+        bool_t volatile isStarted_; ///< Task started flag.
         bool_t isDead_;             ///< Task dead flag.
         Story story_;               ///< Task story to play.
         int32_t error_;             ///< Execution error.
@@ -330,8 +330,8 @@ private:
     System eoos_; ///< EOOS Operating System.
 };  
 
-volatile int32_t lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
-volatile int32_t lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
+int32_t volatile lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
+int32_t volatile lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
 
 // @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
 // and constants defined in scope of fixture classes as well as in scope of tested classes.    
