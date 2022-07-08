@@ -1,2 +1,6 @@
-# EOOS RT Automotive Unit Tests
-EOOS Automotive is software for automotive sphere been developing with aim to ISO 26262. Source code is complied with AUTOSAR C++14 and MISRA C++ rules.
+# EOOS Unit Tests
+---
+
+This repository is a software module of EOOS which contains Unit Tests of all EOOS functionality. 
+The software module is part of elaborated modularity of EOOS software and included to all the 
+EOOS Projects as sub-repository.
