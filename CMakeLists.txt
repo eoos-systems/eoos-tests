@@ -1,7 +1,7 @@
 # EOOS UNIT TESTS.
 #
 # @author    Sergey Baigudin, sergey@baigudin.software
-# @copyright 2020, Sergey Baigudin, Baigudin Software
+# @copyright 2020-2022, Sergey Baigudin, Baigudin Software
 
 add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/MainTest.cpp"
@@ -18,10 +18,8 @@ add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SemaphoreTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SharedPointerTest.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StackTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StringTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ThreadTest.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ToggleTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.UniquePointerTest.cpp"
 )
 

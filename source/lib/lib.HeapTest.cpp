@@ -69,8 +69,9 @@ private:
  */
 TEST_F(lib_HeapTest, Constructor)
 {
+    Mutex<> mutex;
     uintptr_t address( reinterpret_cast<uintptr_t>(memory_) );
-    Heap* heap( new (address) Heap(MEMORY_SIZE) );
+    Heap* heap( new (address) Heap(MEMORY_SIZE, mutex) );
     EXPECT_TRUE(heap->isConstructed()) << "Fatal: Object is not constructed";    
 }
 
