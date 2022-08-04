@@ -8,7 +8,7 @@
 #include "lib.SharedPointer.hpp"
 #include "System.hpp"
 
-#ifdef EOOS_NO_STRICT_MISRA_RULES
+#ifdef EOOS_ENABLE_DYNAMIC_HEAP_MEMORY
 
 namespace eoos
 {
@@ -30,34 +30,6 @@ private:
     
 namespace
 {
-    
-/**
- * @class NullAllocator
- * @brief No memory allocator.
- */
-class NullAllocator
-{
-
-public:
-
-    /**
-     * @brief Returns nullptr.
-     *
-     * @return the null pointer.
-     */    
-    static void* allocate(size_t)
-    {
-        return NULLPTR;
-    }
-
-    /**
-     * @brief Does nothing.
-     */    
-    static void free(void*)
-    {
-    }
-
-};    
 
 /**
  * @struct ManagedAction
@@ -375,7 +347,7 @@ TEST_F(lib_SharedPointerTest, MoveConstructor)
     EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";
     // Test if cast moves obj1 to obj2
     ManagedObject* const ptr1( obj1.get() );
-    SharedPointer<ManagedObject> const obj2( lib::move(obj1) );
+    SharedPointer<ManagedObject> const obj2( move(obj1) );
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: Object 1 is not move casted to object 2";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
@@ -427,7 +399,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     ManagedAction action2;    
     SharedPointer<ManagedObject> obj2(new ManagedObject(VALUE2, &action2));
     EXPECT_EQ(obj2->getValue(), VALUE2) << "Fatal: Wrong value containing in managed object";        
-    obj2 = lib::move(obj1);
+    obj2 = move(obj1);
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with lvalue";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
@@ -441,7 +413,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     EXPECT_FALSE(action3.isDeleted) << "Fatal: Managed object was deleted";
     // Test if an obj1 cannot be recovered
     ManagedAction action4;    
-    obj1 = lib::move(SharedPointer<ManagedObject>(new ManagedObject(&action4)));
+    obj1 = move(SharedPointer<ManagedObject>(new ManagedObject(&action4)));
     EXPECT_FALSE(obj1.isConstructed()) << "Fatal: An object 1 is re-constructed but it was moved";
     EXPECT_TRUE(obj1.isNull()) << "Error: object 1 is not null";
     EXPECT_FALSE(obj1.isUnique()) << "Error: object 1 is unique";
@@ -450,7 +422,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     // Test if an obj moved with rvalue to obj2
     const int32_t VALUE5(5);
     ManagedAction action5;
-    obj2 = lib::move(SharedPointer<ManagedObject>(new ManagedObject(VALUE5, &action5)));
+    obj2 = move(SharedPointer<ManagedObject>(new ManagedObject(VALUE5, &action5)));
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with rvalue of a moved object";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
@@ -459,7 +431,7 @@ TEST_F(lib_SharedPointerTest, MoveAssignment)
     EXPECT_TRUE(action3.isDeleted) << "Fatal: Managed object was not deleted";        
     EXPECT_FALSE(action5.isDeleted) << "Fatal: Managed object was deleted";    
     // Test if an obj moved with rvalue to obj2
-    obj2 = lib::move(SharedPointer<ManagedObject>());
+    obj2 = move(SharedPointer<ManagedObject>());
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with rvalue of a moved object";
     EXPECT_TRUE(obj2.isNull()) << "Error: object 2 is not null";
     EXPECT_FALSE(obj2.isUnique()) << "Error: object 2 is unique";
@@ -1049,4 +1021,4 @@ TEST_F(lib_SharedPointerTest, smartPointer)
 } // namespace lib
 } // namespace eoos
 
-#endif // EOOS_NO_STRICT_MISRA_RULES
+#endif // EOOS_ENABLE_DYNAMIC_HEAP_MEMORY

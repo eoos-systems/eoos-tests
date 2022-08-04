@@ -8,7 +8,7 @@
 #include "lib.UniquePointer.hpp"
 #include "System.hpp"
 
-#ifdef EOOS_NO_STRICT_MISRA_RULES
+#ifdef EOOS_ENABLE_DYNAMIC_HEAP_MEMORY
 
 namespace eoos
 {
@@ -843,4 +843,4 @@ TEST_F(lib_UniquePointerTest, smartPointer)
 } // namespace lib
 } // namespace eoos
 
-#endif // EOOS_NO_STRICT_MISRA_RULES
+#endif // EOOS_ENABLE_DYNAMIC_HEAP_MEMORY

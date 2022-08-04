@@ -99,8 +99,10 @@ static void printConfiguration()
     #endif
 
     // MISRA-C++:2008 rules restrictions.  
-    #if defined (EOOS_NO_STRICT_MISRA_RULES)
-        lib::Stream::cout() << "MISRA-C++:2008 rules are not strict\n";
+    #if defined (EOOS_ENABLE_DYNAMIC_HEAP_MEMORY)
+        lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
+    #else
+        lib::Stream::cout() << "DISABLE: Dynamic heap memory allocation\n";        
     #endif
 }
 

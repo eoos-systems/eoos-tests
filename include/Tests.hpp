@@ -26,6 +26,34 @@ namespace eoos
  */
 static const uint32_t TESTS_WAIT_CYCLE_TIME( EOOS_TESTS_WAIT_CYCLE_TIME );
 
+/**
+ * @class NullAllocator
+ * @brief No memory allocator.
+ */
+class NullAllocator
+{
+
+public:
+
+    /**
+     * @brief Returns nullptr.
+     *
+     * @return the null pointer.
+     */    
+    static void* allocate(size_t)
+    {
+        return NULLPTR;
+    }
+
+    /**
+     * @brief Does nothing.
+     */    
+    static void free(void*)
+    {
+    }
+
+};
+
 } // namespace eoos
 
 #endif // TESTS_HPP_
