@@ -5,7 +5,7 @@
 
 add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/MainTest.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/DebugTest.cpp"    
+    "${CMAKE_CURRENT_LIST_DIR}/source/DebugTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.AlignTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.BaseStringStaticTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.BaseStringDynamicTest.cpp"
@@ -21,6 +21,7 @@ add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SemaphoreTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SharedPointerTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StreamTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StringTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ThreadTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.UniquePointerTest.cpp"
