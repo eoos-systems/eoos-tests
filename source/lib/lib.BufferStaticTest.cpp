@@ -15,7 +15,7 @@ namespace lib
 namespace
 {
     
-const int32_t ILLEGAL_INT32( 0x80000000 );
+const int32_t ILLEGAL_INT32( 0x20000000 );
 
 /**
  * @class TestBuffer<T,L>

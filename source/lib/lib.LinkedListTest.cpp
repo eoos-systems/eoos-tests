@@ -15,7 +15,9 @@ namespace lib
 namespace
 {
     
-const int32_t ILLEGAL_INT32( 0x80000000 );
+const int32_t ILLEGAL_INT32( 0x20000000 );
+const int32_t LIST_ERROR_INDEX( api::List<int32_t>::ERROR_INDEX );
+const int32_t LISTITERATOR_ERROR_INDEX( api::ListIterator<int32_t>::ERROR_INDEX );
 
 /**
  * @class LinkedListUnconstructed<T,L>
@@ -28,9 +30,11 @@ class LinkedListUnconstructed : public LinkedList<T>
     typedef LinkedList<T> Parent;
 
 public:
-    const
+
+    using Parent::setConstructed;
+    
     LinkedListUnconstructed()
-        : LinkedList<T>(length) {
+        : LinkedList<T>() {
         setConstructed(false);
     }
 
@@ -282,7 +286,7 @@ TEST_F(lib_LinkedListTest, list)
         EXPECT_FALSE(lis.removeFirst()) << "Fatal: Element is removed";
         EXPECT_FALSE(lis.removeLast()) << "Fatal: Element is removed";        
         EXPECT_FALSE(lis.removeElement(0x5A5A5000)) << "Fatal: Element is not removed";
-        EXPECT_EQ(lis.getIndexOf(0x5A5A5000), api::List<int32_t>::ERROR_INDEX) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis.getIndexOf(0x5A5A5000), LIST_ERROR_INDEX) << "Fatal: Element value is wrong";
         EXPECT_FALSE(lis.isIndex(0)) << "Fatal: Element index is not exist";
 
         EXPECT_TRUE(lis.add(0x5A5A5001)) << "Fatal: Element is not added";
@@ -313,7 +317,7 @@ TEST_F(lib_LinkedListTest, list)
         EXPECT_EQ(lis.getIndexOf(0x5A5A5003), 3) << "Fatal: Element value is wrong";        
         EXPECT_EQ(lis.getIndexOf(0x5A5A5004), 4) << "Fatal: Element value is wrong";
         EXPECT_EQ(lis.getIndexOf(0x5A5A5005), 5) << "Fatal: Element value is wrong";
-        EXPECT_EQ(lis.getIndexOf(0x5A5A5006), api::List<int32_t>::ERROR_INDEX) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis.getIndexOf(0x5A5A5006), LIST_ERROR_INDEX) << "Fatal: Element value is wrong";
 
         EXPECT_TRUE(lis.isIndex(0)) << "Fatal: Element index is not exist";
         EXPECT_TRUE(lis.isIndex(1)) << "Fatal: Element index is not exist";
@@ -490,13 +494,13 @@ TEST_F(lib_LinkedListTest, listIterator)
         EXPECT_FALSE(it->add(0x6B6B5000)) << "Fatal: Element is added";
 
         EXPECT_FALSE(it->hasNext()) << "Fatal: Iterator has element";
-        EXPECT_EQ(it->getNextIndex(), api::ListIterator<int32_t>::ERROR_INDEX) << "Fatal: Iterator has wrong index";
+        EXPECT_EQ(it->getNextIndex(), LISTITERATOR_ERROR_INDEX) << "Fatal: Iterator has wrong index";
         EXPECT_EQ(it->getNext(), ILLEGAL_INT32) << "Fatal: Iterator has no illegal element";
 
         EXPECT_FALSE(it->remove()) << "Fatal: Iterator deletes element";
 
         EXPECT_FALSE(it->hasPrevious()) << "Fatal: Iterator has element";
-        EXPECT_EQ(it->getPreviousIndex(), api::ListIterator<int32_t>::ERROR_INDEX) << "Fatal: Iterator has wrong index";
+        EXPECT_EQ(it->getPreviousIndex(), LISTITERATOR_ERROR_INDEX) << "Fatal: Iterator has wrong index";
         EXPECT_EQ(it->getPrevious(), ILLEGAL_INT32) << "Fatal: Iterator has no illegal element";
         delete it;
     }

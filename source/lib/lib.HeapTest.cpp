@@ -114,12 +114,10 @@ TEST_F(lib_HeapTest, Constructor)
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
         ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
         EXPECT_TRUE(heap->isConstructed()) << "Fatal: Object is not constructed";
-        delete heap;        
     }
     {
         Heap* heap( new (0U) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_EQ(heap, NULLPTR) << "Fatal: Heap object is allocated on null memory";    
-        delete heap;        
+        ASSERT_EQ(heap, NULLPTR) << "Fatal: Heap object is allocated on null memory";
     }
 }
 
