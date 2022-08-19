@@ -8,6 +8,7 @@
 #include "Program.hpp"
 #include "System.hpp"
 #include "lib.Stream.hpp"
+#include "lib.String.hpp"
 
 namespace eoos
 {
@@ -21,9 +22,23 @@ static const int32_t PROGRAM_WRONG_ARGS  (666); ///< Wrong program exit code.
 int32_t Program::start(api::List<char_t*>& args)
 {
     int32_t error(PROGRAM_WRONG_ARGS);
-    if(args.getLength() == 0)
+    switch( args.getLength() )
     {
-        error = PROGRAM_OK;
+        case 0:
+        {
+            error = PROGRAM_OK;
+            break;
+        }
+        case 2:
+        {
+            lib::String arg0( args.get(0) );
+            lib::String arg1( args.get(1) );
+            if( (arg0 == "ARG0") && (arg1 == "ARG1") )
+            {
+                error = args.getLength();                
+            }
+            break;
+        }            
     }
     return error;
 }
@@ -40,7 +55,151 @@ protected:
     
     System eoos; ///< EOOS Operating System.    
 };
+    
 
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system is constructed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Build eoos object.
+ *
+ * @b Assert:
+ *      - Test the system is constructed.
+ */
+TEST_F(glb_MainTest, isConstructed)
+{
+    ASSERT_TRUE(eoos.isConstructed())     << "Error: EOOS was not constructed";
+}
+
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute)
+{
+    ASSERT_EQ(eoos.execute(), PROGRAM_OK) << "Fatal: Program was not started";
+}
+
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_args0)
+{    
+    char_t* args[] = {NULLPTR};
+    int32_t argv( 0 );
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_OK) << "Fatal: Program was not started";
+}
+    
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_args1)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t* args[] = {ARG0, NULLPTR};
+    int32_t argv( 1 );
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_WRONG_ARGS) << "Fatal: Program was not started";
+}
+
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_args2)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t ARG1[] = {"ARG1"};
+    char_t* args[] = {ARG0, ARG1, NULLPTR};
+    int32_t argv( 2 );
+    ASSERT_EQ(eoos.execute(argv, args), argv) << "Fatal: Program was not started";
+}
+    
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_negativeArgv)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t ARG1[] = {"ARG1"};
+    char_t* args[] = {ARG0, ARG1, NULLPTR};
+    int32_t argv( -2 );
+    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+}
+
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_wrongArgv)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t ARG1[] = {"ARG1"};
+    char_t* args[] = {ARG0, ARG1, NULLPTR};
+    int32_t argv( 5 );
+    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+}
+    
 /**
  * @relates glb_MainTest
  * @brief Tests the system starts a user program and is initialiezed.
@@ -55,12 +214,37 @@ protected:
  *      - Test the system is initialized.
  *      - Test the program is executed with correcet exit code.
  */
-TEST_F(glb_MainTest, execute)
-{
-    ASSERT_TRUE(eoos.isConstructed())     << "Error: EOOS was not constructed";
-    ASSERT_EQ(PROGRAM_OK, eoos.execute()) << "Fatal: Program was not started";
+TEST_F(glb_MainTest, execute_wrongArgc)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t ARG2[] = {"ARG2"};
+    char_t* args[] = {ARG0, NULLPTR, ARG2, NULLPTR};
+    int32_t argv( 3 );
+    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
 }
 
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_noNullArgc)
+{    
+    char_t ARG0[] = {"ARG0"};
+    char_t ARG1[] = {"ARG1"};
+    char_t* args[] = {ARG0, ARG1};
+    int32_t argv( 2 );
+    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+}
+    
 /**
  * @brief Prints EOOS global configuration.
  */
