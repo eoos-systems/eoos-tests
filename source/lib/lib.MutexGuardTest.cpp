@@ -22,6 +22,27 @@ const int64_t GUARD_TIMEOUT       (0x7FFFFFFFFFFFFFFF);
 const int64_t GUARD_UNKNOWN_VALUE (0x7EEEEEEEEEEEEEEE);
 const int64_t GUARD_INIT_VALUE    (0x0000000000000000);
 
+/**
+ * @class MutexUnconstructed<A>
+ *
+ * @brief Class to provide protect functions to public scope.
+ */
+class MutexUnconstructed : public Mutex<>
+{
+    typedef Mutex<> Parent;
+
+public:
+
+    using Parent::setConstructed;
+    
+    MutexUnconstructed()
+        : Mutex<>() {
+        setConstructed(false);
+    }
+
+};
+
+
 } // namespace
     
 /**
@@ -127,8 +148,16 @@ private:
  */
 TEST_F(lib_MutexGuardTest, Constructor)
 {
-    Mutex<> obj;
-    EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
+    {
+        Mutex<> mtx;
+        MutexGuard<> obj( mtx );
+        EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
+    }
+    { 
+        MutexUnconstructed mtx;
+        MutexGuard<> obj( mtx );
+        EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed";
+    }
 }
 
 /**
