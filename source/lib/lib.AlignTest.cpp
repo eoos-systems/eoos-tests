@@ -76,10 +76,10 @@ TEST_F(lib_AlignTest, Sizeof)
 template<typename T, typename R>
 bool_t testSum(T const o1, T const o2)
 {
-    Align<T> const a1(o1);
-    Align<T> const a2(o2);
-    Align<R> const ares(a1 + a2);
-    R const ores (o1 + o2);
+    Align<T> const a1( o1 );
+    Align<T> const a2( o2 );
+    Align<R> const ares( a1 + a2 );
+    R const ores( o1 + o2 );
     return ares == ores;
 }
 
@@ -118,8 +118,8 @@ TEST_F(lib_AlignTest, Sum)
 template<typename T>
 T getTypecast(T const o1)
 {
-    Align<T> const a1(o1);
-    T const c1 (a1);
+    Align<T> const a1( o1 );
+    T const c1( a1 );
     return c1;
 }
     
@@ -178,6 +178,125 @@ TEST_F(lib_AlignTest, Typecast_int)
         uint64_t exp( 0x8FA5A5A5 );
         uint64_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
+    }    
+}
+
+/**
+ * @relates lib_AlignTest
+ * @brief Tests assignment.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct object.
+ *
+ * @b Assert:
+ *      - Test for assignment.
+ */
+TEST_F(lib_AlignTest, operatorAssignment)
+{
+    {
+        Align<uint32_t> a1;
+        uint32_t const v2( 0x12345678 );
+        a1 = v2;
+        uint32_t const v1( a1 );
+        EXPECT_EQ( v1, v2 ) << "Fatal: Value is not assigned";
+    }
+    {
+        Align<uint32_t> a1;
+        Align<uint32_t> const a2( 0x12345678 );
+        a1 = a2;
+        uint32_t const v1( a1 );
+        uint32_t const v2( a2 );        
+        EXPECT_EQ( v1, v2 ) << "Fatal: Value is not assigned";
+    }    
+}
+
+/**
+ * @relates lib_AlignTest
+ * @brief Tests increment.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct object.
+ *
+ * @b Assert:
+ *      - Test for increment.
+ */
+TEST_F(lib_AlignTest, operatorIncrement)
+{
+    {
+        Align<uint32_t> a1( 0x12345678 );
+        ++a1;
+        uint32_t const v1( a1 );
+        EXPECT_EQ( v1, 0x12345679 ) << "Fatal: Value is not assigned";
+    }    
+    {
+        Align<uint32_t> a1( 0x12345678 );
+        a1++;
+        uint32_t const v1( a1 );
+        EXPECT_EQ( v1, 0x12345679 ) << "Fatal: Value is not assigned";
+    }    
+}
+
+/**
+ * @relates lib_AlignTest
+ * @brief Tests decrement.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct object.
+ *
+ * @b Assert:
+ *      - Test for decrement.
+ */
+TEST_F(lib_AlignTest, operatorDecrement)
+{
+    {
+        Align<uint32_t> a1( 0x12345678 );
+        --a1;
+        uint32_t const v1( a1 );
+        EXPECT_EQ( v1, 0x12345677 ) << "Fatal: Value is not assigned";
+    }    
+    {
+        Align<uint32_t> a1( 0x12345678 );
+        a1--;
+        uint32_t const v1( a1 );
+        EXPECT_EQ( v1, 0x12345677 ) << "Fatal: Value is not assigned";
+    }    
+}
+
+/**
+ * @relates lib_AlignTest
+ * @brief Tests comparison.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Construct two objects.
+ *
+ * @b Assert:
+ *      - Test for comparison.
+ */
+TEST_F(lib_AlignTest, comparison)
+{
+    {
+        Align<uint32_t> const a1( 0x12345678 );
+        Align<uint32_t> const a2( 0x12345678 );
+        EXPECT_TRUE( a1 == a2 ) << "Fatal: Values don't equal";
+        EXPECT_FALSE( a1 != a2 ) << "Fatal: Values don't equal";        
+    }
+    {
+        Align<uint32_t> const a1( 0x12345678 );
+        Align<uint32_t> const a2( 0x78563412 );
+        EXPECT_TRUE( a1 != a2 ) << "Fatal: Values equal";
+        EXPECT_FALSE( a1 == a2 ) << "Fatal: Values equal";                
     }    
 }
     
