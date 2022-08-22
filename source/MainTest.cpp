@@ -236,7 +236,7 @@ TEST_F(glb_MainTest, execute_wrongArgc)
  * @b Assert:
  *      - Test the program is executed with correcet exit code.
  */
-TEST_F(glb_MainTest, execute_noNullArgc)
+TEST_F(glb_MainTest, execute_noNullTerminatedArgc)
 {    
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
@@ -244,6 +244,26 @@ TEST_F(glb_MainTest, execute_noNullArgc)
     int32_t argv( 2 );
     ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
 }
+
+/**
+ * @relates glb_MainTest
+ * @brief Tests the system starts a user program and is initialiezed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Execute the test program.
+ *
+ * @b Assert:
+ *      - Test the program is executed with correcet exit code.
+ */
+TEST_F(glb_MainTest, execute_nullArgc)
+{    
+    int32_t argv( 2 );
+    ASSERT_LT(eoos.execute(argv, NULLPTR), 0) << "Fatal: Program was started";
+}
+
     
 /**
  * @brief Prints EOOS global configuration.
