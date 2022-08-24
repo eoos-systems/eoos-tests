@@ -426,6 +426,37 @@ TEST_F(lib_LinkedListTest, list)
         EXPECT_EQ(lis.getLength(), 0) << "Fatal: Length is wrong";        
         EXPECT_TRUE(lis.isEmpty()) << "Fatal: List is not empty";
     }
+    {
+        LinkedList<int32_t> obj( ILLEGAL_INT32 );
+        api::List<int32_t>& lis( obj );
+
+        EXPECT_EQ(lis.getLength(), 0) << "Fatal: Length is wrong";        
+        EXPECT_TRUE(lis.isEmpty()) << "Fatal: List is not empty";
+        
+        EXPECT_TRUE(lis.add(0x5A5A5000)) << "Fatal: Element is not added";
+        EXPECT_TRUE(lis.add(0x5A5A5001)) << "Fatal: Element is not added";        
+        EXPECT_TRUE(lis.add(0x5A5A5002)) << "Fatal: Element is not added";
+
+        EXPECT_EQ(lis.getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis.isEmpty()) << "Fatal: List is empty";        
+
+        lis.clear();        
+        
+        EXPECT_EQ(lis.getLength(), 0) << "Fatal: Length is wrong";        
+        EXPECT_TRUE(lis.isEmpty()) << "Fatal: List is not empty";
+    }
+    {
+        LinkedList<int32_t> obj( ILLEGAL_INT32 );
+        api::List<int32_t>& lis( obj );
+
+        EXPECT_EQ(lis.getLength(), 0) << "Fatal: Length is wrong";        
+        EXPECT_TRUE(lis.isEmpty()) << "Fatal: List is not empty";
+        
+        lis.clear();        
+        
+        EXPECT_EQ(lis.getLength(), 0) << "Fatal: Length is wrong";        
+        EXPECT_TRUE(lis.isEmpty()) << "Fatal: List is not empty";
+    }
 }
 
 /**
