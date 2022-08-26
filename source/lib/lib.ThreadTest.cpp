@@ -187,7 +187,12 @@ protected:
          */
         virtual size_t getStackSize() const
         {
-            return stackSize_;
+            size_t stackSize( stackSize_ );
+            if(stackSize == 0) 
+            {
+                stackSize = AbstractTask<>::getStackSize();
+            }
+            return stackSize;
         }  
         
     private:    
@@ -335,7 +340,7 @@ protected:
     {
         Tasks() 
             : normal()
-            , stack( 16384UL )
+            , stack( static_cast<size_t>(16384UL) )
             , unconstructed( false )
             , in( Task::STORY_INITIATOR )
             , re( Task::STORY_REACTOR )
