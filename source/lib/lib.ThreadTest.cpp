@@ -63,29 +63,50 @@ protected:
         /**
          * @brief Constructor.
          */
-        Task() : Parent(),
-            count_ (0),
-            toCount_ (true),
-            isStarted_ (false),
-            isDead_ (false),
-            story_ (STORY_DEFAULT),
-            error_ (ERROR_TEST_UNDEF),
-            toWait_ (true){
+        Task() 
+            : Parent()
+            , count_ (0U)
+            , toCount_ (true)
+            , isStarted_ (false)
+            , isDead_ (false)
+            , story_ (STORY_DEFAULT)
+            , error_ (ERROR_TEST_UNDEF)
+            , toWait_ (true)
+            , stackSize_(0U) {
         }
-        
+
+        /**
+         * @brief Constructor.
+         *
+         * @param stackSize This task stack size.         
+         */
+        Task(size_t stackSize) 
+            : Parent()
+            , count_ (0U)
+            , toCount_ (true)
+            , isStarted_ (false)
+            , isDead_ (false)
+            , story_ (STORY_DEFAULT)
+            , error_ (ERROR_TEST_UNDEF)
+            , toWait_ (true)
+            , stackSize_(stackSize) {
+        }
+
         /**
          * @brief Constructor.
          *
          * @param isConstructed Flag the object will be constructed.
          */
-        Task(bool_t isConstructed) : Parent(),
-            count_ (0),
-            toCount_ (true),
-            isStarted_ (false),
-            isDead_ (false),
-            story_ (STORY_DEFAULT),
-            error_ (ERROR_TEST_UNDEF),
-            toWait_ (true){
+        Task(bool_t isConstructed) 
+            : Parent()
+            , count_ (0U)
+            , toCount_ (true)
+            , isStarted_ (false)
+            , isDead_ (false)
+            , story_ (STORY_DEFAULT)
+            , error_ (ERROR_TEST_UNDEF)
+            , toWait_ (true)
+            , stackSize_(0U) {
             setConstructed(isConstructed);
         }
         
@@ -94,14 +115,16 @@ protected:
          *
          * @param isConstructed Flag the object will be constructed.
          */
-        Task(Story story) : Parent(),
-            count_ (0),
-            toCount_ (true),
-            isStarted_ (false),
-            isDead_ (false),
-            story_ (story),
-            error_ (ERROR_TEST_UNDEF),
-            toWait_ (true){        
+        Task(Story story) 
+            : Parent()
+            , count_ (0U)
+            , toCount_ (true)
+            , isStarted_ (false)
+            , isDead_ (false)
+            , story_ (story)
+            , error_ (ERROR_TEST_UNDEF)
+            , toWait_ (true)
+            , stackSize_(0U) {            
         }
         
         /**
@@ -158,6 +181,14 @@ protected:
         {
             return error_;
         }
+        
+        /**
+         * @copydoc eoos::api::Task::getStackSize()
+         */
+        virtual size_t getStackSize() const
+        {
+            return stackSize_;
+        }  
         
     private:    
             
@@ -293,6 +324,7 @@ protected:
         Story story_;               ///< Task story to play.
         int32_t error_;             ///< Execution error.
         bool_t toWait_;             ///< Task wait and executed.
+        size_t stackSize_;          ///< Task stack size.
     };
 
     /**
@@ -301,18 +333,20 @@ protected:
      */
     struct Tasks
     {
-        Tasks() :
-            normal (),
-            unconstructed (false),
-            in (Task::STORY_INITIATOR),
-            re (Task::STORY_REACTOR),
-            counter0 (Task::STORY_COUNTER),
-            counter1 (Task::STORY_COUNTER){
+        Tasks() 
+            : normal()
+            , stack( 16384UL )
+            , unconstructed( false )
+            , in( Task::STORY_INITIATOR )
+            , re( Task::STORY_REACTOR )
+            , counter0( Task::STORY_COUNTER )
+            , counter1( Task::STORY_COUNTER ){
             counters[0] = &counter0;
             counters[1] = &counter1;
         }
         
         Task normal;
+        Task stack;        
         Task unconstructed;
         Task in;
         Task re;
@@ -413,7 +447,17 @@ TEST_F(lib_ThreadTest, execute)
         ASSERT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
+        ASSERT_FALSE(thread.execute()) << "Fatal: Thread was executed";        
     }
+    // Execute constructed task with stack defined
+    {
+        Thread<> thread(task.stack);
+        EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
+        EXPECT_FALSE(task.stack.waitIsStarted()) << "Error: Thread was started without execute() function";
+        ASSERT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(task.stack.waitIsStarted()) << "Error: Thread was not started after execute() function";
+        EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
+    }    
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
