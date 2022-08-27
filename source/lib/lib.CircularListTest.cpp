@@ -864,14 +864,14 @@ TEST_F(lib_CircularListTest, iterator)
     {
         CircularList<int32_t,NullAllocator> obj( ILLEGAL_INT32 );
         api::Iterable<int32_t>* volatile ite( &obj );        
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         EXPECT_EQ(it, NULLPTR) << "Fatal: Iterator is not null";  
         delete it;        
     }
     {
         CircularList<int32_t> obj( ILLEGAL_INT32 );
         api::Iterable<int32_t>* volatile ite( &obj );        
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         
         EXPECT_FALSE(it->remove()) << "Fatal: Iterator deletes element";
         
@@ -885,7 +885,7 @@ TEST_F(lib_CircularListTest, iterator)
         api::List<int32_t>* volatile lis( &obj );        
         EXPECT_TRUE(lis->add(0x5A5A5000)) << "Error: Element is not added";        
         api::Iterable<int32_t>* volatile ite( &obj );        
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         
         EXPECT_FALSE(it->remove()) << "Fatal: Iterator deletes element";
         
@@ -902,7 +902,7 @@ TEST_F(lib_CircularListTest, iterator)
         CircularList<int32_t> obj( ILLEGAL_INT32 );
         api::List<int32_t>* volatile lis( &obj );        
         api::Iterable<int32_t>* volatile ite( &obj );        
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         
         EXPECT_TRUE(lis->add(0x5A5A5000)) << "Error: Element is not added";  
         
@@ -920,7 +920,7 @@ TEST_F(lib_CircularListTest, iterator)
         EXPECT_TRUE(lis->add(0x5A5A5002)) << "Error: Element is not added";
         api::Iterable<int32_t>* volatile ite( &obj ); 
         
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         it->setIllegal(INITIAL_ILLEGAL_INT32);
         
         EXPECT_TRUE(it->hasNext()) << "Fatal: Iterator has no element";
@@ -951,7 +951,7 @@ TEST_F(lib_CircularListTest, iterator)
         EXPECT_TRUE(lis->add(0x5A5A5002)) << "Error: Element is not added";
         api::Iterable<int32_t>* volatile ite( &obj ); 
         
-        api::Iterator<int32_t>* volatile it(ite->getIterator());
+        api::Iterator<int32_t>* volatile it( ite->getIterator() );
         
         EXPECT_TRUE(it->isIllegal(INITIAL_ILLEGAL_INT32)) << "Fatal: Illegal value is not illegal";
         EXPECT_EQ(it->getIllegal(), INITIAL_ILLEGAL_INT32) << "Fatal: Illegal value is not illegal";        
