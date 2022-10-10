@@ -157,7 +157,7 @@ protected:
         /**
          * @brief Stops counter.
          */        
-        uint32_t getCounter()
+        uint64_t getCounter()
         {
             return count_;
         }
@@ -322,7 +322,7 @@ protected:
         static int32_t volatile channelItoR_;   ///< Channel Initiator to Reactor direction.
         static int32_t volatile channelRtoI_;   ///< Channel Reactor to Initiator direction.
         
-        uint32_t count_;            ///< Counter.
+        uint64_t count_;            ///< Counter.
         bool_t volatile toCount_;   ///< Has to count flag.
         bool_t volatile isStarted_; ///< Task started flag.
         bool_t isDead_;             ///< Task dead flag.
@@ -638,8 +638,8 @@ TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
  */
 TEST_F(lib_ThreadTest, sleep)
 {
-    int64_t ms[2] = {300, 1200};
-    uint32_t counters[2] = {100, 100};
+    int32_t ms[2] = {300, 1200};
+    uint64_t counters[2] = {100, 100};
     for(int32_t i=0; i<2; i++)
     {
         Thread<> count(*task.counters[i]);
@@ -649,7 +649,9 @@ TEST_F(lib_ThreadTest, sleep)
         EXPECT_TRUE(count.join()) << "Error: Thread was not joined";
         counters[i] += task.counters[i]->getCounter();
     }
-    EXPECT_LT(counters[0] + counters[0], counters[1]) << "Fatal: Thread was not joined";
+    uint64_t val1( counters[0] + counters[0] );
+    uint64_t val2( counters[1] );
+    EXPECT_LT(val1, val2) << "Fatal: Thread was not joined";
 }
 
 /**

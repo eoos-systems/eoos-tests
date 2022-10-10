@@ -238,9 +238,11 @@ TEST_F(glb_MainTest, execute_wrongArgc)
  */
 TEST_F(glb_MainTest, execute_noNullTerminatedArgc)
 {    
+    // @note Involve ARGX to be sure a previous call with possible NULL on the same possition overrided.
+    char_t ARGX[] = {"ARGX"};    
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
-    char_t* args[] = {ARG0, ARG1};
+    char_t* args[] = {ARG0, ARG1, ARGX};
     int32_t argv( 2 );
     ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
 }
