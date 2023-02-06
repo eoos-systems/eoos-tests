@@ -609,7 +609,7 @@ TEST_F(lib_MemoryTest, itoa_int32)
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
 
     // Test the Exception 1
-    val = -2147483648;
+    val = static_cast<int32_t>(0x80000000); // -2147483648
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";

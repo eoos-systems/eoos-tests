@@ -139,7 +139,7 @@ T getTypecast(T const o1)
 TEST_F(lib_AlignTest, Typecast_int)
 {
     {
-        int8_t exp( 0x8F );
+        int8_t exp( 0x7F );
         int8_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }
@@ -149,7 +149,7 @@ TEST_F(lib_AlignTest, Typecast_int)
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }
     {
-        int16_t exp( 0x8FA5 );
+        int16_t exp( 0x7FA5 );
         int16_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }
@@ -159,7 +159,7 @@ TEST_F(lib_AlignTest, Typecast_int)
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }
     {
-        int32_t exp( 0x8FA5A5A5 );
+        int32_t exp( 0x7FA5A5A5 );
         int32_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }
@@ -170,7 +170,7 @@ TEST_F(lib_AlignTest, Typecast_int)
     }
 
     {
-        int64_t exp( 0x8FA5A5A5 );
+        int64_t exp( 0x7FA5A5A5 );
         int64_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
     }

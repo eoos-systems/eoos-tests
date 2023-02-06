@@ -35,7 +35,7 @@ int32_t Program::start(api::List<char_t*>& args)
             lib::String arg1( args.get(1) );
             if( (arg0 == "ARG0") && (arg1 == "ARG1") )
             {
-                error = args.getLength();                
+                error = static_cast<int32_t>( args.getLength() );
             }
             break;
         }            

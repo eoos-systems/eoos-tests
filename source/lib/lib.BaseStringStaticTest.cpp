@@ -1244,7 +1244,7 @@ TEST_F(lib_BaseStringStaticTest_char_t, convert_int32)
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
 
     // Test the Exception 1
-    val = -2147483648;
+    val = static_cast<int32_t>(0x80000000); // -2147483648
     res = obj.convert(val, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
