@@ -9,7 +9,7 @@
 #include "lib.AbstractTask.hpp"
 #include "System.hpp"
 
-#ifdef EOOS_ENABLE_DYNAMIC_HEAP_MEMORY
+#ifndef EOOS_GLOBAL_ENABLE_NO_HEAP
 
 namespace eoos
 {
@@ -680,4 +680,4 @@ TEST_F(lib_ThreadTest, sleep_wrongArgs)
 } // namespace lib
 } // namespace eoos
 
-#endif // EOOS_ENABLE_DYNAMIC_HEAP_MEMORY
+#endif // EOOS_GLOBAL_ENABLE_NO_HEAP

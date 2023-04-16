@@ -304,11 +304,11 @@ static void printConfiguration()
         lib::Stream::cout() << "DATA MODEL: C++ standard\n";
     #endif
 
-    // MISRA-C++:2008 rules restrictions.  
-    #if defined (EOOS_ENABLE_DYNAMIC_HEAP_MEMORY)
-        lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
+    // Dynamic heap memory allocation.
+    #if defined (EOOS_GLOBAL_ENABLE_NO_HEAP)
+        lib::Stream::cout() << "DISABLE: Dynamic heap memory allocation\n";
     #else
-        lib::Stream::cout() << "DISABLE: Dynamic heap memory allocation\n";        
+        lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
     #endif
 }
 
