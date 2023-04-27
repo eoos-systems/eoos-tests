@@ -9,18 +9,26 @@
 #include "System.hpp"
 #include "lib.Stream.hpp"
 #include "lib.String.hpp"
+#include "lib.ArgumentParser.hpp"
 
 namespace eoos
 {
 
-static const int32_t PROGRAM_OK          (777); ///< Correct program exit code.
-static const int32_t PROGRAM_WRONG_ARGS  (666); ///< Wrong program exit code.
+static const int32_t PROGRAM_OK             (777); ///< Correct program exit code.
+static const int32_t PROGRAM_WRONG_ARGS     (666); ///< Wrong program exit code.
+static const int32_t PROGRAM_ERROR_ARGUMENT (555);  ///< Error of a function argument.
 
 /**
  * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)
  */
-int32_t Program::start(api::List<char_t*>& args)
+int32_t Program::start(int32_t argc, char_t* argv[])
 {
+    lib::ArgumentParser<char_t,0> parser(argc, argv);
+    if( !parser.isConstructed() )
+    {
+        return PROGRAM_ERROR_ARGUMENT;
+    }
+    api::List<lib::String>& args( parser.getArguments() ); 
     int32_t error(PROGRAM_WRONG_ARGS);
     switch( args.getLength() )
     {
@@ -31,9 +39,7 @@ int32_t Program::start(api::List<char_t*>& args)
         }
         case 2:
         {
-            lib::String arg0( args.get(0) );
-            lib::String arg1( args.get(1) );
-            if( (arg0 == "ARG0") && (arg1 == "ARG1") )
+            if( (args.get(0) == "ARG0") && (args.get(1) == "ARG1") )
             {
                 error = static_cast<int32_t>( args.getLength() );
             }
@@ -90,7 +96,7 @@ TEST_F(glb_MainTest, isConstructed)
  */
 TEST_F(glb_MainTest, execute)
 {
-    ASSERT_EQ(eoos.execute(), PROGRAM_OK) << "Fatal: Program was not started";
+    ASSERT_EQ(eoos.execute(), PROGRAM_OK) << "Fatal: Program is not executed";
 }
 
 /**
@@ -110,7 +116,7 @@ TEST_F(glb_MainTest, execute_args0)
 {    
     char_t* args[] = {NULLPTR};
     int32_t argv( 0 );
-    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_OK) << "Fatal: Program was not started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_OK) << "Fatal: Program is not executed";
 }
     
 /**
@@ -131,7 +137,7 @@ TEST_F(glb_MainTest, execute_args1)
     char_t ARG0[] = {"ARG0"};
     char_t* args[] = {ARG0, NULLPTR};
     int32_t argv( 1 );
-    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_WRONG_ARGS) << "Fatal: Program was not started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_WRONG_ARGS) << "Fatal: Program arguments is not wrong";
 }
 
 /**
@@ -153,7 +159,7 @@ TEST_F(glb_MainTest, execute_args2)
     char_t ARG1[] = {"ARG1"};
     char_t* args[] = {ARG0, ARG1, NULLPTR};
     int32_t argv( 2 );
-    ASSERT_EQ(eoos.execute(argv, args), argv) << "Fatal: Program was not started";
+    ASSERT_EQ(eoos.execute(argv, args), argv) << "Fatal: Program arguments is not wrong";
 }
     
 /**
@@ -175,7 +181,7 @@ TEST_F(glb_MainTest, execute_negativeArgv)
     char_t ARG1[] = {"ARG1"};
     char_t* args[] = {ARG0, ARG1, NULLPTR};
     int32_t argv( -2 );
-    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
 
 /**
@@ -197,7 +203,7 @@ TEST_F(glb_MainTest, execute_wrongArgv)
     char_t ARG1[] = {"ARG1"};
     char_t* args[] = {ARG0, ARG1, NULLPTR};
     int32_t argv( 5 );
-    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
     
 /**
@@ -220,7 +226,7 @@ TEST_F(glb_MainTest, execute_wrongArgc)
     char_t ARG2[] = {"ARG2"};
     char_t* args[] = {ARG0, NULLPTR, ARG2, NULLPTR};
     int32_t argv( 3 );
-    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
 
 /**
@@ -244,7 +250,7 @@ TEST_F(glb_MainTest, execute_noNullTerminatedArgc)
     char_t ARG1[] = {"ARG1"};
     char_t* args[] = {ARG0, ARG1, ARGX};
     int32_t argv( 2 );
-    ASSERT_LT(eoos.execute(argv, args), 0) << "Fatal: Program was started";
+    ASSERT_EQ(eoos.execute(argv, args), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
 
 /**
@@ -263,7 +269,7 @@ TEST_F(glb_MainTest, execute_noNullTerminatedArgc)
 TEST_F(glb_MainTest, execute_nullArgc)
 {    
     int32_t argv( 2 );
-    ASSERT_LT(eoos.execute(argv, NULLPTR), 0) << "Fatal: Program was started";
+    ASSERT_EQ(eoos.execute(argv, NULLPTR), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
 
     
