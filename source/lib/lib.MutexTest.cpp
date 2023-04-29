@@ -128,8 +128,27 @@ private:
  */
 TEST_F(lib_MutexTest, Constructor)
 {
-    Mutex<> obj;
+    Mutex<> const obj;
     EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
+}
+
+/**
+ * @relates lib_MutexTest
+ * @brief Tests mutex ID.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test mutex ID is correct.
+ */
+TEST_F(lib_MutexTest, getId)
+{
+    Mutex<> const obj;
+    EXPECT_EQ(obj.getId(), -1) << "Fatal: Mutex ID is wrong";
 }
 
 /**
