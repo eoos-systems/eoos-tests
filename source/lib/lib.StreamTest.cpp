@@ -41,7 +41,13 @@ private:
  */
 TEST_F(lib_StreamTest, cout)
 {
-    Stream::cout() << "[       OK ] This is output test to cout" << "\n";
+    Stream::cout() << "[     TEST ] This is output to cout" << "\n";
+    int32_t value( 0 );
+    Stream::cout() << "[     TEST ] This is output to cout of zero integer: " << value << "\n";
+    value = 2147483647;
+    Stream::cout() << "[     TEST ] This is output to cout of max 2147483647 integer: " << value << "\n";
+    value = -2147483647;
+    Stream::cout() << "[     TEST ] This is output to cout of min -2147483647 integer: " << value << "\n";
     api::Object& stream (Stream::cout().flush());
     EXPECT_TRUE(stream.isConstructed()) << "Fatal: System cout stream is not constructed";
 }
@@ -61,7 +67,13 @@ TEST_F(lib_StreamTest, cout)
  */
 TEST_F(lib_StreamTest, cerr)
 {
-    Stream::cerr() << "[       OK ] This is output test to cerr that can be colored to red" << "\n";
+    Stream::cerr() << "[     TEST ] This is output to cerr that can be colored to red" << "\n";
+    int32_t value( 0 );
+    Stream::cout() << "[     TEST ] This is output to cerr of zero integer: " << value << "\n";
+    value = 2147483647;
+    Stream::cout() << "[     TEST ] This is output to cerr of max 2147483647 integer: " << value << "\n";
+    value = -2147483647;
+    Stream::cout() << "[     TEST ] This is output to cerr of min -2147483647 integer: " << value << "\n";
     api::Object& stream (Stream::cerr().flush());
     EXPECT_TRUE(stream.isConstructed()) << "Fatal: System cerr stream is not constructed";
 
