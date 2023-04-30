@@ -316,6 +316,9 @@ static void printConfiguration()
     #else
         lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
     #endif
+
+    // EOOS state:t
+    lib::Stream::cout() << "EOOS: Size of system " << static_cast<int32_t>(sizeof(sys::System)) << " Bytes\n";
 }
 
 } // namespace eoos
