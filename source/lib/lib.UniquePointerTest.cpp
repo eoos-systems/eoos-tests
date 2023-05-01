@@ -8,8 +8,6 @@
 #include "lib.UniquePointer.hpp"
 #include "System.hpp"
 
-#ifndef EOOS_GLOBAL_ENABLE_NO_HEAP
-
 namespace eoos
 {
 namespace lib
@@ -842,5 +840,3 @@ TEST_F(lib_UniquePointerTest, smartPointer)
 
 } // namespace lib
 } // namespace eoos
-
-#endif // EOOS_GLOBAL_ENABLE_NO_HEAP

@@ -8,8 +8,6 @@
 #include "lib.SharedPointer.hpp"
 #include "System.hpp"
 
-#ifndef EOOS_GLOBAL_ENABLE_NO_HEAP
-
 namespace eoos
 {
 namespace lib
@@ -1020,5 +1018,3 @@ TEST_F(lib_SharedPointerTest, smartPointer)
 
 } // namespace lib
 } // namespace eoos
-
-#endif // EOOS_GLOBAL_ENABLE_NO_HEAP

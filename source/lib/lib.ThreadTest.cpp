@@ -9,8 +9,6 @@
 #include "lib.AbstractTask.hpp"
 #include "System.hpp"
 
-#ifndef EOOS_GLOBAL_ENABLE_NO_HEAP
-
 namespace eoos
 {
 namespace lib
@@ -679,5 +677,3 @@ TEST_F(lib_ThreadTest, sleep_wrongArgs)
 
 } // namespace lib
 } // namespace eoos
-
-#endif // EOOS_GLOBAL_ENABLE_NO_HEAP
