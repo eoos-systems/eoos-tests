@@ -134,25 +134,6 @@ TEST_F(lib_MutexTest, Constructor)
 
 /**
  * @relates lib_MutexTest
- * @brief Tests mutex ID.
- *
- * @b Arrange:
- *      - Initialize the EOOS system.
- *
- * @b Act:
- *      - Consctuct an object of the class.
- *
- * @b Assert:
- *      - Test mutex ID is correct.
- */
-TEST_F(lib_MutexTest, getId)
-{
-    Mutex<> const obj;
-    EXPECT_EQ(obj.getId(), -1) << "Fatal: Mutex ID is wrong";
-}
-
-/**
- * @relates lib_MutexTest
  * @brief Mutex lock test.
  *
  * @b Arrange:

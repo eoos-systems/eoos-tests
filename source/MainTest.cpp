@@ -317,6 +317,24 @@ static void printConfiguration()
         lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
     #endif
 
+    #if EOOS_GLOBAL_NUMBER_OF_MUTEXS == 0
+        lib::Stream::cout() << "MEMORY MODE: Mutex resources are allocated in heap memory.\n";
+    #else
+        lib::Stream::cout() << "MEMORY MODE: Mutex resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_MUTEXS << ".\n";
+    #endif
+
+    #if EOOS_GLOBAL_NUMBER_OF_SEMAPHORES == 0
+        lib::Stream::cout() << "MEMORY MODE: Semaphore resources are allocated in heap memory.\n";
+    #else
+        lib::Stream::cout() << "MEMORY MODE: Semaphore resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_SEMAPHORES << ".\n";
+    #endif
+
+    #if EOOS_GLOBAL_NUMBER_OF_THREADS == 0
+        lib::Stream::cout() << "MEMORY MODE: Thread resources are allocated in heap memory.\n";
+    #else
+        lib::Stream::cout() << "MEMORY MODE: Thread resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_THREADS << ".\n";
+    #endif
+
     // EOOS state:t
     lib::Stream::cout() << "EOOS: Size of system " << static_cast<int32_t>(sizeof(sys::System)) << " Bytes\n";
 }
