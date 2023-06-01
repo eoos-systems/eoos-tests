@@ -125,10 +125,7 @@ TEST_F(lib_ArgumentParserTest, isConstructed)
  * @b Assert:
  *      - Test if passed agruments parsed correctly.
  */
-
-static volatile int i_ = 0;
-
-TEST_F(lib_ArgumentParserTest, DISABLED_getArguments)
+TEST_F(lib_ArgumentParserTest, getArguments)
 {
     {
         char_t* argv[] = {NULLPTR};
@@ -150,32 +147,15 @@ TEST_F(lib_ArgumentParserTest, DISABLED_getArguments)
         char_t* argv[] = {ARG0, ARG1, NULLPTR};
         int32_t argc( 2 );
         ArgumentParser<char_t,0> obj(argc, argv);
-        EXPECT_EQ(obj.getArguments().getLength(), 2)  << "Fatal: Wrong argumnet number";
-        EXPECT_STREQ(obj.getArguments().get(0)->getChar(), "ARG0") << "Fatal: Argument has wrong characters";
-        i_++;
-        EXPECT_STREQ(obj.getArguments().get(1)->getChar(), "ARG1") << "Fatal: Argument has wrong characters";
-        i_++;
+        // @todo The problem was investigeting for 2 days with core dump
+        // if avoid `volatile` here or write the test like two tests above.
+        // It appears with Release configuration only compiled with gcc.
+        // The assumption is that gcc has a bug, but this has to be check.
+        api::List< api::String<char_t>* >* volatile args( &obj.getArguments() );        
+        EXPECT_EQ(args->getLength(), 2)  << "Fatal: Wrong argumnet number";
+        EXPECT_STREQ(args->get(0)->getChar(), "ARG0") << "Fatal: Argument has wrong characters";
+        EXPECT_STREQ(args->get(1)->getChar(), "ARG1") << "Fatal: Argument has wrong characters";
     }    
-}
-
-/**
- * @relates lib_ArgumentParserTest
- * @brief Debug a failure. 
- */
-TEST_F(lib_ArgumentParserTest, debug)
-{
-    char_t ARG0[] = {"ARG0"};
-    char_t ARG1[] = {"ARG1"};
-    char_t* argv[] = {ARG0, ARG1, NULLPTR};
-    int32_t argc( 2 );
-
-    ArgumentParser<char_t,0> obj(argc, argv);
-    
-    api::List< api::String<char_t>* >* /*volatile*/ args( &obj.getArguments() );
-    
-    const char* ch( args->get(1)->getChar() ) ;
-    
-    ASSERT_STREQ(ch, "ARG1") << "Fatal: Argument has wrong characters";        
 }
 
 } // namespace lib
