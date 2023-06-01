@@ -7,6 +7,7 @@
  */
 #include "lib.LinkedList.hpp"
 #include "System.hpp"
+#include "lib.String.hpp"
 
 namespace eoos
 {
@@ -967,6 +968,163 @@ TEST_F(lib_LinkedListTest, iterator)
         EXPECT_FALSE(it->remove()) << "Fatal: Iterator deletes element";        
         delete it;
         
+        EXPECT_TRUE(lis->isEmpty()) << "Fatal: List is not empty";
+    }
+}
+
+TEST_F(lib_LinkedListTest, list_string)
+{
+    {
+        LinkedList<String> obj( "ILLEGAL_STRING" );
+        api::List<String>* volatile lis( &obj );        
+
+        EXPECT_EQ(lis->getLength(), 0) << "Fatal: Length is wrong";        
+        EXPECT_TRUE(lis->isEmpty()) << "Fatal: List is not empty";
+        EXPECT_STREQ(lis->get(0).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->getFirst().getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->getLast().getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_FALSE(lis->remove(0)) << "Fatal: Element is removed";
+        EXPECT_FALSE(lis->removeFirst()) << "Fatal: Element is removed";
+        EXPECT_FALSE(lis->removeLast()) << "Fatal: Element is removed";        
+        EXPECT_FALSE(lis->removeElement("0x5A5A5000")) << "Fatal: Element is not removed";
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5000"), LIST_ERROR_INDEX) << "Fatal: Element value is wrong";
+        EXPECT_FALSE(lis->isIndex(0)) << "Fatal: Element index is not exist";
+
+        EXPECT_TRUE(lis->add("0x5A5A5001")) << "Fatal: Element is not added";
+        EXPECT_TRUE(lis->add("0x5A5A5003")) << "Fatal: Element is not added";
+        EXPECT_TRUE(lis->add(0, "0x5A5A5000")) << "Fatal: Element is not added";        
+        EXPECT_TRUE(lis->add(2, "0x5A5A5002")) << "Fatal: Element is not added";
+        EXPECT_TRUE(lis->add(4, "0x5A5A5004")) << "Fatal: Element is not added";
+        EXPECT_TRUE(lis->add("0x5A5A5005")) << "Fatal: Element is not added";        
+        EXPECT_FALSE(lis->add(10, "0x5A5A5010")) << "Fatal: Element is added";
+        EXPECT_FALSE(lis->add(-1, "0x5A5A50FF")) << "Fatal: Element is added";        
+
+        EXPECT_EQ(lis->getLength(), 6) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5000") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5002") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->get(4).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "0x5A5A5005") << "Fatal: Element value is wrong";
+        
+        EXPECT_EQ(lis->getFirst(), "0x5A5A5000") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLast(), "0x5A5A5005") << "Fatal: Element value is wrong";
+        
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5000"), 0) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5001"), 1) << "Fatal: Element value is wrong";        
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5002"), 2) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5003"), 3) << "Fatal: Element value is wrong";        
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5004"), 4) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5005"), 5) << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getIndexOf("0x5A5A5006"), LIST_ERROR_INDEX) << "Fatal: Element value is wrong";
+
+        EXPECT_TRUE(lis->isIndex(0)) << "Fatal: Element index is not exist";
+        EXPECT_TRUE(lis->isIndex(1)) << "Fatal: Element index is not exist";
+        EXPECT_TRUE(lis->isIndex(2)) << "Fatal: Element index is not exist";
+        EXPECT_TRUE(lis->isIndex(3)) << "Fatal: Element index is not exist";
+        EXPECT_TRUE(lis->isIndex(4)) << "Fatal: Element index is not exist";
+        EXPECT_TRUE(lis->isIndex(5)) << "Fatal: Element index is not exist";
+        EXPECT_FALSE(lis->isIndex(6)) << "Fatal: Element index is exist";
+        
+        EXPECT_TRUE(lis->removeFirst()) << "Fatal: Element is not removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5002") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "0x5A5A5005") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 5) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_TRUE(lis->removeLast()) << "Fatal: Element is not removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5002") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 4) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+        
+        EXPECT_TRUE(lis->remove(1)) << "Fatal: Element is not removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_FALSE(lis->remove(3)) << "Fatal: Element is removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_FALSE(lis->remove(-1)) << "Fatal: Element is removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_FALSE(lis->removeElement("0x5A5A5000")) << "Fatal: Element is removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5003") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_TRUE(lis->removeElement("0x5A5A5003")) << "Fatal: Element is not removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 2) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        EXPECT_TRUE(lis->add(0, "0x5A5A5004")) << "Fatal: Element is not added";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";        
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 3) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+        
+        EXPECT_TRUE(lis->removeElement("0x5A5A5004")) << "Fatal: Element is not removed";
+        EXPECT_STREQ(lis->get(0).getChar(), "0x5A5A5001") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "0x5A5A5004") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(5).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 2) << "Fatal: Length is wrong";        
+        EXPECT_FALSE(lis->isEmpty()) << "Fatal: List is empty";
+
+        lis->clear();
+        EXPECT_STREQ(lis->get(0).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(1).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(2).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(3).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_STREQ(lis->get(4).getChar(), "ILLEGAL_STRING") << "Fatal: Element value is wrong";
+        EXPECT_EQ(lis->getLength(), 0) << "Fatal: Length is wrong";        
         EXPECT_TRUE(lis->isEmpty()) << "Fatal: List is not empty";
     }
 }
