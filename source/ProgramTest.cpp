@@ -1,5 +1,5 @@
 /**
- * @file      MainTest.cpp
+ * @file      ProrgamTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2023, Sergey Baigudin, Baigudin Software
  *
@@ -18,7 +18,7 @@ static const int32_t PROGRAM_WRONG_ARGS     (666); ///< Wrong program exit code.
 static const int32_t PROGRAM_ERROR_ARGUMENT (555);  ///< Error of a function argument.
 
 /**
- * @copydoc eoos::Object::Program::start(const api::List<char_t*>*)
+ * @copydoc eoos::Program::start(int32_t, char_t**)
  */
 int32_t Program::start(int32_t argc, char_t* argv[])
 {

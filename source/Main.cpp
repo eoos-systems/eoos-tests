@@ -26,9 +26,9 @@ static void printConfiguration()
         lib::Stream::cout() << "LANGUAGE: C++11\n";
     #elif EOOS_CPP_STANDARD == 2014
         lib::Stream::cout() << "LANGUAGE: C++14\n";
-    #elif EOOS_CPP_STANDARD 2017
+    #elif EOOS_CPP_STANDARD == 2017
         lib::Stream::cout() << "LANGUAGE: C++17\n";
-    #elif EOOS_CPP_STANDARD 2020
+    #elif EOOS_CPP_STANDARD == 2020
         lib::Stream::cout() << "LANGUAGE: C++20\n";
     #else        
         lib::Stream::cout() << "LANGUAGE: unknown\n";
@@ -57,24 +57,24 @@ static void printConfiguration()
     #endif
 
     #if EOOS_GLOBAL_NUMBER_OF_MUTEXS == 0
-        lib::Stream::cout() << "MEMORY MODE: Mutex resources are allocated in heap memory.\n";
+        lib::Stream::cout() << "MEMORY MODE: Mutex in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Mutex resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_MUTEXS << ".\n";
+        lib::Stream::cout() << "MEMORY MODE: Mutex in pool memory of " << EOOS_GLOBAL_NUMBER_OF_MUTEXS << ".\r\n";
     #endif
 
     #if EOOS_GLOBAL_NUMBER_OF_SEMAPHORES == 0
-        lib::Stream::cout() << "MEMORY MODE: Semaphore resources are allocated in heap memory.\n";
+        lib::Stream::cout() << "MEMORY MODE: Semaphore in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Semaphore resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_SEMAPHORES << ".\n";
+        lib::Stream::cout() << "MEMORY MODE: Semaphore in pool memory of " << EOOS_GLOBAL_NUMBER_OF_SEMAPHORES << ".\r\n";
     #endif
 
     #if EOOS_GLOBAL_NUMBER_OF_THREADS == 0
-        lib::Stream::cout() << "MEMORY MODE: Thread resources are allocated in heap memory.\n";
+        lib::Stream::cout() << "MEMORY MODE: Thread in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Thread resources have pre-allocated pool of " << EOOS_GLOBAL_NUMBER_OF_THREADS << ".\n";
+        lib::Stream::cout() << "MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_NUMBER_OF_THREADS << ".\r\n";
     #endif
 
-    // EOOS state:t
+    // EOOS state:
     lib::Stream::cout() << "EOOS: Size of system " << static_cast<int32_t>(sizeof(sys::System)) << " Bytes\n";
 }
 
