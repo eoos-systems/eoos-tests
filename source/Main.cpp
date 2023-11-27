@@ -56,22 +56,22 @@ static void printConfiguration()
         lib::Stream::cout() << "ENABLE: Dynamic heap memory allocation\n";
     #endif
 
-    #if EOOS_GLOBAL_NUMBER_OF_MUTEXS == 0
+    #if EOOS_GLOBAL_SYS_NUMBER_OF_MUTEXS == 0
         lib::Stream::cout() << "MEMORY MODE: Mutex in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Mutex in pool memory of " << EOOS_GLOBAL_NUMBER_OF_MUTEXS << ".\r\n";
+        lib::Stream::cout() << "MEMORY MODE: Mutex in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_MUTEXS << ".\r\n";
     #endif
 
-    #if EOOS_GLOBAL_NUMBER_OF_SEMAPHORES == 0
+    #if EOOS_GLOBAL_SYS_NUMBER_OF_SEMAPHORES == 0
         lib::Stream::cout() << "MEMORY MODE: Semaphore in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Semaphore in pool memory of " << EOOS_GLOBAL_NUMBER_OF_SEMAPHORES << ".\r\n";
+        lib::Stream::cout() << "MEMORY MODE: Semaphore in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_SEMAPHORES << ".\r\n";
     #endif
 
-    #if EOOS_GLOBAL_NUMBER_OF_THREADS == 0
+    #if EOOS_GLOBAL_SYS_NUMBER_OF_THREADS == 0
         lib::Stream::cout() << "MEMORY MODE: Thread in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_NUMBER_OF_THREADS << ".\r\n";
+        lib::Stream::cout() << "MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_THREADS << ".\r\n";
     #endif
 
     // EOOS state:

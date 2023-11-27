@@ -6,6 +6,7 @@
  * @brief Unit tests of `lib::Heap`. 
  */
 #include "lib.Heap.hpp"
+#include "lib.Mutex.hpp"
 #include "lib.Memory.hpp"
 #include "System.hpp"
 

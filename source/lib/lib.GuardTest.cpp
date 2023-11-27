@@ -1,11 +1,12 @@
 /**
- * @file      lib.MutexGuardTest.cpp
+ * @file      lib.GuardTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::MutexGuard`. 
+ * @brief Unit tests of `lib::Guard`. 
  */
-#include "lib.MutexGuard.hpp"
+#include "lib.Guard.hpp"
+#include "lib.Mutex.hpp"
 #include "lib.AbstractThreadTask.hpp"
 #include "System.hpp"
 
@@ -42,15 +43,14 @@ public:
 
 };
 
-
 } // namespace
     
 /**
- * @class lib_MutexGuardTest
+ * @class lib_GuardTest
  * @test Mutex
  * @brief Tests Mutex class functionality.
  */
-class lib_MutexGuardTest : public ::testing::Test
+class lib_GuardTest : public ::testing::Test
 {
 
 protected:
@@ -101,7 +101,7 @@ protected:
          */        
         virtual void start()
         {
-            MutexGuard<> guard(mutex_);
+            Guard<> guard(mutex_);
             if(guard.isConstructed())
             {
                 register_ = GUARD_LOCKED;
@@ -134,7 +134,7 @@ private:
 };    
     
 /**
- * @relates lib_MutexGuardTest
+ * @relates lib_GuardTest
  * @brief Tests the class constructor.
  *
  * @b Arrange:
@@ -146,22 +146,22 @@ private:
  * @b Assert:
  *      - Test the object is constructed.
  */
-TEST_F(lib_MutexGuardTest, Constructor)
+TEST_F(lib_GuardTest, Constructor)
 {
     {
         Mutex<> mtx;
-        MutexGuard<> obj( mtx );
+        Guard<> obj( mtx );
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
     }
     { 
         MutexUnconstructed mtx;
-        MutexGuard<> obj( mtx );
+        Guard<> obj( mtx );
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed";
     }
 }
 
 /**
- * @relates lib_MutexGuardTest
+ * @relates lib_GuardTest
  * @brief Mutex lock test. 
  *
  * @b Arrange:
@@ -174,7 +174,7 @@ TEST_F(lib_MutexGuardTest, Constructor)
  * @b Assert:
  *      - Check the mutex cannot be locked in the primary thread.
  */
-TEST_F(lib_MutexGuardTest, lock)
+TEST_F(lib_GuardTest, lock)
 {
     Mutex<> mutex;
     ASSERT_TRUE(mutex.tryLock()) << "Fatal: New mutex cannot be locked";
