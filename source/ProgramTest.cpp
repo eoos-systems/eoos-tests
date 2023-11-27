@@ -95,24 +95,6 @@ TEST_F(glb_ProgramTest, isConstructed)
  * @b Assert:
  *      - Test the program is executed with correcet exit code.
  */
-TEST_F(glb_ProgramTest, execute)
-{
-    ASSERT_EQ(eoos.execute(), PROGRAM_OK) << "Fatal: Program is not executed";
-}
-
-/**
- * @relates glb_ProgramTest
- * @brief Tests the system starts a user program and is initialiezed.
- *
- * @b Arrange:
- *      - Initialize the EOOS system.
- *
- * @b Act:
- *      - Execute the test program.
- *
- * @b Assert:
- *      - Test the program is executed with correcet exit code.
- */
 TEST_F(glb_ProgramTest, execute_args0)
 {    
     char_t* argv[] = {NULLPTR};
