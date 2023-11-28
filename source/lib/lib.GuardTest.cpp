@@ -128,6 +128,128 @@ protected:
         api::Mutex& mutex_;              ///< Mutex to lock.
     };
 
+    /**
+     * @class ThreadCount
+     * @brief Count thread`.
+     */
+    class ThreadCount : public lib::AbstractThreadTask<>
+    {
+    
+    public:
+
+        /**
+         * @enum Count
+         * @brief Count direction.
+         */
+        enum Count
+        {
+            COUNT_UP,
+            COUNT_DW
+        };
+        
+        /**
+         * @brief Constructor.
+         *
+         * @param count Count direction.
+         * @param mutex Mutex resource to lock on.
+         * @param resource Atomic resource.
+         */
+        ThreadCount(Count count, api::Mutex& mutex, int64_t& resource)
+            : lib::AbstractThreadTask<>()
+            , isCompleted_( false )
+            , count_( count )
+            , mutex_( mutex )
+            , resource_( resource ) {
+        }
+        
+        /**
+         * @brief Test if counting is completed.
+         *
+         * @return True ii completed.
+         */
+        bool_t isCompleted()
+        {
+            return isCompleted_;
+        }
+            
+    private:
+    
+        /**
+         * @copydoc eoos::api::Task::start()
+         */
+        virtual void start()
+        {
+            if(count_ == COUNT_UP)
+            {
+                countUp();
+            }
+            else
+            {
+                countDown();
+            }
+        }
+
+        /**
+         * @brief Counts up.
+         */
+        void countUp()
+        {
+            {
+                lib::Guard<> const guard(mutex_);
+                volatile int64_t resource( resource_ );
+                for(int32_t i(0); i<=MAX_COUNT; i++)
+                {
+                    resource++;
+                }
+                resource_ = resource;
+            }
+            isCompleted_ = true;
+        }
+    
+        /**
+         * @brief Counts down.
+         */
+        void countDown()
+        {
+            {
+                lib::Guard<> const guard(mutex_);
+                volatile int64_t resource( resource_ );
+                for(int32_t i(MAX_COUNT); i>=0; i--)
+                {
+                    resource--;
+                }
+                resource_ = resource;
+            }
+            isCompleted_ = true;
+        }
+
+        /**
+         * @brief Maximum count.
+         */
+        static const int32_t MAX_COUNT = 0x800000;        
+
+        /**
+         * @brief Complete flag.
+         */
+        bool_t isCompleted_;
+
+        /**
+         * @brief Count direction.
+         */
+        Count count_;
+    
+        /**
+         * @brief Mutex resource to lock on.
+         */
+        api::Mutex& mutex_;
+
+        /**
+         * @brief Atomic resource.
+         */
+        int64_t& resource_;
+    
+    };
+
 private:
     
     System eoos_; ///< EOOS Operating System.    
@@ -201,6 +323,44 @@ TEST_F(lib_GuardTest, lock)
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     ASSERT_TRUE(mutex.lock()) << "Fatal: Mutex cannot be locked";
     mutex.unlock();
+}
+
+/**
+ * @relates lib_GuardTest
+ * @brief Mutex atomic lock test. 
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Create two threads and pass them a mutex.
+ *      - Run the threads to count a global variable up and down under the mutex.
+ *
+ * @b Assert:
+ *      - Check counting complited.
+ *      - Check initial value of the variable is not changed. 
+ */
+TEST_F(lib_GuardTest, atomic)
+{
+    const int64_t resVal( 770 );
+    int64_t resource( resVal );
+    Mutex<> mutex;
+    ThreadCount countUp(ThreadCount::COUNT_UP, mutex, resource);
+    ThreadCount countDw(ThreadCount::COUNT_DW, mutex, resource);
+    countUp.execute();
+    countDw.execute();
+    bool_t isCompleted( false );
+    while(true)
+    {
+        isCompleted = countUp.isCompleted();
+        isCompleted &= countDw.isCompleted();
+        if( isCompleted )
+        {
+            break;
+        }
+    }
+    ASSERT_TRUE(isCompleted) << "Fatal: Counting threads didn't complite their jobs";
+    ASSERT_EQ(resource, resVal) << "Fatal: Mutex was not locked on atomic resource access";    
 }
 
 } // namespace lib
