@@ -300,7 +300,7 @@ TEST_F(lib_GuardTest, lock)
 {
     Mutex<> mutex;
     ASSERT_TRUE(mutex.tryLock()) << "Fatal: New mutex cannot be locked";
-    mutex.unlock();
+    ASSERT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be locked";
     ThreadTask thread(mutex);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
@@ -322,7 +322,7 @@ TEST_F(lib_GuardTest, lock)
     thread.setRegisterRead();
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     ASSERT_TRUE(mutex.lock()) << "Fatal: Mutex cannot be locked";
-    mutex.unlock();
+    ASSERT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be unlocked";
 }
 
 /**

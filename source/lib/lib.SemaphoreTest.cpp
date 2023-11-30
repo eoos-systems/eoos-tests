@@ -156,7 +156,7 @@ TEST_F(lib_SemaphoreTest, acquire)
     ThreadTask thread(semAcquire, semRelease);
     ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
     ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    semAcquire.release();
+    ASSERT_TRUE(semAcquire.release()) << "Fatal: Semaphore was not released in the primary thread";
     EXPECT_TRUE(semRelease.acquire()) << "Fatal: Semaphore was not acquired in the primary thread";
     EXPECT_TRUE(thread.wasAcquired()) << "Fatal: Semaphore was not acquired in the child thread";
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
