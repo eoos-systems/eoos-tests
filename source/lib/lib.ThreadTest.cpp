@@ -43,7 +43,8 @@ protected:
             ERROR_TEST_OK,
             ERROR_TEST_UNDEF,
             ERROR_TEST_TIMEOUT,
-            ERROR_TEST_NORESPONSE
+            ERROR_TEST_NORESPONSE,
+            ERROR_TEST_NOYIELD
         };
     
         /**
@@ -232,7 +233,7 @@ protected:
          */        
         void playDefault()
         {
-            Thread<>::yield();
+            static_cast<void>( Thread<>::yield() );
         }
 
         /**
@@ -300,9 +301,16 @@ protected:
             channelItoR_ = MSG_PING;
             // Ask scheduler to yield current time slice to other thread, 
             // relying the reactor will be called
-            Thread<>::yield();
-            // Check the reactor reacted 
-            error_ = (channelRtoI_ == MSG_PONG) ? ERROR_TEST_OK : ERROR_TEST_NORESPONSE;
+            bool_t isYield( Thread<>::yield() );
+            if( isYield )
+            {
+                // Check the reactor reacted 
+                error_ = (channelRtoI_ == MSG_PONG) ? ERROR_TEST_OK : ERROR_TEST_NORESPONSE;
+            }
+            else
+            {
+                error_ = ERROR_TEST_NOYIELD;
+            }
         }
 
         /**
@@ -609,6 +617,7 @@ TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Initiator was not started";    
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_TIMEOUT) << "Fatal: Initiator didn't get confirmation Reactor started";
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_NORESPONSE) << "Fatal: Initiator didn't get reactor response";
+    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_NOYIELD) << "Fatal: Initiator didn't yield the thread";
     EXPECT_EQ(task.in.getError(), Task::ERROR_TEST_OK) << "Fatal: Initiator unexpected error";
     
     EXPECT_NE(task.re.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Reactor was not started";    

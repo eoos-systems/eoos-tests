@@ -115,10 +115,69 @@ TEST_F(lib_HeapTest, Constructor)
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
         ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
         EXPECT_TRUE(heap->isConstructed()) << "Fatal: Object is not constructed";
+        heap->~Heap();
+    }
+    {
+        Heap* heap( new (address_+1) Heap(MEMORY_SIZE/2, mutex_) );
+        ASSERT_EQ(heap, NULLPTR) << "Fatal: Heap object is allocated";
     }
     {
         Heap* heap( new (0U) Heap(MEMORY_SIZE, mutex_) );
         ASSERT_EQ(heap, NULLPTR) << "Fatal: Heap object is allocated on null memory";
+    }
+}
+
+/**
+ * @relates lib_HeapTest
+ * @brief Tests the class destructor.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *      - Destruct the object of the class.
+ *
+ * @b Assert:
+ *      - Test the object is not constructed.
+ */
+TEST_F(lib_HeapTest, Destructor)
+{
+    {
+        Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
+        delete heap;
+    }
+}
+
+/**
+ * @relates lib_HeapTest
+ * @brief Tests the class operator delete.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the object operator delete is called.
+ */
+TEST_F(lib_HeapTest, newdeletion)
+{
+    {
+        void* mem = Heap::operator new(sizeof(Heap), reinterpret_cast<uintptr_t>(NULLPTR));
+        EXPECT_EQ(mem, NULLPTR) << "Fatal: Memory is allocated";            
+    }
+    {
+        void* mem = Heap::operator new(sizeof(Heap), address_);
+        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";            
+        Heap::operator delete(mem);
+    }
+    {
+        void* mem = Heap::operator new(sizeof(Heap), address_);
+        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";            
+        Heap::operator delete(NULLPTR, address_);
     }
 }
 

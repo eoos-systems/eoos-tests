@@ -86,10 +86,10 @@ TEST_F(lib_StreamTest, cerr)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Output a string.
+ *      - Set a new stream.
  *
  * @b Assert:
- *      - Test interface exists.
+ *      - Test set is done.
  */
 TEST_F(lib_StreamTest, set_cout)
 {
@@ -110,10 +110,10 @@ TEST_F(lib_StreamTest, set_cout)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Output a string.
+ *      - Set a new stream.
  *
  * @b Assert:
- *      - Test interface exists.
+ *      - Test set is done.
  */
 TEST_F(lib_StreamTest, set_cerr)
 {
@@ -124,6 +124,26 @@ TEST_F(lib_StreamTest, set_cerr)
     Stream::reset(Stream::TYPE_CERR);
     EXPECT_TRUE(cerr.isConstructed()) << "Fatal: System cerr stream is not constructed";
     cerr << "[     TEST ] This is output to restored cerr" << "\n";
+}
+
+/**
+ * @relates lib_StreamTest
+ * @brief Tests set and reset unknown type of stream.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Set a new stream.
+ *
+ * @b Assert:
+ *      - Test set is not done.
+ */
+TEST_F(lib_StreamTest, set_default)
+{
+    api::OutStream<char_t>& cout( Stream::cout() );
+    EXPECT_FALSE(Stream::set(static_cast<Stream::Type>(-1), cout)) << "Fatal: New stream is set";
+    Stream::reset(static_cast<Stream::Type>(-1));
 }
 
 } // namespace lib
