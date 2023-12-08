@@ -1,7 +1,7 @@
 /**
  * @file      lib.SemaphoreTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Semaphore`. 
  */
@@ -154,9 +154,9 @@ TEST_F(lib_SemaphoreTest, acquire)
     Semaphore<> semAcquire(0);
     Semaphore<> semRelease(0);
     ThreadTask thread(semAcquire, semRelease);
-    ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
-    ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
-    ASSERT_TRUE(semAcquire.release()) << "Fatal: Semaphore was not released in the primary thread";
+    EXPECT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
+    EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
+    EXPECT_TRUE(semAcquire.release()) << "Fatal: Semaphore was not released in the primary thread";
     EXPECT_TRUE(semRelease.acquire()) << "Fatal: Semaphore was not acquired in the primary thread";
     EXPECT_TRUE(thread.wasAcquired()) << "Fatal: Semaphore was not acquired in the child thread";
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";

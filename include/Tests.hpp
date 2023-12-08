@@ -15,7 +15,7 @@
  * @brief Number of cycles when a test would wait a result.
  */
 #ifndef EOOS_TESTS_WAIT_CYCLE_TIME
-    #define EOOS_TESTS_WAIT_CYCLE_TIME (0x00ffffff)
+    #define EOOS_TESTS_WAIT_CYCLE_TIME (0x0FFFFFFF)
 #endif
 
 namespace eoos

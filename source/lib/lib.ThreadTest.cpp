@@ -1,7 +1,7 @@
 /**
  * @file      lib.ThreadTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2021-2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2021-2023, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Thread`. 
  */
@@ -301,11 +301,21 @@ protected:
             channelItoR_ = MSG_PING;
             // Ask scheduler to yield current time slice to other thread, 
             // relying the reactor will be called
+            //
+            // Reason to DISABLED_yield_reactionOnInitiation see in the test-case notes. 
             bool_t isYield( Thread<>::yield() );
             if( isYield )
             {
                 // Check the reactor reacted 
-                error_ = (channelRtoI_ == MSG_PONG) ? ERROR_TEST_OK : ERROR_TEST_NORESPONSE;
+                int32_t const msg( channelRtoI_ );
+                if(msg == MSG_PONG)
+                {
+                    error_ = ERROR_TEST_OK;
+                }
+                else 
+                {
+                    error_ = ERROR_TEST_NORESPONSE;
+                }
             }
             else
             {
@@ -455,17 +465,17 @@ TEST_F(lib_ThreadTest, execute)
         Thread<> thread(task.normal);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
-        ASSERT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-        ASSERT_FALSE(thread.execute()) << "Fatal: Thread was executed";        
+        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";        
     }
     // Execute constructed task with stack defined
     {
         Thread<> thread(task.stack);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.stack.waitIsStarted()) << "Error: Thread was started without execute() function";
-        ASSERT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+        EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.stack.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
     }    
@@ -473,7 +483,7 @@ TEST_F(lib_ThreadTest, execute)
     {
         Thread<> thread(task.unconstructed);
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
-        ASSERT_FALSE(thread.execute()) << "Fatal: Thread was executed";
+        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
         EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Error: Unconstructed thread was executed";
         EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
     }
@@ -602,8 +612,18 @@ TEST_F(lib_ThreadTest, setPriority)
  *
  * @b Assert:
  *      - Test no errors during the ping-pong communication.
+ * 
+ * @note The DISABLED reason:
+ *   Default Linux scheduler policy is `SCHED_OTHER` that is round-robin time-sharing policy
+ * based on the `nice` value. This does not guarantee that thread yield becomes to switch to
+ * the next thread from the static priority 0 list. Therefore, this test case cannot be 
+ * always successfully passed because of the scheduling policy.
+ *   To pass this test, scheduler policy has to be switched to `SCHED_RR` as real-time 
+ * scheduling policy. To do so, the project must be compiled with the `EOOS_GLOBAL_SYS_SCHEDULER_REALTIME`
+ * global definition, and the unit-test exacutable file must be run under root. Otherwise,
+ * EPERM (The calling thread does not have appropriate privileges) error will be rise. 
  */
-TEST_F(lib_ThreadTest, yield_reactionOnInitiation)
+TEST_F(lib_ThreadTest, DISABLED_yield_reactionOnInitiation)
 {
     Thread<> re(task.re);
     Thread<> in(task.in);

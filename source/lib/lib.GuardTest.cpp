@@ -1,7 +1,7 @@
 /**
  * @file      lib.GuardTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Guard`. 
  */
@@ -299,11 +299,11 @@ TEST_F(lib_GuardTest, Constructor)
 TEST_F(lib_GuardTest, lock)
 {
     Mutex<> mutex;
-    ASSERT_TRUE(mutex.tryLock()) << "Fatal: New mutex cannot be locked";
-    ASSERT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be locked";
+    EXPECT_TRUE(mutex.tryLock()) << "Fatal: New mutex cannot be locked";
+    EXPECT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be locked";
     ThreadTask thread(mutex);
-    ASSERT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
-    ASSERT_TRUE(thread.execute()) << "Error: Thread was not executed";
+    EXPECT_TRUE(thread.isConstructed()) << "Error: Thread for Semaphore testing is not constructed";
+    EXPECT_TRUE(thread.execute()) << "Error: Thread was not executed";
     int64_t volatile registerRo(GUARD_UNKNOWN_VALUE);
     for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
@@ -313,16 +313,16 @@ TEST_F(lib_GuardTest, lock)
             break;
         }
     }
-    ASSERT_NE(registerRo, GUARD_UNKNOWN_VALUE) << "Fatal: Register has not read";
-    ASSERT_NE(registerRo, GUARD_NOT_LOCKED) << "Fatal: Mutex was not locked";
-    ASSERT_NE(registerRo, GUARD_TIMEOUT) << "Fatal: Time is out";
-    ASSERT_NE(registerRo, GUARD_INIT_VALUE) << "Fatal: Child thread control not gotten";
-    ASSERT_EQ(registerRo, GUARD_LOCKED) << "Fatal: Mutex was not locked";
-    ASSERT_FALSE(mutex.tryLock()) << "Fatal: Locked mutex can be locked";
+    EXPECT_NE(registerRo, GUARD_UNKNOWN_VALUE) << "Fatal: Register has not read";
+    EXPECT_NE(registerRo, GUARD_NOT_LOCKED) << "Fatal: Mutex was not locked";
+    EXPECT_NE(registerRo, GUARD_TIMEOUT) << "Fatal: Time is out";
+    EXPECT_NE(registerRo, GUARD_INIT_VALUE) << "Fatal: Child thread control not gotten";
+    EXPECT_EQ(registerRo, GUARD_LOCKED) << "Fatal: Mutex was not locked";
+    EXPECT_FALSE(mutex.tryLock()) << "Fatal: Locked mutex can be locked";
     thread.setRegisterRead();
     EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-    ASSERT_TRUE(mutex.lock()) << "Fatal: Mutex cannot be locked";
-    ASSERT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be unlocked";
+    EXPECT_TRUE(mutex.lock()) << "Fatal: Mutex cannot be locked";
+    EXPECT_TRUE(mutex.unlock()) << "Fatal: Mutex cannot be unlocked";
 }
 
 /**
@@ -359,8 +359,10 @@ TEST_F(lib_GuardTest, atomic)
             break;
         }
     }
-    ASSERT_TRUE(isCompleted) << "Fatal: Counting threads didn't complite their jobs";
-    ASSERT_EQ(resource, resVal) << "Fatal: Mutex was not locked on atomic resource access";    
+    EXPECT_TRUE(isCompleted) << "Fatal: Counting threads didn't complite their jobs";
+    EXPECT_EQ(resource, resVal) << "Fatal: Mutex was not locked on atomic resource access";
+    EXPECT_TRUE(countUp.join()) << "Error: Thread was not joined";
+    EXPECT_TRUE(countDw.join()) << "Error: Thread was not joined";
 }
 
 } // namespace lib
