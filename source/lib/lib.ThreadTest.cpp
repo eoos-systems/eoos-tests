@@ -394,7 +394,7 @@ static const int32_t PRIORITY_WRONG(api::Thread::PRIORITY_WRONG);
 static const int32_t PRIORITY_MAX(api::Thread::PRIORITY_MAX);
 static const int32_t PRIORITY_MIN(api::Thread::PRIORITY_MIN);
 static const int32_t PRIORITY_NORM(api::Thread::PRIORITY_NORM);
-static const int32_t PRIORITY_LOCK(api::Thread::PRIORITY_LOCK);
+static const int32_t PRIORITY_IDLE(api::Thread::PRIORITY_IDLE);
 
 
 /**
@@ -566,12 +566,12 @@ TEST_F(lib_ThreadTest, setPriority)
 {
     {
         Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.setPriority(PRIORITY_LOCK)) << "Fatal: Thread priority is not set";
-        EXPECT_EQ(thread.getPriority(), PRIORITY_LOCK) << "Error: Thread priority is wrong";
+        EXPECT_TRUE(thread.setPriority(PRIORITY_IDLE)) << "Fatal: Thread priority is not set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_IDLE) << "Error: Thread priority is wrong";
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.setPriority(PRIORITY_LOCK)) << "Fatal: Thread priority is set"; 
+        EXPECT_FALSE(thread.setPriority(PRIORITY_IDLE)) << "Fatal: Thread priority is set"; 
         EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Error: Thread priority is not wrong";        
     }
     for(int32_t priority=PRIORITY_MIN; priority<=PRIORITY_MAX; priority++)
