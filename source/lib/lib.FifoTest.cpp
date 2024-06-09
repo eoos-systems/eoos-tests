@@ -25,6 +25,7 @@ const int32_t ILLEGAL_INT32( 0x20000000 );
 template <typename T, int32_t L>
 class FifoUnconstructed : public Fifo<T,L>
 {
+    typedef Fifo<T,L> Parent;
 
 public:
 
@@ -51,6 +52,10 @@ public:
         : Fifo<T,L>(isLocked, illegal) {
         setConstructed(false);
     }
+    
+protected:
+
+    using Parent::setConstructed;
 
 };
     

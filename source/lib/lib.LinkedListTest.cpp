@@ -31,8 +31,6 @@ class LinkedListUnconstructed : public LinkedList<T>
     typedef LinkedList<T> Parent;
 
 public:
-
-    using Parent::setConstructed;
     
     LinkedListUnconstructed()
         : LinkedList<T>() {
@@ -42,7 +40,12 @@ public:
     LinkedListUnconstructed(T const& illegal)
         : LinkedList<T>(illegal) {
         setConstructed(false);
-    } 
+    }
+    
+protected:
+
+    using Parent::setConstructed;
+
 };
     
 } // namespace

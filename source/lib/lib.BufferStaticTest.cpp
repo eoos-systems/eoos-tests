@@ -25,6 +25,7 @@ const int32_t ILLEGAL_INT32( 0x20000000 );
 template <typename T, int32_t L>
 class BufferUnconstructed : public Buffer<T,L>
 {
+    typedef Buffer<T,L> Parent;
 
 public:
 
@@ -43,6 +44,10 @@ public:
         : Buffer<T,L>(illegal) {
         setConstructed(false);
     }
+    
+protected:
+
+    using Parent::setConstructed;
     
 };
     
