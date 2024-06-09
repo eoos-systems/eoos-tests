@@ -23,7 +23,7 @@ const int32_t LISTITERATOR_ERROR_INDEX( api::ListIterator<int32_t>::ERROR_INDEX 
 /**
  * @class LinkedListUnconstructed<T,L>
  *
- * @brief Class to provide protect functions to public scope.
+ * @brief Unconstructed LinkedList class.
  */
 template <typename T>
 class LinkedListUnconstructed : public LinkedList<T>
@@ -44,7 +44,6 @@ public:
         setConstructed(false);
     } 
 };
-
     
 } // namespace
     
@@ -226,6 +225,10 @@ TEST_F(lib_LinkedListTest, queue)
     {
         LinkedList<int32_t> obj( ILLEGAL_INT32 );
         api::Queue<int32_t>* volatile que( &obj );
+
+        EXPECT_EQ(que->getLength(), 0) << "Fatal: Length is wrong";
+        EXPECT_TRUE(que->isEmpty()) << "Fatal: List is empty";
+        EXPECT_EQ(que->peek(), ILLEGAL_INT32) << "Fatal: Element value is wrong";
 
         EXPECT_TRUE(que->add(0x5A5A5000)) << "Fatal: Element is not added";
         EXPECT_EQ(que->getLength(), 1) << "Fatal: Length is wrong";

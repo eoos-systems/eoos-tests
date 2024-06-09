@@ -18,38 +18,40 @@ namespace
 const int32_t ILLEGAL_INT32( 0x20000000 );
 
 /**
- * @class TestBuffer<T,L>
+ * @class BufferUnconstructed<T,L>
  *
- * @brief Class to provide protect functions to public scope.
+ * @brief Unconstructed Buffer class. 
  */
 template <typename T>
-class TestBuffer : public Buffer<T,0>
+class BufferUnconstructed : public Buffer<T,0>
 {
-    typedef Buffer<T,0> Parent;
 
 public:
 
-    TestBuffer(size_t const length)
+    /**
+     * @copydoc eoos::lib::Buffer::Buffer(size_t) 
+     */
+    BufferUnconstructed(size_t const length)
         : Buffer<T,0>(length) {
-    }
-
-    TestBuffer(size_t const length, T const& illegal)
-        : Buffer<T,0>(length, illegal) {
-    }
-
-    TestBuffer(size_t const length, T* const buf, T const& illegal)
-        : Buffer<T,0>(length, buf, illegal) {
+        setConstructed(false);            
     }
 
     /**
-     * @copydoc eoos::Object::setConstructed(bool_t)
+     * @copydoc eoos::lib::Buffer::Buffer(size_t, T const&) 
      */
-    void setConstructed(bool_t const flag)
-    {
-        Parent::setConstructed(flag);
-    }    
-};
+    BufferUnconstructed(size_t const length, T const& illegal)
+        : Buffer<T,0>(length, illegal) {
+        setConstructed(false);                }
 
+    /**
+     * @copydoc eoos::lib::Buffer::Buffer(size_t, T*, T const&) 
+     */
+    BufferUnconstructed(size_t const length, T* const buf, T const& illegal)
+        : Buffer<T,0>(length, buf, illegal) {
+        setConstructed(false);            
+    }
+
+};
     
 } // namespace
     
@@ -157,8 +159,7 @@ TEST_F(lib_BufferDynamicTest, collection)
         EXPECT_EQ(obj.getLength(), 3) << "Fatal: Buffer length is wrong";        
     }
     {
-        TestBuffer<int32_t> obj( 3, ILLEGAL_INT32 );
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t> obj( 3, ILLEGAL_INT32 );
         EXPECT_TRUE(obj.isEmpty()) << "Fatal: Buffer has elements";
         EXPECT_EQ(obj.getLength(), 0) << "Fatal: Buffer length is not zero";        
     }
@@ -195,8 +196,7 @@ TEST_F(lib_BufferDynamicTest, getData)
         EXPECT_EQ(*data, 0x5A5A5A00) << "Fatal: Buffer element is wrong";        
     }
     {
-        TestBuffer<int32_t> obj(2,ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t> obj(2,ILLEGAL_INT32);
         int32_t* data( obj.getData() );
         EXPECT_EQ(data, NULLPTR) << "Fatal: Address of buffer is wrong";
     }
@@ -283,8 +283,7 @@ TEST_F(lib_BufferDynamicTest, fill_operator_subscript)
         EXPECT_EQ(obj[5], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";                
     }
     {
-        TestBuffer<int32_t> obj(5, ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t> obj(5, ILLEGAL_INT32);
         obj.fill(0xEEEEEEEE);
         obj.fill(0x12345678, 3, 3);        
         EXPECT_EQ(obj[0], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";
@@ -378,8 +377,7 @@ TEST_F(lib_BufferDynamicTest, fill_operator_subscript_extern)
     }
     {
         int32_t buf[5] = {0x7BBBBB00, 0x7BBBBB01, 0x7BBBBB02, 0x7BBBBB03, 0x7BBBBB04};        
-        TestBuffer<int32_t> obj(5, buf, ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t> obj(5, buf, ILLEGAL_INT32);
         obj.fill(0x12345678, 3, 3);        
         EXPECT_EQ(obj[0], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";
         EXPECT_EQ(obj[1], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";
@@ -441,8 +439,7 @@ TEST_F(lib_BufferDynamicTest, operator_subscript)
     }
     {
         int32_t buf[5] = {0x7BBBBB00, 0x7BBBBB01, 0x7BBBBB02, 0x7BBBBB03, 0x7BBBBB04};                
-        TestBuffer<int32_t> obj(5, buf, ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t> obj(5, buf, ILLEGAL_INT32);
         obj[0] = 0x5A5A5A00;
         obj[1] = 0x5A5A5A01;
         obj[2] = 0x5A5A5A02;
@@ -529,9 +526,8 @@ TEST_F(lib_BufferDynamicTest, operator_assignment_sequenceContainer)
     }
     {
         const int32_t NEW_ILLEGAL_INT32( ILLEGAL_INT32 - 7 );
-        TestBuffer<int32_t> dst(3, ILLEGAL_INT32);
+        BufferUnconstructed<int32_t> dst(3, ILLEGAL_INT32);
         Buffer<int32_t,0>& obj( dst );        
-        dst.setConstructed(false);
         dst[0] = 0x5A5A5A00;
         dst[1] = 0x5A5A5A01;
         dst[2] = NEW_ILLEGAL_INT32;
@@ -554,8 +550,7 @@ TEST_F(lib_BufferDynamicTest, operator_assignment_sequenceContainer)
         dst[0] = 0x5A5A5A00;
         dst[1] = 0x5A5A5A01;
         dst[2] = 0x5A5A5A02;
-        TestBuffer<int32_t> src(3, ILLEGAL_INT32);
-        src.setConstructed(false);
+        BufferUnconstructed<int32_t> src(3, ILLEGAL_INT32);
         src[0] = 0x6B6B6B00;
         src[1] = 0x6B6B6B01;
         src[2] = NEW_ILLEGAL_INT32;

@@ -18,34 +18,33 @@ namespace
 const int32_t ILLEGAL_INT32( 0x20000000 );
 
 /**
- * @class TestBuffer<T,L>
+ * @class BufferUnconstructed<T,L>
  *
- * @brief Class to provide protect functions to public scope.
+ * @brief Unconstructed Buffer class. 
  */
 template <typename T, int32_t L>
-class TestBuffer : public Buffer<T,L>
+class BufferUnconstructed : public Buffer<T,L>
 {
-    typedef Buffer<T,L> Parent;
 
 public:
 
-    TestBuffer()
+    /**
+     * @copydoc eoos::lib::Buffer::Buffer() 
+     */
+    BufferUnconstructed()
         : Buffer<T,L>() {
+        setConstructed(false);
     }
 
-    TestBuffer(T const& illegal)
+    /**
+     * @copydoc eoos::lib::Buffer::Buffer(bool_t) 
+     */
+    BufferUnconstructed(T const& illegal)
         : Buffer<T,L>(illegal) {
+        setConstructed(false);
     }
     
-    /**
-     * @copydoc eoos::Object::setConstructed(bool_t)
-     */
-    void setConstructed(bool_t const flag)
-    {
-        Parent::setConstructed(flag);
-    }    
 };
-
     
 } // namespace
 
@@ -139,8 +138,7 @@ TEST_F(lib_BufferStaticTest, collection)
         EXPECT_EQ(obj.getLength(), 3) << "Fatal: Buffer length is wrong";        
     }
     {
-        TestBuffer<int32_t,3> obj( ILLEGAL_INT32 );
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t,3> obj( ILLEGAL_INT32 );
         EXPECT_TRUE(obj.isEmpty()) << "Fatal: Buffer has elements";
         EXPECT_EQ(obj.getLength(), 0) << "Fatal: Buffer length is not zero";        
     }
@@ -170,8 +168,7 @@ TEST_F(lib_BufferStaticTest, getData)
         EXPECT_EQ(*data, 0x5A5A5A00) << "Fatal: Buffer element is wrong";        
     }
     {
-        TestBuffer<int32_t,2> obj(ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t,2> obj(ILLEGAL_INT32);
         int32_t* data( obj.getData() );
         EXPECT_EQ(data, NULLPTR) << "Fatal: Address of buffer is wrong";
     }
@@ -258,8 +255,7 @@ TEST_F(lib_BufferStaticTest, fill_operator_subscript)
         EXPECT_EQ(obj[5], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";                
     }
     {
-        TestBuffer<int32_t,5> obj(ILLEGAL_INT32);
-        obj.setConstructed(false);
+        BufferUnconstructed<int32_t,5> obj(ILLEGAL_INT32);
         obj.fill(0xEEEEEEEE);
         obj.fill(0x12345678, 3, 3);        
         EXPECT_EQ(obj[0], ILLEGAL_INT32) << "Fatal: Buffer element is wrong";
@@ -377,9 +373,8 @@ TEST_F(lib_BufferStaticTest, operator_assignment_sequenceContainer)
     }
     {
         const int32_t NEW_ILLEGAL_INT32( ILLEGAL_INT32 - 7 );                            
-        TestBuffer<int32_t,3> dst(ILLEGAL_INT32);
-        Buffer<int32_t,3>& obj( dst );                
-        dst.setConstructed(false);
+        BufferUnconstructed<int32_t,3> dst(ILLEGAL_INT32);
+        Buffer<int32_t,3>& obj( dst );
         dst[0] = 0x5A5A5A00;
         dst[1] = 0x5A5A5A01;
         dst[2] = NEW_ILLEGAL_INT32;
@@ -402,8 +397,7 @@ TEST_F(lib_BufferStaticTest, operator_assignment_sequenceContainer)
         dst[0] = 0x5A5A5A00;
         dst[1] = 0x5A5A5A01;
         dst[2] = 0x5A5A5A02;
-        TestBuffer<int32_t,3> src(ILLEGAL_INT32);
-        src.setConstructed(false);
+        BufferUnconstructed<int32_t,3> src(ILLEGAL_INT32);
         src[0] = 0x6B6B6B00;
         src[1] = 0x6B6B6B01;
         src[2] = NEW_ILLEGAL_INT32;
