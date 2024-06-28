@@ -24,6 +24,8 @@ add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.NonCopyableTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectAllocatorTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.RegisterTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ResourceMemoryTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SemaphoreTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.SharedPointerTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.StreamTest.cpp"

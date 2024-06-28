@@ -1,13 +1,38 @@
 /**
  * @file      MainTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2024, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit of `main`. 
  */
 #include "System.hpp"
 #include "lib.Stream.hpp"
 #include "lib.String.hpp"
+/// Test linkage errors by the includes below
+#include "lib.Align.hpp"
+#include "lib.ArgumentParser.hpp"
+#include "lib.String.hpp"
+#include "lib.BaseString.hpp"
+#include "lib.Buffer.hpp"
+#include "lib.CharTrait.hpp"
+#include "lib.CircularList.hpp"
+#include "lib.Fifo.hpp"
+#include "lib.Guard.hpp"
+#include "lib.Heap.hpp"
+#include "lib.LinkedList.hpp"
+#include "lib.Memory.hpp"
+#include "lib.Mutex.hpp"
+#include "lib.NoAllocator.hpp"
+#include "lib.NonCopyable.hpp"
+#include "lib.ObjectAllocator.hpp"
+#include "lib.Object.hpp"
+#include "lib.Register.hpp"
+#include "lib.ResourceMemory.hpp"
+#include "lib.Semaphore.hpp"
+#include "lib.SharedPointer.hpp"
+#include "lib.Stream.hpp"
+#include "lib.Thread.hpp"
+#include "lib.UniquePointer.hpp"
 
 namespace eoos
 {
@@ -19,7 +44,7 @@ static void printConfiguration()
 {
     System eoos;
     lib::Stream::cout() << "WELCOME TO EOOS UNIT TESTS\n";
-    // Output of C++ Language.
+    // Output of C++ Language
     #if   EOOS_CPP_STANDARD == 1998
         lib::Stream::cout() << "LANGUAGE: C++98\n";
     #elif EOOS_CPP_STANDARD == 2011
@@ -34,7 +59,7 @@ static void printConfiguration()
         lib::Stream::cout() << "LANGUAGE: unknown\n";
     #endif
     
-    // Output of Data Model of a hardware system.  
+    // Output of Data Model of a hardware system
     #if defined (EOOS_TYPE_STDLIB)
         lib::Stream::cout() << "DATA MODEL: C++ Standard Library types\n";
     #elif defined (EOOS_TYPE_WIDTH_LP32)
@@ -49,7 +74,7 @@ static void printConfiguration()
         lib::Stream::cout() << "DATA MODEL: C++ standard\n";
     #endif
 
-    // Dynamic heap memory allocation.
+    // Dynamic heap memory allocation
     #if defined (EOOS_GLOBAL_ENABLE_NO_HEAP)
         lib::Stream::cout() << "DISABLE: Dynamic heap memory allocation\n";
     #else
@@ -74,7 +99,7 @@ static void printConfiguration()
         lib::Stream::cout() << "MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_THREADS << ".\r\n";
     #endif
 
-    // EOOS state:
+    // EOOS state
     lib::Stream::cout() << "EOOS: Size of system " << static_cast<int32_t>(sizeof(sys::System)) << " Bytes\n";
 }
 
