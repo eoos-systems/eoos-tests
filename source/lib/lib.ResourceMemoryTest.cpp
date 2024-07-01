@@ -61,8 +61,7 @@ protected:
         
     private:
     
-        int32_t value_;
-        
+        int32_t value_;        
     };
 
     /**
@@ -156,10 +155,10 @@ TEST_F(lib_ResourceMemoryTest, Constructor)
  */
 TEST_F(lib_ResourceMemoryTest, allocate_free)
 {
+    void* res[3] = { NULLPTR };
+    void* tmp( NULLPTR );
     ResourceMemory<Resource,3> pool(guard_);
     EXPECT_TRUE(pool.isConstructed()) << "Fatal: Object is not constructed";
-    void* res[4] = {NULLPTR, NULLPTR, NULLPTR, NULLPTR};
-    void* tmp( NULLPTR );
     
     res[0] = pool.allocate(sizeof(Resource), NULLPTR);
     EXPECT_NE(res[0], NULLPTR) << "Fatal: Address is wrong";        
@@ -167,16 +166,19 @@ TEST_F(lib_ResourceMemoryTest, allocate_free)
     EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";    
     res[2] = pool.allocate(sizeof(Resource), NULLPTR);
     EXPECT_NE(res[2], NULLPTR) << "Fatal: Address is wrong";
-    res[4] = pool.allocate(sizeof(Resource), NULLPTR);
-    EXPECT_EQ(res[4], NULLPTR) << "Fatal: Address is wrong";
-    
+    tmp = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_EQ(tmp, NULLPTR) << "Fatal: Address is wrong";
+
     tmp = res[1];
     pool.free(res[1]);
     res[1] = pool.allocate(sizeof(Resource), NULLPTR);
     EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";
     EXPECT_EQ(res[1], tmp) << "Fatal: Allocation has differnd address";    
     
-    pool.free(res[0]); 
+    pool.free(res[0]);
+    tmp = pool.allocate(sizeof(uint8_t), NULLPTR);
+    EXPECT_EQ(tmp, NULLPTR) << "Fatal: Memory allocated for different size then T";
+
     pool.free(res[1]); 
     pool.free(res[2]);
     res[0] = pool.allocate(sizeof(Resource), NULLPTR);
