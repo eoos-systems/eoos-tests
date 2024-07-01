@@ -21,6 +21,102 @@ namespace lib
 class lib_ResourceMemoryTest : public ::testing::Test
 {
 
+protected:
+
+    /**
+     * @class Resource
+     * @brief Test resource.
+     */
+    class Resource
+    {
+        
+    public:
+    
+        /**
+         * @brief Constructor.
+         */
+        Resource() :
+            value_ (-1) {
+        }
+
+        /**
+         * @brief Returns value.
+         *
+         * @return This value.
+         */
+        int32_t getValue()
+        {
+            return value_;
+        }
+        
+        /**
+         * @brief Sets a new value.
+         *
+         * @param value a new value.
+         */    
+        void setValue(int32_t value)
+        {
+            value_ = value;
+        }
+        
+    private:
+    
+        int32_t value_;
+        
+    };
+
+    /**
+     * @class Guard
+     */
+    class Guard : public NonCopyable<Allocator>, public api::Guard
+    {
+        typedef NonCopyable<Allocator> Parent;
+    
+    public:
+    
+        /**
+         * @brief Constructor.
+         */
+        Guard() 
+            : NonCopyable<Allocator>()
+            , api::Guard() {
+        }
+    
+        /**
+         * @brief Destructor.
+         */
+        virtual ~Guard()
+        {
+        }
+        
+        /**
+         * @copydoc eoos::api::Object::isConstructed()
+         */
+        virtual bool_t isConstructed() const
+        {
+            return true;
+        }
+            
+        /**
+         * @copydoc eoos::api::Mutex::lock()
+         */
+        virtual bool_t lock()
+        {
+            return false;
+        }
+    
+        /**
+         * @copydoc eoos::api::Mutex::unlock()
+         */
+        virtual bool_t unlock()
+        {
+            return true;
+        }
+    
+    };
+
+    Guard guard_; ///< Test guard.
+    
 private:
     
     System eoos_; ///< EOOS Operating System.
@@ -41,6 +137,56 @@ private:
  */
 TEST_F(lib_ResourceMemoryTest, Constructor)
 {
+    ResourceMemory<Resource,3> pool(guard_);
+    EXPECT_TRUE(pool.isConstructed()) << "Fatal: Object is not constructed";    
+}
+
+/**
+ * @relates lib_ResourceMemoryTest
+ * @brief Tests allocation and free.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an object of the class.
+ *
+ * @b Assert:
+ *      - Test the functionality is constructed.
+ */
+TEST_F(lib_ResourceMemoryTest, allocate_free)
+{
+    ResourceMemory<Resource,3> pool(guard_);
+    EXPECT_TRUE(pool.isConstructed()) << "Fatal: Object is not constructed";
+    void* res[4] = {NULLPTR, NULLPTR, NULLPTR, NULLPTR};
+    void* tmp( NULLPTR );
+    
+    res[0] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[0], NULLPTR) << "Fatal: Address is wrong";        
+    res[1] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";    
+    res[2] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[2], NULLPTR) << "Fatal: Address is wrong";
+    res[4] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_EQ(res[4], NULLPTR) << "Fatal: Address is wrong";
+    
+    tmp = res[1];
+    pool.free(res[1]);
+    res[1] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";
+    EXPECT_EQ(res[1], tmp) << "Fatal: Allocation has differnd address";    
+    
+    pool.free(res[0]); 
+    pool.free(res[1]); 
+    pool.free(res[2]);
+    res[0] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[0], NULLPTR) << "Fatal: Address is wrong";
+    res[1] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";
+    res[2] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_NE(res[2], NULLPTR) << "Fatal: Address is wrong";
+    res[4] = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_EQ(res[4], NULLPTR) << "Fatal: Address is wrong";    
 }
 
 } // namespace lib
