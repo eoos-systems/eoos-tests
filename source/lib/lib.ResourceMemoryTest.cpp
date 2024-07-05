@@ -187,8 +187,8 @@ TEST_F(lib_ResourceMemoryTest, allocate_free)
     EXPECT_NE(res[1], NULLPTR) << "Fatal: Address is wrong";
     res[2] = pool.allocate(sizeof(Resource), NULLPTR);
     EXPECT_NE(res[2], NULLPTR) << "Fatal: Address is wrong";
-    res[4] = pool.allocate(sizeof(Resource), NULLPTR);
-    EXPECT_EQ(res[4], NULLPTR) << "Fatal: Address is wrong";    
+    tmp = pool.allocate(sizeof(Resource), NULLPTR);
+    EXPECT_EQ(tmp, NULLPTR) << "Fatal: Address is wrong";
 }
 
 } // namespace lib
