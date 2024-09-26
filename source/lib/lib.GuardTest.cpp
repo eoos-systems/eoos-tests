@@ -231,7 +231,7 @@ protected:
         /**
          * @brief Complete flag.
          */
-        bool_t isCompleted_;
+        bool_t volatile isCompleted_;
 
         /**
          * @brief Count direction.
@@ -350,7 +350,7 @@ TEST_F(lib_GuardTest, atomic)
     countUp.execute();
     countDw.execute();
     bool_t isCompleted( false );
-    while(true)
+    for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
     {
         isCompleted = countUp.isCompleted();
         isCompleted &= countDw.isCompleted();
