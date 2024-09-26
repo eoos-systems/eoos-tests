@@ -1,9 +1,9 @@
 # EOOS UNIT TESTS.
 #
 # @author    Sergey Baigudin, sergey@baigudin.software
-# @copyright 2020-2023, Sergey Baigudin, Baigudin Software
+# @copyright 2020-2024, Sergey Baigudin, Baigudin Software
 
-add_executable(target-eoos-unit-tests
+add_executable(UnitTests
     "${CMAKE_CURRENT_LIST_DIR}/source/Main.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/ProgramTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.AlignTest.cpp"
@@ -33,27 +33,33 @@ add_executable(target-eoos-unit-tests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.UniquePointerTest.cpp"
 )
 
-target_link_libraries(target-eoos-unit-tests
+if(EOOS_CMAKE_TARGET_OS STREQUAL "KOS")
+    add_dependencies(UnitTests target-eoos-unit-tests-edl-files)
+endif()
+
+target_link_libraries(UnitTests
 PRIVATE
     target-eoos
-    gtest_main
+    gtest
 )
 
-target_include_directories(target-eoos-unit-tests
+target_include_directories(UnitTests
 PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
 )
 
-set_target_properties(target-eoos-unit-tests PROPERTIES
-    OUTPUT_NAME EoosTests
-)
-
-add_test(
-    NAME test-eoos-unit-tests
-    COMMAND target-eoos-unit-tests
-)
-
-install(
-    TARGETS target-eoos-unit-tests
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+if(NOT EOOS_CMAKE_TARGET_OS STREQUAL "KOS")
+    set_target_properties(UnitTests PROPERTIES
+        OUTPUT_NAME EoosTests
+    )
+    
+    add_test(
+        NAME test-eoos-unit-tests
+        COMMAND UnitTests
+    )
+    
+    install(
+        TARGETS UnitTests
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+endif()
