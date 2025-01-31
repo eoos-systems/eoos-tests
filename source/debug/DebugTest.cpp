@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021-2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Thread`. 
+ * @brief Unit tests of `lib::Thread`.
  */
 #include "lib.Thread.hpp"
 #include "lib.String.hpp"
@@ -25,24 +25,24 @@ protected:
     class Task : public lib::Object<>, public api::Task
     {
         typedef lib::Object<> Parent;
-      
+
     public:
 
         bool_t isDone;
         uint64_t count;
-    
+
         Task() : Parent(),
             isDone(false),
             count(0){
         }
-        
-    private:    
-        
+
+    private:
+
         virtual bool_t isConstructed() const
         {
             return Parent::isConstructed();
-        }    
-    
+        }
+
         virtual void start()
         {
             while(!isDone)
@@ -50,21 +50,21 @@ protected:
                 count++;
             }
         }
-        
+
         virtual size_t getStackSize() const
         {
             return 0;
         }
-    
+
     };
- 
+
     Task task;
- 
+
 private:
 
     System eoos_;
-};  
-    
+};
+
 /**
  * @brief Waits for some cycles.
  *

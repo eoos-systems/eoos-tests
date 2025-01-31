@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib.CharTrait`. 
+ * @brief Unit tests of `lib.CharTrait`.
  */
 #include "lib.CharTrait.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_CharTrait
  * @test CharTrait
@@ -22,10 +22,10 @@ class lib_CharTrait : public ::testing::Test
 {
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
-};    
-    
+
+    System eoos_; ///< EOOS Operating System.
+};
+
 /**
  * @relates lib_CharTrait
  * @brief Tests string terminator.

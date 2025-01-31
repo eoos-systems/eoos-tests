@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Heap`. 
+ * @brief Unit tests of `lib::Heap`.
  */
 #include "lib.Heap.hpp"
 #include "lib.Mutex.hpp"
@@ -17,7 +17,7 @@ namespace lib
 
 /**
  * @brief Heap size in Bytes.
- */    
+ */
 const size_t MEMORY_SIZE( 4096U );
 
 /**
@@ -57,10 +57,10 @@ public:
     }
 
 };
-    
+
 } // namespace
 
-    
+
 /**
  * @class lib_HeapTest
  * @test Heap
@@ -74,7 +74,7 @@ protected:
     /**
      * @brief Sets a test up before the test run
      */
-    virtual void SetUp() 
+    virtual void SetUp()
     {
         Memory::memset(memory_, 0xFF, sizeof(memory_));
     }
@@ -82,19 +82,19 @@ protected:
     /**
      * @brief Tears a test down after the test done
      */
-    virtual void TearDown() 
+    virtual void TearDown()
     {
-    }    
-    
+    }
+
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
+
+    System eoos_; ///< EOOS Operating System.
 
 protected:
 
     Mutex<> mutex_; ///< Heap mutex defined after EOOS to be it initialized.
 
-};    
+};
 
 /**
  * @relates lib_HeapTest
@@ -113,7 +113,7 @@ TEST_F(lib_HeapTest, Constructor)
 {
     {
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
         EXPECT_TRUE(heap->isConstructed()) << "Fatal: Object is not constructed";
         heap->~Heap();
     }
@@ -145,7 +145,7 @@ TEST_F(lib_HeapTest, Destructor)
 {
     {
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
         delete heap;
     }
 }
@@ -167,16 +167,16 @@ TEST_F(lib_HeapTest, newdeletion)
 {
     {
         void* mem = Heap::operator new(sizeof(Heap), reinterpret_cast<uintptr_t>(NULLPTR));
-        EXPECT_EQ(mem, NULLPTR) << "Fatal: Memory is allocated";            
+        EXPECT_EQ(mem, NULLPTR) << "Fatal: Memory is allocated";
     }
     {
         void* mem = Heap::operator new(sizeof(Heap), address_);
-        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";            
+        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";
         Heap::operator delete(mem);
     }
     {
         void* mem = Heap::operator new(sizeof(Heap), address_);
-        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";            
+        EXPECT_EQ(mem, memory_) << "Fatal: Memory is not allocated";
         Heap::operator delete(NULLPTR, address_);
     }
 }
@@ -198,8 +198,8 @@ TEST_F(lib_HeapTest, allocate_fragmentation)
 {
     {
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
-        
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
+
         void* addr070( heap->allocate(7, NULLPTR) );
         EXPECT_NE(addr070, NULLPTR) << "Fatal: Memory is not allocated";
 
@@ -210,17 +210,17 @@ TEST_F(lib_HeapTest, allocate_fragmentation)
         EXPECT_NE(addr082, NULLPTR) << "Fatal: Memory is not allocated";
 
         heap->free(addr081);
-        
+
         void* addr160( heap->allocate(16, NULLPTR) );
-        EXPECT_NE(addr160, NULLPTR) << "Fatal: Memory is not allocated";        
-        
+        EXPECT_NE(addr160, NULLPTR) << "Fatal: Memory is not allocated";
+
         void* addr083( heap->allocate(8, NULLPTR) );
         EXPECT_NE(addr083, NULLPTR) << "Fatal: Memory is not allocated";
-        EXPECT_EQ(addr083, addr081) << "Fatal: Memory is fragmentation detected";        
+        EXPECT_EQ(addr083, addr081) << "Fatal: Memory is fragmentation detected";
 
         heap->free(addr160);
         heap->free(addr082);
-        heap->free(addr083);        
+        heap->free(addr083);
         heap->free(addr070);
     }
 }
@@ -242,8 +242,8 @@ TEST_F(lib_HeapTest, allocate_unfit)
 {
     {
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
-        
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
+
         void* block0( heap->allocate(8, NULLPTR) );
         EXPECT_NE(block0, NULLPTR) << "Fatal: Memory is not allocated";
         void* block1( heap->allocate(8, NULLPTR) );
@@ -261,8 +261,8 @@ TEST_F(lib_HeapTest, allocate_unfit)
         void* block2new( heap->allocate(16, NULLPTR) );
         EXPECT_NE(block2new, block2) << "Fatal: Memory is not allocated";
 
-        heap->free(block3);        
-        heap->free(block2new);        
+        heap->free(block3);
+        heap->free(block2new);
         heap->free(block1new);
         heap->free(block0);
     }
@@ -285,8 +285,8 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
 {
     {
         Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
-        
+        ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
+
         void* block0( heap->allocate(8, NULLPTR) );
         EXPECT_NE(block0, NULLPTR) << "Fatal: Memory is not allocated";
         void* block1( heap->allocate(8, NULLPTR) );
@@ -302,7 +302,7 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
         void* block6( heap->allocate(8, NULLPTR) );
         EXPECT_NE(block6, NULLPTR) << "Fatal: Memory is not allocated";
         void* block7( heap->allocate(8, NULLPTR) );
-        EXPECT_NE(block7, NULLPTR) << "Fatal: Memory is not allocated";        
+        EXPECT_NE(block7, NULLPTR) << "Fatal: Memory is not allocated";
         void* block8( heap->allocate(8, NULLPTR) );
         EXPECT_NE(block8, NULLPTR) << "Fatal: Memory is not allocated";
         void* block9( heap->allocate(8, NULLPTR) );
@@ -322,14 +322,14 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
 
         // Delete if next free
         heap->free(blockF);
-        // Delete if prev or next free        
-        heap->free(blockD);        
+        // Delete if prev or next free
+        heap->free(blockD);
         heap->free(blockE);
         // Delete first
-        heap->free(block0);        
+        heap->free(block0);
         // Delete if prev free
         heap->free(blockA);
-        heap->free(blockB);        
+        heap->free(blockB);
         // Delete just
         heap->free(blockC);
         heap->free(block9);
@@ -344,7 +344,7 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
     }
 }
 
-    
+
 /**
  * @relates lib_HeapTest
  * @brief Tests memory allocation.
@@ -359,9 +359,9 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
  *      - Allocate memory.
  */
 TEST_F(lib_HeapTest, allocate_unconstructed)
-{    
+{
     HeapUnconstructed* heap( new (address_) HeapUnconstructed(MEMORY_SIZE, mutex_) );
-    ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
+    ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
     void* addr( heap->allocate(8, NULLPTR) );
     EXPECT_EQ(addr, NULLPTR) << "Fatal: Memory is allocated by unconstructed Heap";
     heap->free(addr);
@@ -381,9 +381,9 @@ TEST_F(lib_HeapTest, allocate_unconstructed)
  *      - Allocate memory.
  */
 TEST_F(lib_HeapTest, allocate_zeroSize)
-{    
+{
     Heap* heap( new (address_) Heap(MEMORY_SIZE, mutex_) );
-    ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";    
+    ASSERT_NE(heap, NULLPTR) << "Fatal: Heap object is not allocated";
     void* addr( heap->allocate(0U, NULLPTR) );
     EXPECT_EQ(addr, NULLPTR) << "Fatal: Memory of zero size is allocated";
     heap->free(addr);
@@ -410,10 +410,10 @@ TEST_F(lib_HeapTest, allocate_overflow)
     uint32_t* nextToHeapAddr( reinterpret_cast<uint32_t*>( &memory_[HEAP_COUNT] ) );
     uint32_t& nextToHeap( *nextToHeapAddr );
     nextToHeap = NEXT_TO_HEAP;
-    
+
     Heap* heap( new (address_) Heap(HEAP_SIZE, mutex_) );
     EXPECT_EQ(nextToHeap, NEXT_TO_HEAP) << "Fatal: Integrity of heap memory is damaged";
-    
+
     uint32_t count(HEAP_COUNT);
     while(true)
     {
@@ -422,7 +422,7 @@ TEST_F(lib_HeapTest, allocate_overflow)
         {
             break;
         }
-        Memory::memset(addr, 0x77, 8);            
+        Memory::memset(addr, 0x77, 8);
         --count;
         if(count == 0U)
         {

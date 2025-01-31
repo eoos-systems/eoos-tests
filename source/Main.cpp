@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2024, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit of `main`. 
+ * @brief Unit of `main`.
  */
 #include "System.hpp"
 #include "lib.Stream.hpp"
@@ -36,7 +36,7 @@
 
 namespace eoos
 {
-    
+
 /**
  * @brief Prints EOOS global configuration.
  */
@@ -56,10 +56,10 @@ static void printConfiguration()
         lib::Stream::cout() << "[EOOS ] LANGUAGE: C++17\r\n";
     #elif EOOS_CPP_STANDARD == 2020
         lib::Stream::cout() << "[EOOS ] LANGUAGE: C++20\r\n";
-    #else        
+    #else
         lib::Stream::cout() << "[EOOS ] LANGUAGE: unknown\r\n";
     #endif
-    
+
     // Output of Data Model of a hardware system
     #if defined (EOOS_TYPE_STDLIB)
         lib::Stream::cout() << "[EOOS ] DATA MODEL: C++ Standard Library types\r\n";
@@ -111,7 +111,7 @@ static void printExecutionEnding()
 {
     System eoos;
     lib::Stream::cout() << "[EOOS ] EOOS EXECUTION END\r\n";
-    lib::Stream::cout() << "[EOOS ] ~~~ eoos end ~~~~~~~~~~~~~~~~~~~\r\n";    
+    lib::Stream::cout() << "[EOOS ] ~~~ eoos end ~~~~~~~~~~~~~~~~~~~\r\n";
 }
 
 } // namespace eoos
@@ -119,15 +119,15 @@ static void printExecutionEnding()
 /**
  * @brief The main function.
  *
- * This function starts all the testsuites and is defined here as the EOOS library may have 
- * its own main() function defined and this definition will make a linker link the main(). 
+ * This function starts all the testsuites and is defined here as the EOOS library may have
+ * its own main() function defined and this definition will make a linker link the main().
  *
  * @param argc  The number of arguments passed to the program.
  * @param argv  An array of c-string of arguments where the last one - argc + 1 is null.
  * @return Error code or zero.
  */
 int main(int argc, char** const argv)
-{    
+{
     ::eoos::printConfiguration();
     ::testing::InitGoogleTest(&argc, argv);
     int const error( RUN_ALL_TESTS() );

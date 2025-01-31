@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Align`. 
+ * @brief Unit tests of `lib::Align`.
  */
 #include "lib.Align.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_AlignTest
  * @test Align
@@ -22,15 +22,15 @@ class lib_AlignTest : public ::testing::Test
 {
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
+
+    System eoos_; ///< EOOS Operating System.
 };
 
 /**
  * @brief Tests size of T and size of lib::Align<T>.
  *
  * @tparam T Base type to test.
- * @return Comparation result. 
+ * @return Comparation result.
  */
 template<typename T>
 bool_t testSizeof()
@@ -55,7 +55,7 @@ bool_t testSizeof()
  */
 TEST_F(lib_AlignTest, Sizeof)
 {
-    EXPECT_TRUE(testSizeof<int8_t>())   << "Fatal: Size of int8_t types are not equal";  
+    EXPECT_TRUE(testSizeof<int8_t>())   << "Fatal: Size of int8_t types are not equal";
     EXPECT_TRUE(testSizeof<int16_t>())  << "Fatal: Size of int16_t types are not equal";
     EXPECT_TRUE(testSizeof<int32_t>())  << "Fatal: Size of int32_t types are not equal";
     EXPECT_TRUE(testSizeof<int64_t>())  << "Fatal: Size of int64_t types are not equal";
@@ -64,14 +64,14 @@ TEST_F(lib_AlignTest, Sizeof)
     EXPECT_TRUE(testSizeof<uint32_t>()) << "Fatal: Size of uint32_t types are not equal";
     EXPECT_TRUE(testSizeof<uint64_t>()) << "Fatal: Size of uint64_t types are not equal";
 }
-    
+
 /**
  * @brief Tests sum of two variables of T types and Align<T> types.
  *
  * @tparam T Base type to test.
  * @param o1 A variable to sum.
  * @param o2 A variable to sum.
- * @return Comparation result. 
+ * @return Comparation result.
  */
 template<typename T, typename R>
 bool_t testSum(T const o1, T const o2)
@@ -113,7 +113,7 @@ TEST_F(lib_AlignTest, Sum)
  * @tparam T Base type to test.
  * @param o1 A variable to sum.
  * @param o2 A variable to sum.
- * @return Comparation result. 
+ * @return Comparation result.
  */
 template<typename T>
 T getTypecast(T const o1)
@@ -122,7 +122,7 @@ T getTypecast(T const o1)
     T const c1( a1 );
     return c1;
 }
-    
+
 /**
  * @relates lib_AlignTest
  * @brief Tests of typecast.
@@ -178,7 +178,7 @@ TEST_F(lib_AlignTest, Typecast_int)
         uint64_t exp( 0x8FA5A5A5 );
         uint64_t act( getTypecast(exp) );
         EXPECT_EQ( act, exp ) << "Fatal: Type cast are not faild";
-    }    
+    }
 }
 
 /**
@@ -208,9 +208,9 @@ TEST_F(lib_AlignTest, operatorAssignment)
         Align<uint32_t> const a2( 0x12345678 );
         a1 = a2;
         uint32_t const v1( a1 );
-        uint32_t const v2( a2 );        
+        uint32_t const v2( a2 );
         EXPECT_EQ( v1, v2 ) << "Fatal: Value is not assigned";
-    }    
+    }
 }
 
 /**
@@ -233,13 +233,13 @@ TEST_F(lib_AlignTest, operatorIncrement)
         ++a1;
         uint32_t const v1( a1 );
         EXPECT_EQ( v1, 0x12345679 ) << "Fatal: Value is not assigned";
-    }    
+    }
     {
         Align<uint32_t> a1( 0x12345678 );
         a1++;
         uint32_t const v1( a1 );
         EXPECT_EQ( v1, 0x12345679 ) << "Fatal: Value is not assigned";
-    }    
+    }
 }
 
 /**
@@ -262,13 +262,13 @@ TEST_F(lib_AlignTest, operatorDecrement)
         --a1;
         uint32_t const v1( a1 );
         EXPECT_EQ( v1, 0x12345677 ) << "Fatal: Value is not assigned";
-    }    
+    }
     {
         Align<uint32_t> a1( 0x12345678 );
         a1--;
         uint32_t const v1( a1 );
         EXPECT_EQ( v1, 0x12345677 ) << "Fatal: Value is not assigned";
-    }    
+    }
 }
 
 /**
@@ -290,15 +290,15 @@ TEST_F(lib_AlignTest, comparison)
         Align<uint32_t> const a1( 0x12345678 );
         Align<uint32_t> const a2( 0x12345678 );
         EXPECT_TRUE( a1 == a2 ) << "Fatal: Values don't equal";
-        EXPECT_FALSE( a1 != a2 ) << "Fatal: Values don't equal";        
+        EXPECT_FALSE( a1 != a2 ) << "Fatal: Values don't equal";
     }
     {
         Align<uint32_t> const a1( 0x12345678 );
         Align<uint32_t> const a2( 0x78563412 );
         EXPECT_TRUE( a1 != a2 ) << "Fatal: Values equal";
-        EXPECT_FALSE( a1 == a2 ) << "Fatal: Values equal";                
-    }    
+        EXPECT_FALSE( a1 == a2 ) << "Fatal: Values equal";
+    }
 }
-    
+
 } // namespace lib
 } // namespace eoos

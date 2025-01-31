@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Stream`. 
+ * @brief Unit tests of `lib::Stream`.
  */
 #include "lib.Stream.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_StreamTest
  * @test Stream
@@ -22,9 +22,9 @@ class lib_StreamTest : public ::testing::Test
 {
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
-};    
+
+    System eoos_; ///< EOOS Operating System.
+};
 
 /**
  * @relates lib_StreamTest

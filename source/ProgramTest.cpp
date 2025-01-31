@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `Program`. 
+ * @brief Unit tests of `Program`.
  */
 #include "Program.hpp"
 #include "System.hpp"
@@ -27,7 +27,7 @@ int32_t Program::start(int32_t argc, char_t* argv[])
     {
         return PROGRAM_ERROR_ARGUMENT;
     }
-    api::List<api::String<char_t>*>& args( parser.getArguments() ); 
+    api::List<api::String<char_t>*>& args( parser.getArguments() );
     int32_t error(PROGRAM_WRONG_ARGS);
     switch( args.getLength() )
     {
@@ -45,7 +45,7 @@ int32_t Program::start(int32_t argc, char_t* argv[])
                 error = static_cast<int32_t>( args.getLength() );
             }
             break;
-        }            
+        }
     }
     return error;
 }
@@ -59,10 +59,10 @@ class glb_ProgramTest : public ::testing::Test
 {
 
 protected:
-    
-    System eoos; ///< EOOS Operating System.    
+
+    System eoos; ///< EOOS Operating System.
 };
-    
+
 
 /**
  * @relates glb_ProgramTest
@@ -96,12 +96,12 @@ TEST_F(glb_ProgramTest, isConstructed)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_args0)
-{    
+{
     char_t* argv[] = {NULLPTR};
     int32_t argc( 0 );
     ASSERT_EQ(eoos.execute(argc, argv), PROGRAM_OK) << "Fatal: Program is not executed";
 }
-    
+
 /**
  * @relates glb_ProgramTest
  * @brief Tests the system starts a user program and is initialiezed.
@@ -116,7 +116,7 @@ TEST_F(glb_ProgramTest, execute_args0)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_args1)
-{    
+{
     char_t ARG0[] = {"ARG0"};
     char_t* argv[] = {ARG0, NULLPTR};
     int32_t argc( 1 );
@@ -137,14 +137,14 @@ TEST_F(glb_ProgramTest, execute_args1)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_args2)
-{    
+{
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
     char_t* argv[] = {ARG0, ARG1, NULLPTR};
     int32_t argc( 2 );
     ASSERT_EQ(eoos.execute(argc, argv), argc) << "Fatal: Program arguments is not wrong";
 }
-    
+
 /**
  * @relates glb_ProgramTest
  * @brief Tests the system starts a user program and is initialiezed.
@@ -159,7 +159,7 @@ TEST_F(glb_ProgramTest, execute_args2)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_negativeArgv)
-{    
+{
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
     char_t* argv[] = {ARG0, ARG1, NULLPTR};
@@ -181,14 +181,14 @@ TEST_F(glb_ProgramTest, execute_negativeArgv)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_wrongArgv)
-{    
+{
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
     char_t* argv[] = {ARG0, ARG1, NULLPTR};
     int32_t argc( 5 );
     ASSERT_EQ(eoos.execute(argc, argv), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }
-    
+
 /**
  * @relates glb_ProgramTest
  * @brief Tests the system starts a user program and is initialiezed.
@@ -204,7 +204,7 @@ TEST_F(glb_ProgramTest, execute_wrongArgv)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_wrongArgc)
-{    
+{
     char_t ARG0[] = {"ARG0"};
     char_t ARG2[] = {"ARG2"};
     char_t* argv[] = {ARG0, NULLPTR, ARG2, NULLPTR};
@@ -226,9 +226,9 @@ TEST_F(glb_ProgramTest, execute_wrongArgc)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_noNullTerminatedArgc)
-{    
+{
     // @note Involve ARGX to be sure a previous call with possible NULL on the same possition overrided.
-    char_t ARGX[] = {"ARGX"};    
+    char_t ARGX[] = {"ARGX"};
     char_t ARG0[] = {"ARG0"};
     char_t ARG1[] = {"ARG1"};
     char_t* argv[] = {ARG0, ARG1, ARGX};
@@ -250,7 +250,7 @@ TEST_F(glb_ProgramTest, execute_noNullTerminatedArgc)
  *      - Test the program is executed with correcet exit code.
  */
 TEST_F(glb_ProgramTest, execute_nullArgc)
-{    
+{
     int32_t argc( 2 );
     ASSERT_EQ(eoos.execute(argc, NULLPTR), PROGRAM_ERROR_ARGUMENT) << "Fatal: Program no argumnets error";
 }

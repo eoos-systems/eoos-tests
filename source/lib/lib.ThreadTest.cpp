@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021-2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Thread`. 
+ * @brief Unit tests of `lib::Thread`.
  */
 #include "lib.Thread.hpp"
 #include "lib.AbstractTask.hpp"
@@ -31,13 +31,13 @@ protected:
     class Task : public AbstractTask<>
     {
         typedef AbstractTask<> Parent;
-      
+
     public:
 
         /**
          * @enum Error
          * @brief The task possible errors.
-         */    
+         */
         enum Error
         {
             ERROR_TEST_OK,
@@ -46,7 +46,7 @@ protected:
             ERROR_TEST_NORESPONSE,
             ERROR_TEST_NOYIELD
         };
-    
+
         /**
          * @enum Story
          * @brief Task story to play
@@ -54,15 +54,15 @@ protected:
         enum Story
         {
             STORY_DEFAULT,
-            STORY_COUNTER,            
+            STORY_COUNTER,
             STORY_REACTOR,
-            STORY_INITIATOR            
+            STORY_INITIATOR
         };
-    
+
         /**
          * @brief Constructor.
          */
-        Task() 
+        Task()
             : Parent()
             , count_ (0U)
             , toCount_ (true)
@@ -77,9 +77,9 @@ protected:
         /**
          * @brief Constructor.
          *
-         * @param stackSize This task stack size.         
+         * @param stackSize This task stack size.
          */
-        Task(size_t stackSize) 
+        Task(size_t stackSize)
             : Parent()
             , count_ (0U)
             , toCount_ (true)
@@ -96,7 +96,7 @@ protected:
          *
          * @param isConstructed Flag the object will be constructed.
          */
-        Task(bool_t isConstructed) 
+        Task(bool_t isConstructed)
             : Parent()
             , count_ (0U)
             , toCount_ (true)
@@ -108,13 +108,13 @@ protected:
             , stackSize_(0U) {
             setConstructed(isConstructed);
         }
-        
+
         /**
          * @brief Constructor.
          *
          * @param isConstructed Flag the object will be constructed.
          */
-        Task(Story story) 
+        Task(Story story)
             : Parent()
             , count_ (0U)
             , toCount_ (true)
@@ -123,9 +123,9 @@ protected:
             , story_ (story)
             , error_ (ERROR_TEST_UNDEF)
             , toWait_ (true)
-            , stackSize_(0U) {            
+            , stackSize_(0U) {
         }
-        
+
         /**
          * @brief Waits the task is called in separated thread.
          *
@@ -147,7 +147,7 @@ protected:
 
         /**
          * @brief Stops counter.
-         */        
+         */
         void stopCounter()
         {
             toCount_ = false;
@@ -155,7 +155,7 @@ protected:
 
         /**
          * @brief Stops counter.
-         */        
+         */
         uint64_t getCounter()
         {
             return count_;
@@ -165,43 +165,43 @@ protected:
          * @brief Tests if the task is completed execution.
          *
          * @return True if task is is completed execution.
-         */        
+         */
         bool isDead() const
         {
             return isDead_;
         }
-        
+
         /**
          * @brief Returns execution error.
          *
          * @return an error code.
-         */        
+         */
         int32_t getError() const
         {
             return error_;
         }
-        
+
         /**
          * @copydoc eoos::api::Task::getStackSize()
          */
         virtual size_t getStackSize() const
         {
             size_t stackSize( stackSize_ );
-            if(stackSize == 0) 
+            if(stackSize == 0)
             {
                 stackSize = AbstractTask<>::getStackSize();
             }
             return stackSize;
-        }  
-        
-    private:    
-            
+        }
+
+    private:
+
         /**
          * @copydoc eoos::api::Task::start()
-         */        
+         */
         virtual void start()
         {
-            isStarted_ = true;            
+            isStarted_ = true;
             switch (story_)
             {
                 case STORY_DEFAULT:
@@ -225,12 +225,12 @@ protected:
                     break;
                 }
             }
-            isDead_ = true;            
+            isDead_ = true;
         }
 
         /**
          * @brief Plays default story.
-         */        
+         */
         void playDefault()
         {
             static_cast<void>( Thread<>::yield() );
@@ -238,7 +238,7 @@ protected:
 
         /**
          * @brief Plays counter story.
-         */        
+         */
         void playCounter()
         {
             while(true)
@@ -250,10 +250,10 @@ protected:
                 count_++;
             }
         }
-        
+
         /**
          * @brief Plays reactor story.
-         */                
+         */
         void playReactor()
         {
             // Inform the initiator the reactor is ready to react
@@ -261,7 +261,7 @@ protected:
             // Wait the initiator initiated
             int32_t count(TESTS_WAIT_CYCLE_TIME);
             while(true)
-            {   
+            {
                 if(channelItoR_ == MSG_PING)
                 {
                     channelRtoI_ = MSG_PONG;
@@ -286,7 +286,7 @@ protected:
             // Wait the reactor is ready
             int32_t count(TESTS_WAIT_CYCLE_TIME);
             while(true)
-            {   
+            {
                 if(channelRtoI_ == MSG_READY)
                 {
                     break;
@@ -299,20 +299,20 @@ protected:
             }
             // Initiate the reactor
             channelItoR_ = MSG_PING;
-            // Ask scheduler to yield current time slice to other thread, 
+            // Ask scheduler to yield current time slice to other thread,
             // relying the reactor will be called
             //
-            // Reason to DISABLED_yield_reactionOnInitiation see in the test-case notes. 
+            // Reason to DISABLED_yield_reactionOnInitiation see in the test-case notes.
             bool_t isYield( Thread<>::yield() );
             if( isYield )
             {
-                // Check the reactor reacted 
+                // Check the reactor reacted
                 int32_t const msg( channelRtoI_ );
                 if(msg == MSG_PONG)
                 {
                     error_ = ERROR_TEST_OK;
                 }
-                else 
+                else
                 {
                     error_ = ERROR_TEST_NORESPONSE;
                 }
@@ -326,7 +326,7 @@ protected:
         /**
          * @enum Msg
          * @brief Initiator-reactor messages.
-         */        
+         */
         enum Msg
         {
             MSG_IDLE,
@@ -334,10 +334,10 @@ protected:
             MSG_PING,
             MSG_PONG
         };
-        
+
         static int32_t volatile channelItoR_;   ///< Channel Initiator to Reactor direction.
         static int32_t volatile channelRtoI_;   ///< Channel Reactor to Initiator direction.
-        
+
         uint64_t count_;            ///< Counter.
         bool_t volatile toCount_;   ///< Has to count flag.
         bool_t volatile isStarted_; ///< Task started flag.
@@ -354,7 +354,7 @@ protected:
      */
     struct Tasks
     {
-        Tasks() 
+        Tasks()
             : normal()
             , stack( static_cast<size_t>(16384UL) )
             , unconstructed( false )
@@ -365,31 +365,31 @@ protected:
             counters[0] = &counter0;
             counters[1] = &counter1;
         }
-        
+
         Task normal;
-        Task stack;        
+        Task stack;
         Task unconstructed;
         Task in;
         Task re;
         // @note G++ compiler creates templorary objects and move them
         // by calling move constructors of objects in Task[2] array.
-        // Move semantic of the Task class is prohibited by  inhiring 
+        // Move semantic of the Task class is prohibited by  inhiring
         // of NonCopyable<A> class. Therefore, will use Task*[2] here:
         Task counter0;
         Task counter1;
         Task* counters[2];
     } task;
-    
+
 private:
 
     System eoos_; ///< EOOS Operating System.
-};  
+};
 
 int32_t volatile lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);
 int32_t volatile lib_ThreadTest::Task::channelRtoI_(lib_ThreadTest::Task::MSG_IDLE);
 
-// @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables 
-// and constants defined in scope of fixture classes as well as in scope of tested classes.    
+// @note Re-define the api::Thread constants here as GTest on GCC doesn't like static variables
+// and constants defined in scope of fixture classes as well as in scope of tested classes.
 static const int32_t PRIORITY_WRONG(api::Thread::PRIORITY_WRONG);
 static const int32_t PRIORITY_MAX(api::Thread::PRIORITY_MAX);
 static const int32_t PRIORITY_MIN(api::Thread::PRIORITY_MIN);
@@ -418,7 +418,7 @@ TEST_F(lib_ThreadTest, Constructor)
 
 /**
  * @relates lib_ThreadTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -428,7 +428,7 @@ TEST_F(lib_ThreadTest, Constructor)
  *
  * @b Assert:
  *      - Test the object is constructed.
- *      - Test the object is not constructed. 
+ *      - Test the object is not constructed.
  */
 TEST_F(lib_ThreadTest, isConstructed)
 {
@@ -446,7 +446,7 @@ TEST_F(lib_ThreadTest, isConstructed)
 
 /**
  * @relates lib_ThreadTest
- * @brief Test if thread can be executed. 
+ * @brief Test if thread can be executed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -468,7 +468,7 @@ TEST_F(lib_ThreadTest, execute)
         EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";        
+        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
     }
     // Execute constructed task with stack defined
     {
@@ -478,7 +478,7 @@ TEST_F(lib_ThreadTest, execute)
         EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.stack.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-    }    
+    }
     // Execute not constructed task
     {
         Thread<> thread(task.unconstructed);
@@ -517,7 +517,7 @@ TEST_F(lib_ThreadTest, join)
         EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
         EXPECT_FALSE(thread.execute()) << "Error: Thread was executed";
         EXPECT_FALSE(thread.join()) << "Fatal: Thread was joined";
-        EXPECT_FALSE(task.unconstructed.isDead()) << "Error: Thread is dead";        
+        EXPECT_FALSE(task.unconstructed.isDead()) << "Error: Thread is dead";
     }
 }
 
@@ -544,7 +544,7 @@ TEST_F(lib_ThreadTest, getPriority)
     {
         Thread<> thread(task.unconstructed);
         EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Fatal: Thread priority is not Wrong";
-    }    
+    }
 }
 
 /**
@@ -556,7 +556,7 @@ TEST_F(lib_ThreadTest, getPriority)
  *
  * @b Act:
  *      - Set all priorities in valid range.
- *      - Set all priorities out of valid range. 
+ *      - Set all priorities out of valid range.
  *
  * @b Assert:
  *      - Test priorities in valid range are set.
@@ -571,8 +571,8 @@ TEST_F(lib_ThreadTest, setPriority)
     }
     {
         Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.setPriority(PRIORITY_IDLE)) << "Fatal: Thread priority is set"; 
-        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Error: Thread priority is not wrong";        
+        EXPECT_FALSE(thread.setPriority(PRIORITY_IDLE)) << "Fatal: Thread priority is set";
+        EXPECT_EQ(thread.getPriority(), PRIORITY_WRONG) << "Error: Thread priority is not wrong";
     }
     for(int32_t priority=PRIORITY_MIN; priority<=PRIORITY_MAX; priority++)
     {
@@ -584,12 +584,12 @@ TEST_F(lib_ThreadTest, setPriority)
         Thread<> thread(task.normal);
         EXPECT_FALSE(thread.setPriority(PRIORITY_MAX + 1)) << "Fatal: Thread priority is set";
         EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Error: Thread priority is wrong";
-    }  
+    }
     {
         Thread<> thread(task.normal);
         EXPECT_FALSE(thread.setPriority(PRIORITY_MIN - 2)) << "Fatal: Thread priority is set";
         EXPECT_EQ(thread.getPriority(), PRIORITY_NORM) << "Error: Thread priority is wrong";
-    }      
+    }
 }
 
 /**
@@ -612,35 +612,35 @@ TEST_F(lib_ThreadTest, setPriority)
  *
  * @b Assert:
  *      - Test no errors during the ping-pong communication.
- * 
+ *
  * @note The DISABLED reason:
  *   Default Linux scheduler policy is `SCHED_OTHER` that is round-robin time-sharing policy
  * based on the `nice` value. This does not guarantee that thread yield becomes to switch to
- * the next thread from the static priority 0 list. Therefore, this test case cannot be 
+ * the next thread from the static priority 0 list. Therefore, this test case cannot be
  * always successfully passed because of the scheduling policy.
- *   To pass this test, scheduler policy has to be switched to `SCHED_RR` as real-time 
+ *   To pass this test, scheduler policy has to be switched to `SCHED_RR` as real-time
  * scheduling policy. To do so, the project must be compiled with the `EOOS_GLOBAL_SYS_SCHEDULER_REALTIME`
  * global definition, and the unit-test exacutable file must be run under root. Otherwise,
- * EPERM (The calling thread does not have appropriate privileges) error will be rise. 
+ * EPERM (The calling thread does not have appropriate privileges) error will be rise.
  */
 TEST_F(lib_ThreadTest, DISABLED_yield_reactionOnInitiation)
 {
     Thread<> re(task.re);
     Thread<> in(task.in);
 
-    EXPECT_TRUE(re.execute()) << "Error: Reactor thread was not executed";    
+    EXPECT_TRUE(re.execute()) << "Error: Reactor thread was not executed";
     EXPECT_TRUE(in.execute()) << "Error: Initiator thread was not executed";
 
     EXPECT_TRUE(re.join()) << "Error: Reactor thread was not joined";
     EXPECT_TRUE(in.join()) << "Error: Initiator thread was not joined";
 
-    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Initiator was not started";    
+    EXPECT_NE(task.in.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Initiator was not started";
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_TIMEOUT) << "Fatal: Initiator didn't get confirmation Reactor started";
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_NORESPONSE) << "Fatal: Initiator didn't get reactor response";
     EXPECT_NE(task.in.getError(), Task::ERROR_TEST_NOYIELD) << "Fatal: Initiator didn't yield the thread";
     EXPECT_EQ(task.in.getError(), Task::ERROR_TEST_OK) << "Fatal: Initiator unexpected error";
-    
-    EXPECT_NE(task.re.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Reactor was not started";    
+
+    EXPECT_NE(task.re.getError(), Task::ERROR_TEST_UNDEF) << "Fatal: Reactor was not started";
     EXPECT_NE(task.re.getError(), Task::ERROR_TEST_TIMEOUT) << "Fatal: Reactor didn't get initiator request";
     EXPECT_EQ(task.re.getError(), Task::ERROR_TEST_OK) << "Fatal: Reactor unexpected error";
 }

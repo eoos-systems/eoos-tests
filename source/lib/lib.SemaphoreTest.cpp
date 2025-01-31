@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Semaphore`. 
+ * @brief Unit tests of `lib::Semaphore`.
  */
 #include "lib.Semaphore.hpp"
 #include "lib.AbstractThreadTask.hpp"
@@ -31,9 +31,9 @@ protected:
     class ThreadTask : public AbstractThreadTask<>
     {
         typedef AbstractThreadTask<> Parent;
-    
+
     public:
-        
+
         /**
          * @brief Constructor.
          *
@@ -50,32 +50,32 @@ protected:
          * @brief Test if semaphore was acquired.
          *
          * @return True if semaphore was acquired.
-         */        
+         */
         bool_t wasAcquired()
         {
             return isAcquired_;
         }
-                        
-    private:    
-            
+
+    private:
+
         /**
          * @copydoc eoos::api::Task::start()
-         */        
+         */
         virtual void start()
         {
             isAcquired_ = semAcquire_.acquire();
             semRelease_.release();
         }
-        
+
         bool_t isAcquired_;          ///< Acquirement flag.
         api::Semaphore& semAcquire_; ///< Semaphore to acquire in the thread.
         api::Semaphore& semRelease_; ///< Semaphore to release in the thread after the acquirement.
     };
-    
+
 private:
 
     System eoos_; ///< EOOS Operating System.
-};  
+};
 
 /**
  * @relates lib_SemaphoreTest
@@ -98,7 +98,7 @@ TEST_F(lib_SemaphoreTest, Constructor)
 
 /**
  * @relates lib_SemaphoreTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -122,7 +122,7 @@ TEST_F(lib_SemaphoreTest, isConstructed)
     {
         Semaphore<> obj(0x7FFFFFFF);
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed with permits 0x7FFFFFFF";
-    }    
+    }
     {
         Semaphore<> obj(-1);
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed with permits -1";
@@ -135,7 +135,7 @@ TEST_F(lib_SemaphoreTest, isConstructed)
 
 /**
  * @relates lib_SemaphoreTest
- * @brief Semaphore acquire test. 
+ * @brief Semaphore acquire test.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.

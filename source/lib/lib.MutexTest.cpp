@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Mutex`. 
+ * @brief Unit tests of `lib::Mutex`.
  */
 #include "lib.Mutex.hpp"
 #include "lib.AbstractThreadTask.hpp"
@@ -15,15 +15,15 @@ namespace lib
 {
 namespace
 {
-    
+
 const int64_t MUTEX_LOCKED        (0x5555555555555555);
-const int64_t MUTEX_NOT_LOCKED    (0x5AAAAAAAAAAAAAAA);    
+const int64_t MUTEX_NOT_LOCKED    (0x5AAAAAAAAAAAAAAA);
 const int64_t MUTEX_TIMEOUT       (0x7FFFFFFFFFFFFFFF);
 const int64_t MUTEX_UNKNOWN_VALUE (0x7EEEEEEEEEEEEEEE);
 const int64_t MUTEX_INIT_VALUE    (0x0000000000000000);
 
 } // namespace
-    
+
 /**
  * @class lib_MutexTest
  * @test Mutex
@@ -41,9 +41,9 @@ protected:
     class ThreadTask : public AbstractThreadTask<>
     {
         typedef AbstractThreadTask<> Parent;
-    
+
     public:
-            
+
         /**
          * @brief Constructor.
          *
@@ -67,17 +67,17 @@ protected:
 
         /**
          * @brief Set register read.
-         */        
+         */
         void setRegisterRead()
         {
             isRegisterRead_ = true;
         }
-        
-    private:    
-            
+
+    private:
+
         /**
          * @copydoc eoos::api::Task::start()
-         */        
+         */
         virtual void start()
         {
             bool_t res = mutex_.lock();
@@ -102,16 +102,16 @@ protected:
                 register_ = MUTEX_NOT_LOCKED;
             }
         }
-        
+
         bool_t volatile isRegisterRead_; ///< Register is read by primary thread.
         int64_t volatile register_;      ///< Register to access.
         api::Mutex& mutex_;              ///< Mutex to lock.
     };
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
-};    
+
+    System eoos_; ///< EOOS Operating System.
+};
 
 /**
  * @relates lib_MutexTest

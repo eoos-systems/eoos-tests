@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Guard`. 
+ * @brief Unit tests of `lib::Guard`.
  */
 #include "lib.Guard.hpp"
 #include "lib.Mutex.hpp"
@@ -16,9 +16,9 @@ namespace lib
 {
 namespace
 {
-    
+
 const int64_t GUARD_LOCKED        (0x5555555555555555);
-const int64_t GUARD_NOT_LOCKED    (0x5AAAAAAAAAAAAAAA);    
+const int64_t GUARD_NOT_LOCKED    (0x5AAAAAAAAAAAAAAA);
 const int64_t GUARD_TIMEOUT       (0x7FFFFFFFFFFFFFFF);
 const int64_t GUARD_UNKNOWN_VALUE (0x7EEEEEEEEEEEEEEE);
 const int64_t GUARD_INIT_VALUE    (0x0000000000000000);
@@ -35,7 +35,7 @@ class MutexUnconstructed : public Mutex<>
 public:
 
     using Parent::setConstructed;
-    
+
     MutexUnconstructed()
         : Mutex<>() {
         setConstructed(false);
@@ -44,7 +44,7 @@ public:
 };
 
 } // namespace
-    
+
 /**
  * @class lib_GuardTest
  * @test Mutex
@@ -62,9 +62,9 @@ protected:
     class ThreadTask : public AbstractThreadTask<>
     {
         typedef AbstractThreadTask<> Parent;
-    
+
     public:
-            
+
         /**
          * @brief Constructor.
          *
@@ -88,17 +88,17 @@ protected:
 
         /**
          * @brief Set register read.
-         */        
+         */
         void setRegisterRead()
         {
             isRegisterRead_ = true;
         }
-        
-    private:    
-            
+
+    private:
+
         /**
          * @copydoc eoos::api::Task::start()
-         */        
+         */
         virtual void start()
         {
             Guard<> guard(mutex_);
@@ -122,7 +122,7 @@ protected:
                 register_ = GUARD_NOT_LOCKED;
             }
         }
-        
+
         bool_t volatile isRegisterRead_; ///< Register is read by primary thread.
         int64_t volatile register_;      ///< Register to access.
         api::Mutex& mutex_;              ///< Mutex to lock.
@@ -134,7 +134,7 @@ protected:
      */
     class ThreadCount : public lib::AbstractThreadTask<>
     {
-    
+
     public:
 
         /**
@@ -146,7 +146,7 @@ protected:
             COUNT_UP,
             COUNT_DW
         };
-        
+
         /**
          * @brief Constructor.
          *
@@ -161,7 +161,7 @@ protected:
             , mutex_( mutex )
             , resource_( resource ) {
         }
-        
+
         /**
          * @brief Test if counting is completed.
          *
@@ -171,9 +171,9 @@ protected:
         {
             return isCompleted_;
         }
-            
+
     private:
-    
+
         /**
          * @copydoc eoos::api::Task::start()
          */
@@ -205,7 +205,7 @@ protected:
             }
             isCompleted_ = true;
         }
-    
+
         /**
          * @brief Counts down.
          */
@@ -226,7 +226,7 @@ protected:
         /**
          * @brief Maximum count.
          */
-        static const int32_t MAX_COUNT = 0x800000;        
+        static const int32_t MAX_COUNT = 0x800000;
 
         /**
          * @brief Complete flag.
@@ -237,7 +237,7 @@ protected:
          * @brief Count direction.
          */
         Count count_;
-    
+
         /**
          * @brief Mutex resource to lock on.
          */
@@ -247,14 +247,14 @@ protected:
          * @brief Atomic resource.
          */
         int64_t& resource_;
-    
+
     };
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
-};    
-    
+
+    System eoos_; ///< EOOS Operating System.
+};
+
 /**
  * @relates lib_GuardTest
  * @brief Tests the class constructor.
@@ -275,7 +275,7 @@ TEST_F(lib_GuardTest, Constructor)
         Guard<> obj( mtx );
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: Object is not constructed";
     }
-    { 
+    {
         MutexUnconstructed mtx;
         Guard<> obj( mtx );
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: Object is constructed";
@@ -284,7 +284,7 @@ TEST_F(lib_GuardTest, Constructor)
 
 /**
  * @relates lib_GuardTest
- * @brief Mutex lock test. 
+ * @brief Mutex lock test.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -327,7 +327,7 @@ TEST_F(lib_GuardTest, lock)
 
 /**
  * @relates lib_GuardTest
- * @brief Mutex atomic lock test. 
+ * @brief Mutex atomic lock test.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -338,7 +338,7 @@ TEST_F(lib_GuardTest, lock)
  *
  * @b Assert:
  *      - Check counting complited.
- *      - Check initial value of the variable is not changed. 
+ *      - Check initial value of the variable is not changed.
  */
 TEST_F(lib_GuardTest, atomic)
 {

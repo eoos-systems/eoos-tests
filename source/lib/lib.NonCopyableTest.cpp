@@ -22,11 +22,11 @@ class lib_NonCopyableTest : public ::testing::Test
 {
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
-    
-namespace 
+};
+
+namespace
 {
 
 /**
@@ -46,7 +46,7 @@ public:
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);
-    }    
+    }
 };
 
 } // namespace
@@ -67,19 +67,19 @@ public:
 TEST_F(lib_NonCopyableTest, Constructor)
 {
     NonCopyable<> const obj;
-    EXPECT_TRUE(obj.isConstructed())        << "Fatal: NonCopyable is not constructed";    
+    EXPECT_TRUE(obj.isConstructed())        << "Fatal: NonCopyable is not constructed";
 }
 
 /**
  * @relates lib_NonCopyableTest
- * @brief Test if the new operator and the placement new operator. 
+ * @brief Test if the new operator and the placement new operator.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object by new.
- *      - Construct an object by placement new. 
+ *      - Construct an object by placement new.
  *
  * @b Assert:
  *      - Test if the objects are constructed.
@@ -101,14 +101,14 @@ TEST_F(lib_NonCopyableTest, MemoryAllocation)
 
 /**
  * @relates lib_NonCopyableTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Destruct the object. 
+ *      - Destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -117,22 +117,22 @@ TEST_F(lib_NonCopyableTest, isConstructed)
 {
     NonCopyable<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: NonCopyable is not constructed";
-    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~NonCopyable()` 
+    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~NonCopyable()`
     // for example and check if the object is not constructed after destruction.
-    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning 
+    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning
     // `isConstructed_’ may be used uninitialized in this function isConstructed().
 }
 
 /**
  * @relates lib_NonCopyableTest
- * @brief Test if object is constructed by static object function. 
+ * @brief Test if object is constructed by static object function.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Allocate and construct an object.
- *      - Delete and destruct the object. 
+ *      - Delete and destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -148,14 +148,14 @@ TEST_F(lib_NonCopyableTest, isConstructed_obj)
 
 /**
  * @relates lib_NonCopyableTest
- * @brief Test the protected function changes constructed status of object. 
+ * @brief Test the protected function changes constructed status of object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Delete and destruct the object. 
+ *      - Delete and destruct the object.
  *
  * @b Assert:
  *      - Test if the object construction flag changes.

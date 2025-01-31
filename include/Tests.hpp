@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2021-2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Global definitions of Unit Tests. 
+ * @brief Global definitions of Unit Tests.
  */
 #ifndef TESTS_HPP_
 #define TESTS_HPP_
@@ -39,7 +39,7 @@ public:
      * @brief Returns nullptr.
      *
      * @return the null pointer.
-     */    
+     */
     static void* allocate(size_t)
     {
         return NULLPTR;
@@ -47,7 +47,7 @@ public:
 
     /**
      * @brief Does nothing.
-     */    
+     */
     static void free(void*)
     {
     }

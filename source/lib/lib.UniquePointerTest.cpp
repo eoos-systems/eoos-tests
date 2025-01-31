@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::UniquePointer`. 
+ * @brief Unit tests of `lib::UniquePointer`.
  */
 #include "lib.UniquePointer.hpp"
 #include "System.hpp"
@@ -22,10 +22,10 @@ class lib_UniquePointerTest : public ::testing::Test
 {
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
-    
+};
+
 namespace
 {
 
@@ -35,10 +35,10 @@ namespace
  */
 struct ManagedAction
 {
-    ManagedAction() : 
+    ManagedAction() :
         isDeleted (false) {
     }
-    
+
     bool_t isDeleted;
 };
 
@@ -79,7 +79,7 @@ public:
         value_ (0),
         action_ (action){
     }
-    
+
     /**
      * @brief Constructor.
      *
@@ -89,7 +89,7 @@ public:
     ManagedObject(int32_t const value, ManagedAction* const action) : Parent(),
         value_  (value),
         action_ (action){
-    }    
+    }
 
     /**
      * @brief Destructor.
@@ -102,17 +102,17 @@ public:
             action_->isDeleted = true;
         }
     }
-    
+
     /**
      * @brief Returns containing value.
      *
      * @return The value passed to the constructor.
-     */        
+     */
     int32_t getValue() const
     {
         return value_;
     }
-    
+
 private:
 
     int32_t value_;
@@ -122,10 +122,10 @@ private:
 /**
  * @brief Creates UniquePointer for ManagedObject.
  *
- * @param value A value to containt as member.    
+ * @param value A value to containt as member.
  * @param action Flags will be set on actions.
  * @return Created object by rvalue.
- */        
+ */
 UniquePointer<ManagedObject> createObject(int32_t const value = 0, ManagedAction* const action = NULLPTR)
 {
     return UniquePointer<ManagedObject>(new ManagedObject(value, action));
@@ -139,7 +139,7 @@ template <typename T>
 class TestUniquePointer : public UniquePointer<T>
 {
     typedef UniquePointer<T> Parent;
-    
+
 public:
 
     /**
@@ -153,7 +153,7 @@ public:
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);
-    }    
+    }
 };
 
 } // namespace
@@ -170,12 +170,12 @@ public:
  *
  * @b Assert:
  *      - Test the object is constructed.
- *      - Test the pointer is NULLPTR. 
+ *      - Test the pointer is NULLPTR.
  */
 TEST_F(lib_UniquePointerTest, Constructor_nullptr)
 {
     UniquePointer<ManagedObject> const obj(NULLPTR);
-    EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";    
+    EXPECT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj.get(), NULLPTR) << "Fatal: Unique pointer does not equal to NULLPTR";
 }
 
@@ -211,11 +211,11 @@ TEST_F(lib_UniquePointerTest, Constructor_pointer)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Construct an object 2 with casting an object 1. 
+ *      - Construct an object 2 with casting an object 1.
  *
  * @b Assert:
  *      - Test the object 2 is constructed.
- *      - Test the object 1 is not constructed after the casting. 
+ *      - Test the object 1 is not constructed after the casting.
  */
 TEST_F(lib_UniquePointerTest, MoveConstructor)
 {
@@ -235,7 +235,7 @@ TEST_F(lib_UniquePointerTest, MoveConstructor)
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: Object 1 is not move casted to object 2";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
-    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";        
+    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";
     EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
     EXPECT_FALSE(obj1.isConstructed()) << "Fatal: Object 1 is constructed after movement to object 2";
@@ -266,10 +266,10 @@ TEST_F(lib_UniquePointerTest, MoveAssignment)
     ManagedAction action1;
     UniquePointer<ManagedObject> obj1(new ManagedObject(VALUE1, &action1));
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Fatal: Wrong value containing in managed object";
-    EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";        
+    EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was deleted";
     // Test if an obj moved to rvalue, and the rvalue assigned to obj1
-    const int32_t VALUE3(3);       
-    ManagedAction action3;    
+    const int32_t VALUE3(3);
+    ManagedAction action3;
     obj1 = createObject(VALUE3, &action3);
     EXPECT_TRUE(obj1.isConstructed()) << "Fatal: An object is not moved to rvalue, and the rvalue is not assigned to object 1";
     EXPECT_FALSE(obj1.isNull()) << "Error: object 1 is null";
@@ -277,12 +277,12 @@ TEST_F(lib_UniquePointerTest, MoveAssignment)
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj1->getValue(), VALUE3) << "Fatal: Wrong value containing in managed object";
     EXPECT_TRUE(action1.isDeleted) << "Fatal: Managed object was not deleted";
-    EXPECT_FALSE(action3.isDeleted) << "Fatal: Managed object was deleted";    
+    EXPECT_FALSE(action3.isDeleted) << "Fatal: Managed object was deleted";
     // Test if obj1 moved with lvalue to obj2
-    const int32_t VALUE2(2);    
-    ManagedAction action2;    
+    const int32_t VALUE2(2);
+    ManagedAction action2;
     UniquePointer<ManagedObject> obj2(new ManagedObject(VALUE2, &action2));
-    EXPECT_EQ(obj2->getValue(), VALUE2) << "Fatal: Wrong value containing in managed object";        
+    EXPECT_EQ(obj2->getValue(), VALUE2) << "Fatal: Wrong value containing in managed object";
     obj2 = lib::move(obj1);
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with lvalue";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
@@ -296,13 +296,13 @@ TEST_F(lib_UniquePointerTest, MoveAssignment)
     EXPECT_TRUE(action2.isDeleted) << "Fatal: Managed object was not deleted";
     EXPECT_FALSE(action3.isDeleted) << "Fatal: Managed object was deleted";
     // Test if an obj1 cannot be recovered
-    ManagedAction action4;    
+    ManagedAction action4;
     obj1 = lib::move(UniquePointer<ManagedObject>(new ManagedObject(&action4)));
     EXPECT_FALSE(obj1.isConstructed()) << "Fatal: An object 1 is re-constructed but it was moved";
     EXPECT_TRUE(obj1.isNull()) << "Error: object 1 is not null";
     EXPECT_FALSE(obj1.isUnique()) << "Error: object 1 is unique";
     EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of unique objects managing object is wrong";
-    EXPECT_TRUE(action4.isDeleted) << "Fatal: Managed object was not deleted";    
+    EXPECT_TRUE(action4.isDeleted) << "Fatal: Managed object was not deleted";
     // Test if an obj moved with rvalue to obj2
     const int32_t VALUE5(5);
     ManagedAction action5;
@@ -310,29 +310,29 @@ TEST_F(lib_UniquePointerTest, MoveAssignment)
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with rvalue of a moved object";
     EXPECT_FALSE(obj2.isNull()) << "Error: object 2 is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: object 2 is not unique";
-    EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";    
+    EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj2->getValue(), VALUE5) << "Fatal: Wrong value containing in managed object";
-    EXPECT_TRUE(action3.isDeleted) << "Fatal: Managed object was not deleted";        
-    EXPECT_FALSE(action5.isDeleted) << "Fatal: Managed object was deleted";    
+    EXPECT_TRUE(action3.isDeleted) << "Fatal: Managed object was not deleted";
+    EXPECT_FALSE(action5.isDeleted) << "Fatal: Managed object was deleted";
     // Test if an obj moved with rvalue to obj2
     obj2 = lib::move(UniquePointer<ManagedObject>());
     EXPECT_TRUE(obj2.isConstructed()) << "Fatal: An object 2 is not constructed with rvalue of a moved object";
     EXPECT_TRUE(obj2.isNull()) << "Error: object 2 is not null";
     EXPECT_FALSE(obj2.isUnique()) << "Error: object 2 is unique";
     EXPECT_EQ(obj2.getCount(), 0) << "Error: Amount of unique objects managing object is wrong";
-    EXPECT_TRUE(action5.isDeleted) << "Fatal: Managed object was not deleted";    
+    EXPECT_TRUE(action5.isDeleted) << "Fatal: Managed object was not deleted";
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Destruct the object. 
+ *      - Destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -345,14 +345,14 @@ TEST_F(lib_UniquePointerTest, isConstructed)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test the protected function changes constructed status of object. 
+ * @brief Test the protected function changes constructed status of object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Delete and destruct the object. 
+ *      - Delete and destruct the object.
  *
  * @b Assert:
  *      - Test if the object construction flag changes.
@@ -391,11 +391,11 @@ TEST_F(lib_UniquePointerTest, get)
     EXPECT_EQ(obj1.get(), ptr) << "Fatal: Unique pointer does not equal to its raw pointer";
     EXPECT_EQ(obj1.get()->getValue(), VALUE) << "Fatal: Value in managed object is wrong";
     UniquePointer<ManagedObject> obj2;
-    ASSERT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";    
+    ASSERT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj2.get(), NULLPTR) << "Fatal: Unique pointer does not equal to its raw pointer";
     UniquePointer<ManagedObject> obj3(NULLPTR);
     ASSERT_TRUE(obj3.isConstructed()) << "Error: Object is not constructed";
-    EXPECT_EQ(obj3.get(), NULLPTR) << "Fatal: Unique pointer does not equal to its raw pointer";    
+    EXPECT_EQ(obj3.get(), NULLPTR) << "Fatal: Unique pointer does not equal to its raw pointer";
 }
 
 /**
@@ -454,7 +454,7 @@ TEST_F(lib_UniquePointerTest, reset_withOther)
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
-    
+
     const int32_t VALUE2(2);
     ManagedAction action2;
     obj1.reset(new ManagedObject(VALUE2, &action2));
@@ -462,9 +462,9 @@ TEST_F(lib_UniquePointerTest, reset_withOther)
     EXPECT_FALSE(obj1.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: Object is not unique";
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
-    EXPECT_EQ(obj1->getValue(), VALUE2) << "Error: Wrong value containing in managed object";    
+    EXPECT_EQ(obj1->getValue(), VALUE2) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action2.isDeleted) << "Error: Managed object was deleted";
-    EXPECT_TRUE(action1.isDeleted) << "Error: Managed object was not deleted";    
+    EXPECT_TRUE(action1.isDeleted) << "Error: Managed object was not deleted";
 }
 
 /**
@@ -495,7 +495,7 @@ TEST_F(lib_UniquePointerTest, swap)
 
     const int32_t VALUE2(2);
     ManagedAction action2;
-    ManagedObject* ptr2(new ManagedObject(VALUE2, &action2));    
+    ManagedObject* ptr2(new ManagedObject(VALUE2, &action2));
     UniquePointer<ManagedObject> obj2(ptr2);
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj2.isNull()) << "Error: Object is null";
@@ -503,7 +503,7 @@ TEST_F(lib_UniquePointerTest, swap)
     EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj2->getValue(), VALUE2) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action2.isDeleted) << "Error: Managed object was deleted";
-    
+
     obj1.swap(obj2);
 
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
@@ -513,37 +513,37 @@ TEST_F(lib_UniquePointerTest, swap)
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj1->getValue(), VALUE2) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action2.isDeleted) << "Error: Managed object was deleted";
-    
+
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj2.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: Object is not unique";
-    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";    
+    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";
     EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
-    
+
     obj1.reset();
-    
+
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_TRUE(obj1.isNull()) << "Error: Object is not null";
     EXPECT_FALSE(obj1.isUnique()) << "Error: Object is unique";
     EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_TRUE(action2.isDeleted) << "Error: Managed object was deleted";
-    
+
     EXPECT_TRUE(obj2.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj2.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj2.isUnique()) << "Error: Object is not unique";
-    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";        
+    EXPECT_EQ(obj2.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";
     EXPECT_EQ(obj2.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj2->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
-    
-    obj1.swap(obj2);    
+
+    obj1.swap(obj2);
 
     EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
     EXPECT_FALSE(obj1.isNull()) << "Error: Object is null";
     EXPECT_TRUE(obj1.isUnique()) << "Error: Object is not unique";
-    EXPECT_EQ(obj1.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";        
+    EXPECT_EQ(obj1.get(), ptr1) << "Fatal: Unique pointer does not equal to expected value";
     EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
     EXPECT_EQ(obj1->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
     EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
@@ -556,7 +556,7 @@ TEST_F(lib_UniquePointerTest, swap)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test counter of unique objects for the managed object. 
+ * @brief Test counter of unique objects for the managed object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -578,16 +578,16 @@ TEST_F(lib_UniquePointerTest, getCount)
     {
         ManagedAction action1;
         UniquePointer<ManagedObject>* obj1( new UniquePointer<ManagedObject>(new ManagedObject(&action1)) );
-        EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was unexpectedly deleted";    
+        EXPECT_FALSE(action1.isDeleted) << "Fatal: Managed object was unexpectedly deleted";
         EXPECT_EQ(obj1->getCount(), 1) << "Fatal: Amount of unique objects managing object is wrong";
         delete obj1;
-        EXPECT_TRUE(action1.isDeleted) << "Fatal: Managed object was not deleted";  
+        EXPECT_TRUE(action1.isDeleted) << "Fatal: Managed object was not deleted";
     }
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test if unique pointer manages an object. 
+ * @brief Test if unique pointer manages an object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -610,7 +610,7 @@ TEST_F(lib_UniquePointerTest, isNull)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Tests if unique pointer is only one manages an object. 
+ * @brief Tests if unique pointer is only one manages an object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -631,7 +631,7 @@ TEST_F(lib_UniquePointerTest, isUnique)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Tests if pointer is released by unique pointer. 
+ * @brief Tests if pointer is released by unique pointer.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -655,7 +655,7 @@ TEST_F(lib_UniquePointerTest, release)
         EXPECT_EQ(obj1.getCount(), 1) << "Error: Amount of unique objects managing object is wrong";
         EXPECT_EQ(obj1->getValue(), VALUE1) << "Error: Wrong value containing in managed object";
         EXPECT_FALSE(action1.isDeleted) << "Error: Managed object was deleted";
-        
+
         ManagedObject* ptr2(obj1.release());
         EXPECT_TRUE(obj1.isConstructed()) << "Error: Object is not constructed";
         EXPECT_TRUE(obj1.isNull()) << "Error: Object is not null";
@@ -670,15 +670,15 @@ TEST_F(lib_UniquePointerTest, release)
         EXPECT_TRUE(obj1.isNull()) << "Error: Object is not null";
         EXPECT_FALSE(obj1.isUnique()) << "Error: Object is unique";
         EXPECT_EQ(obj1.getCount(), 0) << "Error: Amount of unique objects managing object is wrong";
-        
-        ManagedObject* ptr2(obj1.release());        
+
+        ManagedObject* ptr2(obj1.release());
         EXPECT_EQ(ptr2, NULLPTR) << "Error: Released raw pointers doesn't equal to null";
     }
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test operator (->). 
+ * @brief Test operator (->).
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -699,7 +699,7 @@ TEST_F(lib_UniquePointerTest, operator_arrow)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test operator (*). 
+ * @brief Test operator (*).
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -714,13 +714,13 @@ TEST_F(lib_UniquePointerTest, operator_star)
 {
     int32_t const value(0x7E63ABCD);
     UniquePointer<ManagedObject> const obj(new ManagedObject(value));
-    ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";    
+    ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ((*obj).getValue(), value) << "Fatal: Value in managed object is wrong";
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test cast operator to bool type. 
+ * @brief Test cast operator to bool type.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -743,7 +743,7 @@ TEST_F(lib_UniquePointerTest, operator_bool)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test operator ([]) and array managment. 
+ * @brief Test operator ([]) and array managment.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -761,18 +761,18 @@ TEST_F(lib_UniquePointerTest, operator_squareBrackets)
     ASSERT_TRUE(obj.isConstructed()) << "Error: Object is not constructed";
     EXPECT_EQ(obj[0], arr[0]) << "Fatal: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Fatal: Wrong value of element 1";
-    EXPECT_EQ(obj[2], arr[2]) << "Fatal: Wrong value of element 2";    
+    EXPECT_EQ(obj[2], arr[2]) << "Fatal: Wrong value of element 2";
     obj[0] = 111;
     obj[1] = 222;
-    obj[2] = 333;    
+    obj[2] = 333;
     EXPECT_EQ(obj[0], arr[0]) << "Fatal: Wrong value of element 0";
     EXPECT_EQ(obj[1], arr[1]) << "Fatal: Wrong value of element 1";
-    EXPECT_EQ(obj[2], arr[2]) << "Fatal: Wrong value of element 2";        
+    EXPECT_EQ(obj[2], arr[2]) << "Fatal: Wrong value of element 2";
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test operator equal. 
+ * @brief Test operator equal.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -787,14 +787,14 @@ TEST_F(lib_UniquePointerTest, operator_equal)
 {
     UniquePointer<ManagedObject> const obj1(new ManagedObject());
     UniquePointer<ManagedObject> const obj2(new ManagedObject());
-    UniquePointer<ManagedObject> const obj3;    
+    UniquePointer<ManagedObject> const obj3;
     EXPECT_FALSE( obj1 == obj2 ) << "Fatal: Objects equal each other";
     EXPECT_FALSE( obj1 == obj3 ) << "Fatal: Objects equal each other";
 }
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test operator equal. 
+ * @brief Test operator equal.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -816,7 +816,7 @@ TEST_F(lib_UniquePointerTest, operator_unequal)
 
 /**
  * @relates lib_UniquePointerTest
- * @brief Test SmartPointer interface. 
+ * @brief Test SmartPointer interface.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
@@ -829,13 +829,13 @@ TEST_F(lib_UniquePointerTest, operator_unequal)
  */
 TEST_F(lib_UniquePointerTest, smartPointer)
 {
-    ManagedObject* const ptr(new ManagedObject());    
+    ManagedObject* const ptr(new ManagedObject());
     UniquePointer<ManagedObject> obj(ptr);
     api::SmartPointer<ManagedObject>& smrt(obj);
     EXPECT_TRUE(smrt.isConstructed()) << "Fatal: Object is not constructed";
     EXPECT_EQ(smrt.get(), ptr) << "Fatal: Unique pointer does not equal to its raw pointer";
     EXPECT_EQ(smrt.getCount(), 1) << "Fatal: Amount of unique objects managing object is wrong";
-    EXPECT_FALSE(smrt.isNull()) << "Fatal: Unique pointer is null";    
+    EXPECT_FALSE(smrt.isNull()) << "Fatal: Unique pointer is null";
 }
 
 } // namespace lib

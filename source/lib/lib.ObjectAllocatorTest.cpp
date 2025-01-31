@@ -28,7 +28,7 @@ protected:
      */
     class TestAllocator
     {
-    
+
     public:
 
         static const uintptr_t ADDRESS = 0x12345678;
@@ -43,7 +43,7 @@ protected:
         {
             return reinterpret_cast<void*>( ADDRESS );
         }
-    
+
         /**
          * @brief Frees allocated memory.
          *
@@ -56,9 +56,9 @@ protected:
     };
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
+};
 
 /**
  * @relates lib_ObjectAllocatorTest
@@ -78,13 +78,13 @@ TEST_F(lib_ObjectAllocatorTest, allocation)
     {
         void* addr( reinterpret_cast<void*>( TestAllocator::ADDRESS ) );
         void* mem = ObjectAllocator<TestAllocator>::operator new(100500);
-        EXPECT_EQ(mem, addr) << "Fatal: Memory is not allocated";            
+        EXPECT_EQ(mem, addr) << "Fatal: Memory is not allocated";
         ObjectAllocator<TestAllocator>::operator delete(mem);
     }
     {
         void* addr( reinterpret_cast<void*>( TestAllocator::ADDRESS + 500 ) );
         void* mem = ObjectAllocator<TestAllocator>::operator new(100500, addr);
-        EXPECT_EQ(mem, addr) << "Fatal: Memory is not allocated";            
+        EXPECT_EQ(mem, addr) << "Fatal: Memory is not allocated";
         ObjectAllocator<TestAllocator>::operator delete(NULLPTR, mem);
     }
 }

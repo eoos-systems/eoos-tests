@@ -14,7 +14,7 @@ add_executable(UnitTests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.BufferDynamicTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.CharTraitTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.CircularListTest.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.FifoTest.cpp"    
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.FifoTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.GuardTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.HeapTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.LinkedListTest.cpp"
@@ -52,12 +52,12 @@ if(NOT EOOS_CMAKE_TARGET_OS STREQUAL "KOS")
     set_target_properties(UnitTests PROPERTIES
         OUTPUT_NAME EoosTests
     )
-    
+
     add_test(
         NAME test-eoos-unit-tests
         COMMAND UnitTests
     )
-    
+
     install(
         TARGETS UnitTests
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

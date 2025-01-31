@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2023, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib.NoAllocator`. 
+ * @brief Unit tests of `lib.NoAllocator`.
  */
 #include "lib.NoAllocator.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_NoAllocator
  * @test NoAllocator
@@ -22,10 +22,10 @@ class lib_NoAllocator : public ::testing::Test
 {
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
-};    
-    
+
+    System eoos_; ///< EOOS Operating System.
+};
+
 /**
  * @relates lib_NoAllocator
  * @brief Tests no memory allocation.
@@ -41,7 +41,7 @@ private:
  */
 TEST_F(lib_NoAllocator, allocate)
 {
-    EXPECT_EQ(NoAllocator::allocate(0), NULLPTR) << "Fatal: Memory allocated";    
+    EXPECT_EQ(NoAllocator::allocate(0), NULLPTR) << "Fatal: Memory allocated";
     EXPECT_EQ(NoAllocator::allocate(770), NULLPTR) << "Fatal: Memory allocated";
     NoAllocator::free(NULLPTR);
 }

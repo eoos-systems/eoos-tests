@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::BaseString<char_t,0>`. 
+ * @brief Unit tests of `lib::BaseString<char_t,0>`.
  */
 #include "lib.String.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_BaseStringDynamicTest_char_t
  * @test String
@@ -22,8 +22,8 @@ class lib_BaseStringDynamicTest_char_t : public ::testing::Test
 {
 
 private:
-    
-    System eoos_; ///< EOOS Operating System.    
+
+    System eoos_; ///< EOOS Operating System.
 };
 
 namespace
@@ -58,7 +58,7 @@ public:
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);
-    }    
+    }
 };
 
 /**
@@ -118,18 +118,18 @@ TEST_F(lib_BaseStringDynamicTest_char_t, Constructor)
     {
         String const obj( 12345678, static_cast<Number::Base>(32) );
         EXPECT_FALSE(obj.isConstructed()) << "Fatal: String is constructed";
-    }    
+    }
     {
         String const tmp( "ABC" );
         api::String<char_t> const& itmp( tmp );
         String const obj( itmp );
         EXPECT_TRUE(tmp.isConstructed()) << "Fatal: String is not constructed";
-        EXPECT_TRUE(obj.isConstructed()) << "Fatal: String is not constructed";        
-    }    
+        EXPECT_TRUE(obj.isConstructed()) << "Fatal: String is not constructed";
+    }
     {
         String const tmp( "ABC" );
         String const obj( tmp );
-        EXPECT_TRUE(tmp.isConstructed()) << "Fatal: String is not constructed";        
+        EXPECT_TRUE(tmp.isConstructed()) << "Fatal: String is not constructed";
         EXPECT_TRUE(obj.isConstructed()) << "Fatal: String is not constructed";
     }
     {
@@ -147,7 +147,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, Constructor)
  *
  * @b Act:
  *      - Consctuct an object of the class with user defined construct.
- *      - Consctuct an object of the class with copy construct. 
+ *      - Consctuct an object of the class with copy construct.
  *
  * @b Assert:
  *      - Test the objects are constructed.
@@ -160,12 +160,12 @@ TEST_F(lib_BaseStringDynamicTest_char_t, CopyConstructor)
         EXPECT_TRUE(tmp.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(tmp.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(tmp.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(tmp.isEmpty())           << "Fatal: String is empty";                                
+        EXPECT_FALSE(tmp.isEmpty())           << "Fatal: String is empty";
         EXPECT_TRUE(obj.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
-        EXPECT_NE(obj.getChar(), tmp.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
+        EXPECT_NE(obj.getChar(), tmp.getChar()) << "Fatal: String addresses are the same";
     }
     {
         TestString tmp( ALPHABET );
@@ -183,11 +183,11 @@ TEST_F(lib_BaseStringDynamicTest_char_t, CopyConstructor)
     {
         String const tmp( ALPHABET );
         TestString obj( tmp );
-        obj.setConstructed(false);        
+        obj.setConstructed(false);
         EXPECT_TRUE(tmp.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(tmp.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(tmp.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(tmp.isEmpty())           << "Fatal: String is empty";                                
+        EXPECT_FALSE(tmp.isEmpty())           << "Fatal: String is empty";
         EXPECT_FALSE(obj.isConstructed())     << "Fatal: String is constructed";
         EXPECT_STREQ(obj.getChar(), NULLPTR)  << "Fatal: String is not null";
         EXPECT_EQ(obj.getLength(), 0)         << "Fatal: String length is not 0";
@@ -205,18 +205,18 @@ TEST_F(lib_BaseStringDynamicTest_char_t, CopyConstructor)
  * @b Act:
  *      - Construct an object 1, 2, and 3.
  *      - Assign the object 1 to the object 2.
- *      - Assign the object 1 to the object 3. 
+ *      - Assign the object 1 to the object 3.
  *
  * @b Assert:
  *      - Test the objects are constructed.
- *      - Test the pointer are correct. 
+ *      - Test the pointer are correct.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, CopyAssignment)
 {
     {
         String const obj1( ALPHABET );
         String obj2;
-        String obj3( "ABCDEFGHIJKLM" );        
+        String obj3( "ABCDEFGHIJKLM" );
         obj2 = obj1;
         obj3 = obj1;
 
@@ -237,7 +237,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, CopyAssignment)
 
         EXPECT_NE(obj1.getChar(), obj2.getChar()) << "Fatal: String addresses are the same";
         EXPECT_NE(obj1.getChar(), obj3.getChar()) << "Fatal: String addresses are the same";
-    }    
+    }
     {
         TestString obj1( ALPHABET );
         obj1.setConstructed(false);
@@ -294,7 +294,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, MoveConstructor)
         EXPECT_TRUE(obj.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
 }
 
@@ -326,9 +326,9 @@ TEST_F(lib_BaseStringDynamicTest_char_t, MoveAssignment)
         EXPECT_TRUE(obj.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
-    {       
+    {
         String tmp( ALPHABET );
         String obj( "ABCDEFGHIJKLM" );
         obj = move(tmp);
@@ -339,7 +339,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, MoveAssignment)
         EXPECT_TRUE(obj.isConstructed())      << "Fatal: String is not constructed";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
 }
 
@@ -363,56 +363,56 @@ TEST_F(lib_BaseStringDynamicTest_char_t, getChar_getLength_isEmpty)
         ASSERT_NE(obj.getChar(), NULLPTR) << "Fatal: String is null";
         EXPECT_STREQ(obj.getChar(), "")   << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 0)     << "Fatal: String has wrong length";
-        EXPECT_TRUE(obj.isEmpty())        << "Fatal: String is not empty";        
+        EXPECT_TRUE(obj.isEmpty())        << "Fatal: String is not empty";
     }
     {
         String const obj( "ABC" );
         ASSERT_NE(obj.getChar(), NULLPTR)  << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "ABC") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 3)      << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())        << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())        << "Fatal: String is empty";
     }
     {
         String const obj( ALPHABET );
         ASSERT_NE(obj.getChar(), NULLPTR)     << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
     {
         String const obj( 1234567890 );
         ASSERT_NE(obj.getChar(), NULLPTR)         << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "1234567890") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 10)            << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";                        
-    }    
+        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";
+    }
     {
         String const obj( 2147483647, Number::BASE_2 );
         ASSERT_NE(obj.getChar(), NULLPTR)         << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "1111111111111111111111111111111") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 31)            << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";
     }
     {
         String const obj( 2147483647, Number::BASE_8 );
         ASSERT_NE(obj.getChar(), NULLPTR)          << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "17777777777") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 11)             << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())                << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())                << "Fatal: String is empty";
     }
     {
         String const obj( 2147483647, Number::BASE_10 );
         ASSERT_NE(obj.getChar(), NULLPTR)         << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "2147483647") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 10)            << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())               << "Fatal: String is empty";
     }
     {
         String const obj( 2147483647, Number::BASE_16 );
         ASSERT_NE(obj.getChar(), NULLPTR)       << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), "7fffffff") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 8)           << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())             << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())             << "Fatal: String is empty";
     }
     {
         String const tmp( ALPHABET );
@@ -421,7 +421,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, getChar_getLength_isEmpty)
         ASSERT_NE(obj.getChar(), NULLPTR)     << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
     {
         String const tmp( ALPHABET );
@@ -429,13 +429,13 @@ TEST_F(lib_BaseStringDynamicTest_char_t, getChar_getLength_isEmpty)
         ASSERT_NE(obj.getChar(), NULLPTR)     << "Fatal: C-String is null";
         EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26)        << "Fatal: String has wrong length";
-        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";                        
+        EXPECT_FALSE(obj.isEmpty())           << "Fatal: String is empty";
     }
     {
         char_t str[4] = {'A','B','C','\0'};
         String const obj( str );
         ASSERT_NE(obj.getChar(), NULLPTR)  << "Fatal: C-String is null";
-        EXPECT_STREQ(obj.getChar(), "ABC") << "Fatal: String has wrong characters";  
+        EXPECT_STREQ(obj.getChar(), "ABC") << "Fatal: String has wrong characters";
         EXPECT_NE(obj.getChar(), str)      << "Fatal: String addresses are the same";
         EXPECT_EQ(obj.getLength(), 3)      << "Fatal: String has wrong length";
         EXPECT_FALSE(obj.isEmpty())        << "Fatal: String is empty";
@@ -486,7 +486,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy)
         EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
-        String dst( "ABC" );        
+        String dst( "ABC" );
         String const src( "DEFG" );
         res = dst.copy(src);
         EXPECT_TRUE(res) << "Fatal: Copy is not done";
@@ -495,7 +495,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy)
         EXPECT_EQ(dst.getLength(), 4)       << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 4)       << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())         << "Fatal: String is empty";
-        EXPECT_FALSE(src.isEmpty())         << "Fatal: String is empty";        
+        EXPECT_FALSE(src.isEmpty())         << "Fatal: String is empty";
         EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
@@ -509,7 +509,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy)
         EXPECT_EQ(src.getLength(), 23)      << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())        << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst("ABCDEFGHIJKLM");
@@ -522,7 +522,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy)
         EXPECT_EQ(src.getLength(), 13)      << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())        << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
 }
 
@@ -545,7 +545,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_unconstructed)
     {
         TestString dst;
         dst.setConstructed(false);
-        String const src( "ABC" );        
+        String const src( "ABC" );
         res = dst.copy(src);
         EXPECT_FALSE(res) << "Fatal: Copy is done";
         EXPECT_STREQ(dst.getChar(), NULLPTR) << "Fatal: String is copied";
@@ -553,8 +553,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_unconstructed)
         EXPECT_EQ(dst.getLength(), 0)        << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 3)        << "Fatal: String has wrong length";
         EXPECT_TRUE(dst.isEmpty())           << "Fatal: String is not empty";
-        EXPECT_FALSE(src.isEmpty())          << "Fatal: String is empty";        
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_FALSE(src.isEmpty())          << "Fatal: String is empty";
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst( "ABC" );
@@ -567,8 +567,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_unconstructed)
         EXPECT_EQ(dst.getLength(), 3)        << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 0)        << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())          << "Fatal: String is empty";
-        EXPECT_TRUE(src.isEmpty())           << "Fatal: String is empty";        
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_TRUE(src.isEmpty())           << "Fatal: String is empty";
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
 }
 
@@ -590,8 +590,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_banana)
     // The '🍌' character in:
     // UTF-8  Encoding: 0xF0 0x9F 0x8D 0x8C
     // UTF-16 Encoding: 0xD83C 0xDF4C
-    // UTF-32 Encoding: 0x0001F34C    
-    bool_t res( false );      
+    // UTF-32 Encoding: 0x0001F34C
+    bool_t res( false );
     String dst;
     String const src( "🍌" );
     res = dst.copy(src);
@@ -601,7 +601,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_banana)
     EXPECT_EQ(dst.getLength(), 4)     << "Fatal: String has wrong length";
     EXPECT_EQ(src.getLength(), 4)     << "Fatal: String has wrong length";
     EXPECT_FALSE(dst.isEmpty())       << "Fatal: String is empty";
-    EXPECT_FALSE(src.isEmpty())       << "Fatal: String is empty";    
+    EXPECT_FALSE(src.isEmpty())       << "Fatal: String is empty";
     EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
 }
 
@@ -632,7 +632,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenate)
         EXPECT_EQ(src.getLength(), 3)     << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())       << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())       << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst( "A" );
@@ -644,7 +644,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenate)
         EXPECT_EQ(dst.getLength(), 3)      << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 2)      << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())        << "Fatal: String is empty";
-        EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";        
+        EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";
         EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
@@ -658,7 +658,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenate)
         EXPECT_EQ(src.getLength(), 23)      << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())        << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst("ABCDEFGHIJKLM");
@@ -671,8 +671,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenate)
         EXPECT_EQ(src.getLength(), 13)      << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())        << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())        << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
-    }    
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
+    }
 }
 
 /**
@@ -694,7 +694,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_unconstructed)
     {
         TestString dst;
         dst.setConstructed(false);
-        String const src( "ABC" );        
+        String const src( "ABC" );
         res = dst.concatenate(src);
         EXPECT_FALSE(res) << "Fatal: Concatenation is done";
         EXPECT_STREQ(dst.getChar(), NULLPTR) << "Fatal: String is copied";
@@ -702,8 +702,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_unconstructed)
         EXPECT_EQ(dst.getLength(), 0)        << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 3)        << "Fatal: String has wrong length";
         EXPECT_TRUE(dst.isEmpty())           << "Fatal: String is not empty";
-        EXPECT_FALSE(src.isEmpty())          << "Fatal: String is empty";        
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_FALSE(src.isEmpty())          << "Fatal: String is empty";
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst( "AB" );
@@ -716,8 +716,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_unconstructed)
         EXPECT_EQ(dst.getLength(), 2)        << "Fatal: String has wrong length";
         EXPECT_EQ(src.getLength(), 0)        << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())          << "Fatal: String is empty";
-        EXPECT_TRUE(src.isEmpty())           << "Fatal: String is empty";        
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_TRUE(src.isEmpty())           << "Fatal: String is empty";
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
 }
 
@@ -739,8 +739,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_banana)
     // The '🍌' character in:
     // UTF-8  Encoding: 0xF0 0x9F 0x8D 0x8C
     // UTF-16 Encoding: 0xD83C 0xDF4C
-    // UTF-32 Encoding: 0x0001F34C    
-    bool_t res( false );      
+    // UTF-32 Encoding: 0x0001F34C
+    bool_t res( false );
     String dst( "\xF0\x9F" );
     String const src( "\x8D\x8C" );
     res = dst.concatenate(src);
@@ -779,7 +779,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo)
         res = dst.isEqualTo(src);
         EXPECT_FALSE(res) << "Fatal: Strings equal to each other";
         EXPECT_STRNE(dst.getChar(), src.getChar()) << "Fatal: Strings equal to each other";
-    }    
+    }
     {
         String const dst( "AB" );
         String const src( "CD" );
@@ -810,7 +810,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo)
  *      - Test the object is correct.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo_unconstructed)
-{   
+{
     bool_t res( false );
     {
         TestString dst( "AB" );
@@ -823,7 +823,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo_unconstructed)
     {
         String dst( "AB" );
         TestString src( "AB" );
-        src.setConstructed(false);        
+        src.setConstructed(false);
         res = dst.isEqualTo(src);
         EXPECT_FALSE(res) << "Fatal: Strings equal to each other";
         EXPECT_STRNE(dst.getChar(), src.getChar()) << "Fatal: Strings equal to each other";
@@ -841,7 +841,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo_unconstructed)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_int8)
 {
@@ -849,29 +849,29 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int8)
     bool_t res( false );
 
     int8_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = -1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";
 
     val = 0x7A;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "7a") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "7a") << "Fatal: String is wrong";
 
     val = 127;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "127") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "127") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7f") << "Fatal: String is wrong";
@@ -887,20 +887,20 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int8)
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "-127") << "Fatal: String is wrong";
 
-    obj = String(ALPHABET);    
+    obj = String(ALPHABET);
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 
     // Test the Exception 1
     val = -128;
     res = obj.convert(val, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
-   
+
     // Test the Exception 2
-    val = -127;    
+    val = -127;
     res = obj.convert(val, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
@@ -923,7 +923,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int8)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint8)
 {
@@ -931,24 +931,24 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint8)
     bool_t res( false );
 
     uint8_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = 0xAB;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "ab") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "ab") << "Fatal: String is wrong";
 
     val = 127;
-    res = obj.convert(val);   
+    res = obj.convert(val);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "127") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "127") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7f") << "Fatal: String is wrong";
@@ -977,7 +977,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint8)
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 }
 
 /**
@@ -991,7 +991,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint8)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_int16)
 {
@@ -999,29 +999,29 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int16)
     bool_t res( false );
 
     int16_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = -1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";
 
     val = 0x7ABC;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "7abc") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "7abc") << "Fatal: String is wrong";
 
     val = 32767;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "32767") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "32767") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fff") << "Fatal: String is wrong";
@@ -1036,21 +1036,21 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int16)
     res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "-32767") << "Fatal: String is wrong";
-    
-    obj = String(ALPHABET);    
+
+    obj = String(ALPHABET);
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 
     // Test the Exception 1
     val = -32768;
     res = obj.convert(val, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
-   
+
     // Test the Exception 2
-    val = -32767;    
+    val = -32767;
     res = obj.convert(val, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
@@ -1073,7 +1073,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int16)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint16)
 {
@@ -1081,24 +1081,24 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint16)
     bool_t res( false );
 
     uint16_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = 0xABCD;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "abcd") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "abcd") << "Fatal: String is wrong";
 
     val = 32767;
-    res = obj.convert(val);   
+    res = obj.convert(val);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "32767") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "32767") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fff") << "Fatal: String is wrong";
@@ -1127,7 +1127,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint16)
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 }
 
 /**
@@ -1141,7 +1141,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint16)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_int32)
 {
@@ -1149,29 +1149,29 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int32)
     bool_t res( false );
 
     int32_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = -1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";
 
     val = 0x00ABCDEF;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "abcdef") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "abcdef") << "Fatal: String is wrong";
 
     val = 2147483647;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "2147483647") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "2147483647") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fffffff") << "Fatal: String is wrong";
@@ -1186,21 +1186,21 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int32)
     res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "-2147483647") << "Fatal: String is wrong";
-    
-    obj = String(ALPHABET);    
+
+    obj = String(ALPHABET);
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 
     // Test the Exception 1
     val = static_cast<int32_t>(0x80000000); // -2147483648
     res = obj.convert(val, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
-   
+
     // Test the Exception 2
-    val = -2147483647;    
+    val = -2147483647;
     res = obj.convert(val, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
@@ -1223,7 +1223,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int32)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint32)
 {
@@ -1231,24 +1231,24 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint32)
     bool_t res( false );
 
     uint32_t val( 0 );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = 0x89ABCDEF;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "89abcdef") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "89abcdef") << "Fatal: String is wrong";
 
     val = 2147483647;
-    res = obj.convert(val);   
+    res = obj.convert(val);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "2147483647") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "2147483647") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fffffff") << "Fatal: String is wrong";
@@ -1277,7 +1277,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint32)
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 }
 
 /**
@@ -1291,7 +1291,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint32)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_int64)
 {
@@ -1299,29 +1299,29 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int64)
     bool_t res( false );
 
     int64_t val( 0LL );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1LL;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = -1LL;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "-1") << "Fatal: String is wrong";
 
     val = 0x1234567890ABCDEFLL;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1234567890abcdef") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1234567890abcdef") << "Fatal: String is wrong";
 
     val = 9223372036854775807LL;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "9223372036854775807") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "9223372036854775807") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fffffffffffffff") << "Fatal: String is wrong";
@@ -1336,19 +1336,19 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int64)
     res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "-9223372036854775807") << "Fatal: String is wrong";
-    
-    obj = String(ALPHABET);    
+
+    obj = String(ALPHABET);
     val = 123;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 
     // Test the Exception 1
     val = -9223372036854775807LL - 1LL;
     res = obj.convert(val, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
-   
+
     // Test the Exception 2
     val = -9223372036854775807LL;
     res = obj.convert(val, Number::BASE_16);
@@ -1373,7 +1373,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_int64)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in String is compare. 
+ *      - Test number in String is compare.
  */
 TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint64)
 {
@@ -1381,24 +1381,24 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint64)
     bool_t res( false );
 
     uint64_t val( 0ULL );
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "0") << "Fatal: String is wrong";
 
     val = 1ULL;
-    res = obj.convert(val, Number::BASE_10);   
+    res = obj.convert(val, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "1") << "Fatal: String is wrong";
 
     val = 0x00ABCDEFULL;
-    res = obj.convert(val, Number::BASE_16);   
+    res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "abcdef") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "abcdef") << "Fatal: String is wrong";
 
     val = 9223372036854775807ULL;
-    res = obj.convert(val);   
+    res = obj.convert(val);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), "9223372036854775807") << "Fatal: String is wrong";    
+    EXPECT_STREQ(obj.getChar(), "9223372036854775807") << "Fatal: String is wrong";
     res = obj.convert(val, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(obj.getChar(), "7fffffffffffffff") << "Fatal: String is wrong";
@@ -1427,7 +1427,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint64)
     val = 123ULL;
     res = obj.convert(val, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";        
+    EXPECT_STREQ(obj.getChar(), ALPHABET) << "Fatal: String is wrong";
 }
 
 /**
@@ -1455,7 +1455,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_equal)
         String const obj2("ABC");
         EXPECT_FALSE(obj1 == obj2) << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj1(ALPHABET);
         EXPECT_TRUE(obj1 == ALPHABET) << "Fatal: Strings don't equal to each other";
@@ -1464,7 +1464,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_equal)
         String const obj1(ALPHABET);
         EXPECT_FALSE(obj1 == "ABC") << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj2(ALPHABET);
         EXPECT_TRUE(ALPHABET == obj2) << "Fatal: Strings don't equal to each other";
@@ -1488,7 +1488,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_equal)
         api::String<char_t> const& ibj2( obj2 );
         EXPECT_FALSE(ibj1 == ibj2) << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj1(ALPHABET);
         api::String<char_t> const& ibj1( obj1 );
@@ -1499,15 +1499,15 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_equal)
         api::String<char_t> const& ibj1( obj1 );
         EXPECT_FALSE(ibj1 == "ABC") << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj2(ALPHABET);
-        api::String<char_t> const& ibj2( obj2 );        
+        api::String<char_t> const& ibj2( obj2 );
         EXPECT_TRUE(ALPHABET == ibj2) << "Fatal: Strings don't equal to each other";
     }
     {
         String const obj2(ALPHABET);
-        api::String<char_t> const& ibj2( obj2 );        
+        api::String<char_t> const& ibj2( obj2 );
         EXPECT_FALSE("ABC" == ibj2) << "Fatal: Strings equal to each other";
     }
 }
@@ -1537,7 +1537,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_unequal)
         String const obj2("ABC");
         EXPECT_TRUE(obj1 != obj2) << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj1(ALPHABET);
         EXPECT_FALSE(obj1 != ALPHABET) << "Fatal: Strings don't equal to each other";
@@ -1546,7 +1546,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_unequal)
         String const obj1(ALPHABET);
         EXPECT_TRUE(obj1 != "ABC") << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj2(ALPHABET);
         EXPECT_FALSE(ALPHABET != obj2) << "Fatal: Strings don't equal to each other";
@@ -1570,7 +1570,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_unequal)
         api::String<char_t> const& ibj2( obj2 );
         EXPECT_TRUE(ibj1 != ibj2) << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj1(ALPHABET);
         api::String<char_t> const& ibj1( obj1 );
@@ -1581,15 +1581,15 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_unequal)
         api::String<char_t> const& ibj1( obj1 );
         EXPECT_TRUE(ibj1 != "ABC") << "Fatal: Strings equal to each other";
     }
-    
+
     {
         String const obj2(ALPHABET);
-        api::String<char_t> const& ibj2( obj2 );        
+        api::String<char_t> const& ibj2( obj2 );
         EXPECT_FALSE(ALPHABET != ibj2) << "Fatal: Strings don't equal to each other";
     }
     {
         String const obj2(ALPHABET);
-        api::String<char_t> const& ibj2( obj2 );        
+        api::String<char_t> const& ibj2( obj2 );
         EXPECT_TRUE("ABC" != ibj2) << "Fatal: Strings equal to each other";
     }
 }
@@ -1619,7 +1619,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_assignment_sum)
         EXPECT_EQ(src.getLength(), 13) << "Fatal: String has wrong length";
         EXPECT_FALSE(dst.isEmpty())    << "Fatal: String is empty";
         EXPECT_FALSE(src.isEmpty())    << "Fatal: String is empty";
-        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";        
+        EXPECT_NE(dst.getChar(), src.getChar()) << "Fatal: String addresses are the same";
     }
     {
         String dst("ABCDEFGHIJKLM");
@@ -1656,7 +1656,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_sum)
     {
         String const obj1("ABCDEFGHIJKLM");
         String const obj2("NOPQRSTUVWXYZ");
-        api::String<char_t> const& ibj2(obj2);        
+        api::String<char_t> const& ibj2(obj2);
         String const obj(obj1 + ibj2);
         EXPECT_STREQ(obj.getChar(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26) << "Fatal: String has wrong length";
@@ -1665,7 +1665,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_sum)
     {
         String const obj1("ABCDEFGHIJKLM");
         String const obj2("NOPQRSTUVWXYZ");
-        api::String<char_t> const& ibj1(obj1);        
+        api::String<char_t> const& ibj1(obj1);
         String const obj(ibj1 + obj2);
         EXPECT_STREQ(obj.getChar(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ") << "Fatal: String has wrong characters";
         EXPECT_EQ(obj.getLength(), 26) << "Fatal: String has wrong length";

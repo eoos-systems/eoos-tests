@@ -22,17 +22,17 @@ class lib_ObjectTest : public ::testing::Test
 {
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
-    
-namespace 
+};
+
+namespace
 {
 
 /**
  * @brief Creates an object to test it.
  *
- * @return an object of Object class. 
+ * @return an object of Object class.
  */
 Object<> createObject()
 {
@@ -57,7 +57,7 @@ public:
     void setConstructed(bool_t const flag)
     {
         Parent::setConstructed(flag);
-    }    
+    }
 };
 
 } // namespace
@@ -78,7 +78,7 @@ public:
 TEST_F(lib_ObjectTest, Constructor)
 {
     Object<> const obj;
-    EXPECT_TRUE(obj.isConstructed())        << "Fatal: Object is not constructed";    
+    EXPECT_TRUE(obj.isConstructed())        << "Fatal: Object is not constructed";
 }
 
 /**
@@ -90,7 +90,7 @@ TEST_F(lib_ObjectTest, Constructor)
  *
  * @b Act:
  *      - Consctuct an object of the class with default construct.
- *      - Consctuct an object of the class with copy construct. 
+ *      - Consctuct an object of the class with copy construct.
  *
  * @b Assert:
  *      - Test the objects are constructed.
@@ -135,7 +135,7 @@ TEST_F(lib_ObjectTest, CopyAssignment)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Construct an object of the class with returning an object from a function using NRVO. 
+ *      - Construct an object of the class with returning an object from a function using NRVO.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -157,11 +157,11 @@ TEST_F(lib_ObjectTest, MoveConstructor_byNrvo)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Construct an object 2 with casting an object 1. 
+ *      - Construct an object 2 with casting an object 1.
  *
  * @b Assert:
  *      - Test the object 2 is constructed.
- *      - Test the object 1 is not constructed after the casting. 
+ *      - Test the object 1 is not constructed after the casting.
  */
 TEST_F(lib_ObjectTest, MoveConstructor_byCast)
 {
@@ -174,13 +174,13 @@ TEST_F(lib_ObjectTest, MoveConstructor_byCast)
 /**
  * @relates lib_ObjectTest
  * @brief Test if compiler calls move assignment operator.
- * 
+ *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Construct an object of the class with returning an object from a function using NRVO. 
- *      - Assign to the object an object returned by a function using NRVO.  
+ *      - Construct an object of the class with returning an object from a function using NRVO.
+ *      - Assign to the object an object returned by a function using NRVO.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -198,13 +198,13 @@ TEST_F(lib_ObjectTest, MoveAssignment_byNrvo)
 
 /**
  * @relates lib_ObjectTest
- * @brief Test if casting calls move assignment operator. 
+ * @brief Test if casting calls move assignment operator.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Construct two object. 
+ *      - Construct two object.
  *
  * @b Assert:
  *      - Test if the object 1 moved with lvalue to the object 2.
@@ -216,7 +216,7 @@ TEST_F(lib_ObjectTest, MoveAssignment_byCast)
     Object<> obj1;
     Object<> obj2;
     // Test if obj1 moved with lvalue to obj2
-    obj2 = lib::move(obj1);  
+    obj2 = lib::move(obj1);
     EXPECT_TRUE(obj2.isConstructed())   << "Fatal: An object 2 is not constructed with lvalue";
     EXPECT_FALSE(obj1.isConstructed())  << "Fatal: An object 1 is constructed but it was moved with lvalue";
     // Test if an obj1 cannot be recovered
@@ -224,19 +224,19 @@ TEST_F(lib_ObjectTest, MoveAssignment_byCast)
     EXPECT_FALSE(obj1.isConstructed())   << "Fatal: An object 1 is re-constructed but it was moved";
     // Test if an obj moved with rvalue to obj2
     obj2 = lib::move(Object<>());
-    EXPECT_TRUE(obj2.isConstructed())   << "Fatal: An object 2 is not constructed with rvalue of a moved object";    
+    EXPECT_TRUE(obj2.isConstructed())   << "Fatal: An object 2 is not constructed with rvalue of a moved object";
 }
 
 /**
  * @relates lib_ObjectTest
- * @brief Test if the new operator and the placement new operator. 
+ * @brief Test if the new operator and the placement new operator.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object by new.
- *      - Construct an object by placement new. 
+ *      - Construct an object by placement new.
  *
  * @b Assert:
  *      - Test if the objects are constructed.
@@ -258,14 +258,14 @@ TEST_F(lib_ObjectTest, MemoryAllocation)
 
 /**
  * @relates lib_ObjectTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Destruct the object. 
+ *      - Destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -274,22 +274,22 @@ TEST_F(lib_ObjectTest, isConstructed)
 {
     Object<> const obj;
     EXPECT_TRUE(obj.isConstructed())  << "Fatal: Object is not constructed";
-    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~Object()` 
+    // @todo Revise possibility to destruct the object by dirrect call the destructor `obj.~Object()`
     // for example and check if the object is not constructed after destruction.
-    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning 
+    // For now, declaring Object member as bool volatile isConstructed_ invokes GCC warning
     // `isConstructed_’ may be used uninitialized in this function isConstructed().
 }
 
 /**
  * @relates lib_ObjectTest
- * @brief Test if object is constructed by static object function. 
+ * @brief Test if object is constructed by static object function.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Allocate and construct an object.
- *      - Delete and destruct the object. 
+ *      - Delete and destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -305,14 +305,14 @@ TEST_F(lib_ObjectTest, isConstructed_obj)
 
 /**
  * @relates lib_ObjectTest
- * @brief Test the protected function changes constructed status of object. 
+ * @brief Test the protected function changes constructed status of object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Delete and destruct the object. 
+ *      - Delete and destruct the object.
  *
  * @b Assert:
  *      - Test if the object construction flag changes.

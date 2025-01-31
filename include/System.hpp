@@ -34,7 +34,7 @@ public:
     ~System()
     {
     }
-    
+
     /**
      * @copydoc eoos::api::Object::isConstructed()
      */
@@ -47,7 +47,7 @@ public:
      * @brief Executes the operating system.
      *
      * @param argc The number of arguments passed to the program.
-     * @param argv An array of c-string of arguments where the last one - argc + 1 is null.  
+     * @param argv An array of c-string of arguments where the last one - argc + 1 is null.
      * @return Zero, or error code if the execution has been terminated.
      */
     int32_t execute(int32_t argc, char_t* argv[])
@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    
+
     sys::System eoos_;
 
 };

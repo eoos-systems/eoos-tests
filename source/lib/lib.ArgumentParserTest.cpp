@@ -26,20 +26,20 @@ class lib_ArgumentParserTest : public ::testing::Test
 {
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
+};
 
 /**
  * @relates lib_ArgumentParserTest
- * @brief Test if object is constructed. 
+ * @brief Test if object is constructed.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Destruct the object. 
+ *      - Destruct the object.
  *
  * @b Assert:
  *      - Test if the object is constructed and destructed.
@@ -93,7 +93,7 @@ TEST_F(lib_ArgumentParserTest, isConstructed)
     }
     {
         // @note Involve ARGX to be sure a previous call with possible NULL on the same possition overrided.
-        char_t ARGX[] = {"ARGX"};    
+        char_t ARGX[] = {"ARGX"};
         char_t ARG0[] = {"ARG0"};
         char_t ARG1[] = {"ARG1"};
         char_t* argv[] = {ARG0, ARG1, ARGX};
@@ -113,14 +113,14 @@ TEST_F(lib_ArgumentParserTest, isConstructed)
 
 /**
  * @relates lib_ArgumentParserTest
- * @brief Test the protected function changes constructed status of object. 
+ * @brief Test the protected function changes constructed status of object.
  *
  * @b Arrange:
  *      - Initialize the EOOS system.
  *
  * @b Act:
  *      - Construct an object.
- *      - Get arguments. 
+ *      - Get arguments.
  *
  * @b Assert:
  *      - Test if passed agruments parsed correctly.
@@ -151,11 +151,11 @@ TEST_F(lib_ArgumentParserTest, getArguments)
         // if avoid `volatile` here or write the test like two tests above.
         // It appears with Release configuration only compiled with gcc.
         // The assumption is that gcc has a bug, but this has to be check.
-        api::List< api::String<char_t>* >* volatile args( &obj.getArguments() );        
+        api::List< api::String<char_t>* >* volatile args( &obj.getArguments() );
         EXPECT_EQ(args->getLength(), 2)  << "Fatal: Wrong argumnet number";
         EXPECT_STREQ(args->get(0)->getChar(), "ARG0") << "Fatal: Argument has wrong characters";
         EXPECT_STREQ(args->get(1)->getChar(), "ARG1") << "Fatal: Argument has wrong characters";
-    }    
+    }
 }
 
 } // namespace lib

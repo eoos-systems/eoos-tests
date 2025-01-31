@@ -20,7 +20,7 @@ namespace lib
  */
 class lib_RegisterTest : public ::testing::Test
 {
-    
+
 protected:
 
     union YourRegister
@@ -28,8 +28,8 @@ protected:
         typedef uint32_t Value;
         YourRegister(){}
         YourRegister(Value v){value = v;}
-       ~YourRegister(){}    
-      
+       ~YourRegister(){}
+
         Value value;
         struct Bit
         {
@@ -49,9 +49,9 @@ protected:
     };
 
 private:
-    
+
     System eoos_; ///< EOOS Operating System.
-};    
+};
 
 /**
  * @relates lib_RegisterTest
@@ -115,7 +115,7 @@ TEST_F(lib_RegisterTest, bit)
         EXPECT_EQ(reg.bit().ttcm , 1) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
-        
+
         reg.bit().sleep = 1;
         EXPECT_EQ(reg.bit().inrq , 0) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
@@ -222,7 +222,7 @@ TEST_F(lib_RegisterTest, bit)
         EXPECT_EQ(reg.bit().abom , 1) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().ttcm , 0) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
-        EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";        
+        EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
     }
     {
         Register<YourRegister> const reg(mem);
@@ -235,7 +235,7 @@ TEST_F(lib_RegisterTest, bit)
         EXPECT_EQ(reg.bit().abom , 0) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().ttcm , 1) << "Fatal: Value of bit is wrong";
         EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
-        EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";    
+        EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
     }
 }
 
@@ -284,7 +284,7 @@ TEST_F(lib_RegisterTest, setBit)
     const YourRegister::Value VAL(0x00000000);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
-    
+
     EXPECT_EQ(reg.bit().inrq , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().txfp , 0) << "Fatal: Value of bit is wrong";
@@ -296,7 +296,7 @@ TEST_F(lib_RegisterTest, setBit)
     EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x00000000) << "Fatal: Value of register is wrong";
-    
+
     reg.setBit(0);
     EXPECT_EQ(reg.bit().inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 0) << "Fatal: Value of bit is wrong";
@@ -322,7 +322,7 @@ TEST_F(lib_RegisterTest, setBit)
     EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x00000003) << "Fatal: Value of register is wrong";
-    
+
     reg.setBit(2);
     EXPECT_EQ(reg.bit().inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
@@ -426,7 +426,7 @@ TEST_F(lib_RegisterTest, setBit)
     EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x800080FF) << "Fatal: Value of register is wrong";
-    
+
     reg.setBit(23);
     EXPECT_EQ(reg.bit().inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
@@ -438,7 +438,7 @@ TEST_F(lib_RegisterTest, setBit)
     EXPECT_EQ(reg.bit().ttcm , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
-    EXPECT_EQ(reg.value(), 0x808080FF) << "Fatal: Value of register is wrong";    
+    EXPECT_EQ(reg.value(), 0x808080FF) << "Fatal: Value of register is wrong";
 }
 
 /**
@@ -459,7 +459,7 @@ TEST_F(lib_RegisterTest, clearBit)
     const YourRegister::Value VAL(0x808080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
-    
+
     EXPECT_EQ(reg.bit().inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().txfp , 1) << "Fatal: Value of bit is wrong";
@@ -471,7 +471,7 @@ TEST_F(lib_RegisterTest, clearBit)
     EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x808080FF) << "Fatal: Value of register is wrong";
-    
+
     reg.clearBit(0);
     EXPECT_EQ(reg.bit().inrq , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
@@ -497,7 +497,7 @@ TEST_F(lib_RegisterTest, clearBit)
     EXPECT_EQ(reg.bit().reset, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x808080FC) << "Fatal: Value of register is wrong";
-    
+
     reg.clearBit(2);
     EXPECT_EQ(reg.bit().inrq , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 0) << "Fatal: Value of bit is wrong";
@@ -601,7 +601,7 @@ TEST_F(lib_RegisterTest, clearBit)
     EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.value(), 0x00800000) << "Fatal: Value of register is wrong";
-    
+
     reg.clearBit(23);
     EXPECT_EQ(reg.bit().inrq , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 0) << "Fatal: Value of bit is wrong";
@@ -613,7 +613,7 @@ TEST_F(lib_RegisterTest, clearBit)
     EXPECT_EQ(reg.bit().ttcm , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
-    EXPECT_EQ(reg.value(), 0x00000000) << "Fatal: Value of register is wrong";    
+    EXPECT_EQ(reg.value(), 0x00000000) << "Fatal: Value of register is wrong";
 }
 
 /**
@@ -634,7 +634,7 @@ TEST_F(lib_RegisterTest, commit)
     const YourRegister::Value VAL(0x800080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
-    
+
     EXPECT_EQ(mem.bit.inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(mem.bit.sleep, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(mem.bit.txfp , 1) << "Fatal: Value of bit is wrong";
@@ -679,7 +679,7 @@ TEST_F(lib_RegisterTest, commit)
     EXPECT_EQ(mem.bit.abom , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(mem.bit.ttcm , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(mem.bit.reset, 0) << "Fatal: Value of bit is wrong";
-    EXPECT_EQ(mem.bit.dbf  , 0) << "Fatal: Value of bit is wrong";   
+    EXPECT_EQ(mem.bit.dbf  , 0) << "Fatal: Value of bit is wrong";
 }
 
 /**
@@ -700,7 +700,7 @@ TEST_F(lib_RegisterTest, fetch)
     const YourRegister::Value VAL(0x800080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
-    
+
     EXPECT_EQ(reg.bit().inrq , 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().sleep, 1) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().txfp , 1) << "Fatal: Value of bit is wrong";
@@ -745,7 +745,7 @@ TEST_F(lib_RegisterTest, fetch)
     EXPECT_EQ(reg.bit().abom , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().ttcm , 0) << "Fatal: Value of bit is wrong";
     EXPECT_EQ(reg.bit().reset, 0) << "Fatal: Value of bit is wrong";
-    EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";   
+    EXPECT_EQ(reg.bit().dbf  , 0) << "Fatal: Value of bit is wrong";
 }
 
 } // namespace lib

@@ -3,7 +3,7 @@
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2022, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::Memory`. 
+ * @brief Unit tests of `lib::Memory`.
  */
 #include "lib.Memory.hpp"
 #include "System.hpp"
@@ -12,7 +12,7 @@ namespace eoos
 {
 namespace lib
 {
-    
+
 /**
  * @class lib_MemoryTest
  * @test Memory
@@ -20,7 +20,7 @@ namespace lib
  */
 class lib_MemoryTest : public ::testing::Test
 {
-};    
+};
 
 /**
  * @relates lib_MemoryTest
@@ -33,7 +33,7 @@ class lib_MemoryTest : public ::testing::Test
  *      - Pass address of two variables.
  *
  * @b Assert:
- *      - Test value of the variables correct. 
+ *      - Test value of the variables correct.
  */
 TEST_F(lib_MemoryTest, memcpy)
 {
@@ -41,32 +41,32 @@ TEST_F(lib_MemoryTest, memcpy)
     void* res;
     uint32_t src;
     uint32_t dst;
-    
+
     src = VALUE;
     dst = 0;
     res = Memory::memcpy(&dst, &src, sizeof(uint32_t));
     EXPECT_EQ(src, dst) << "Fatal: Memory is not copied";
     EXPECT_EQ(res, &dst) << "Fatal: Returned memory address is wrong";
-    
+
     dst = VALUE;
     res = Memory::memcpy(&dst, NULLPTR, sizeof(uint32_t));
     EXPECT_EQ(dst, VALUE) << "Fatal: Memory is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned memory address is wrong";
-    
+
     src =  VALUE;
     res = Memory::memcpy(NULLPTR, &src, sizeof(uint32_t));
     EXPECT_EQ(src, VALUE) << "Fatal: Memory is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned memory address is wrong";
 
     res = Memory::memcpy(NULLPTR, NULLPTR, sizeof(uint32_t));
-    EXPECT_EQ(res, NULLPTR) << "Fatal: Returned memory address is wrong";   
-    
+    EXPECT_EQ(res, NULLPTR) << "Fatal: Returned memory address is wrong";
+
     src = 0x11111111;
     dst = 0x22222222;
     res = Memory::memcpy(&dst, &src, 0);
     EXPECT_NE(src, dst) << "Fatal: Memory is copied";
     EXPECT_EQ(src, 0x11111111) << "Fatal: Source memory is wrong";
-    EXPECT_EQ(dst, 0x22222222) << "Fatal: Destination memory is wrong";    
+    EXPECT_EQ(dst, 0x22222222) << "Fatal: Destination memory is wrong";
     EXPECT_EQ(res, &dst) << "Fatal: Returned memory address is wrong";
 }
 
@@ -81,14 +81,14 @@ TEST_F(lib_MemoryTest, memcpy)
  *      - Pass address of variables.
  *
  * @b Assert:
- *      - Test value of the variable correct. 
+ *      - Test value of the variable correct.
  */
 TEST_F(lib_MemoryTest, memset)
 {
     const uint32_t VALUE( 0x5A5A5A5A );
     void* res;
     uint32_t dst;
-    
+
     dst = 0;
     res = Memory::memset(&dst, 0x5A, sizeof(uint32_t));
     EXPECT_EQ(dst, VALUE) << "Fatal: Memory is not copied";
@@ -99,7 +99,7 @@ TEST_F(lib_MemoryTest, memset)
 
     dst = 0x22222222;
     res = Memory::memset(&dst, 0x5A, 0);
-    EXPECT_EQ(dst, 0x22222222) << "Fatal: Destination memory is wrong";    
+    EXPECT_EQ(dst, 0x22222222) << "Fatal: Destination memory is wrong";
     EXPECT_EQ(res, &dst) << "Fatal: Returned memory address is wrong";
 }
 
@@ -115,7 +115,7 @@ TEST_F(lib_MemoryTest, memset)
  *      - Pass C-string.
  *
  * @b Assert:
- *      - Test length is correct. 
+ *      - Test length is correct.
  */
 TEST_F(lib_MemoryTest, strlen)
 {
@@ -143,28 +143,28 @@ TEST_F(lib_MemoryTest, strlen)
  *      - Pass address of two C-string.
  *
  * @b Assert:
- *      - Test C-string content is correct. 
+ *      - Test C-string content is correct.
  */
 TEST_F(lib_MemoryTest, strcpy)
 {
-    char_t* res( NULLPTR );    
+    char_t* res( NULLPTR );
     char_t dst[64] = {'\0'};
     char_t src[64] = {'a','b','c','\0'};
     const char_t* const SRC( "Hello, World!" );
-    
+
     res = Memory::strcpy(dst, SRC);
     EXPECT_STREQ(dst, SRC) << "Fatal: C-string is not copied";
-    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";    
+    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";
 
     res = Memory::strcpy(dst, src);
     EXPECT_STREQ(dst, "abc") << "Fatal: C-string is not copied";
-    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";    
+    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";
 
     res = Memory::strcpy(dst, SRC);
     res = Memory::strcpy(dst, NULLPTR);
     EXPECT_STREQ(dst, SRC) << "Fatal: C-string is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned C-string address is wrong";
-    
+
     res = Memory::strcpy(NULLPTR, src);
     EXPECT_STREQ(src, "abc") << "Fatal: C-string is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned C-string address is wrong";
@@ -184,23 +184,23 @@ TEST_F(lib_MemoryTest, strcpy)
  *      - Pass address of two C-string.
  *
  * @b Assert:
- *      - Test C-string content is correct. 
+ *      - Test C-string content is correct.
  */
 TEST_F(lib_MemoryTest, strcat)
 {
-    char_t* res( NULLPTR );    
+    char_t* res( NULLPTR );
     char_t dst[64] = {'a','b','c','\0'};
     char_t src[64] = {'d','e','f','\0'};
-    
+
     res = Memory::strcat(dst, src);
     EXPECT_STREQ(dst, "abcdef") << "Fatal: C-string is not copied";
-    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";    
+    EXPECT_EQ(res, dst) << "Fatal: Returned C-string address is wrong";
 
     res = Memory::strcpy(dst, "abc");
     res = Memory::strcat(dst, NULLPTR);
     EXPECT_STREQ(dst, "abc") << "Fatal: C-string is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned C-string address is wrong";
-    
+
     res = Memory::strcat(NULLPTR, src);
     EXPECT_STREQ(src, "def") << "Fatal: C-string is changed";
     EXPECT_EQ(res, NULLPTR) << "Fatal: Returned C-string address is wrong";
@@ -220,34 +220,34 @@ TEST_F(lib_MemoryTest, strcat)
  *      - Pass address of two C-string.
  *
  * @b Assert:
- *      - Test C-string content is similar. 
+ *      - Test C-string content is similar.
  */
 TEST_F(lib_MemoryTest, strcmp)
-{    
+{
     int32_t res( -1 );
     res = Memory::strcmp("abc", "abc");
     EXPECT_EQ(res, 0) << "Fatal: C-strings are not similar";
 
     res = Memory::strcmp("abc", "abcd");
-    EXPECT_LT(res, 0) << "Fatal: C-string1 are not shorter than the string 2";    
+    EXPECT_LT(res, 0) << "Fatal: C-string1 are not shorter than the string 2";
 
     res = Memory::strcmp("abC", "abc");
-    EXPECT_LT(res, 0) << "Fatal: C-string1 are not shorter than the string 2";    
+    EXPECT_LT(res, 0) << "Fatal: C-string1 are not shorter than the string 2";
 
     res = Memory::strcmp("abcd", "abc");
-    EXPECT_GT(res, 0) << "Fatal: C-string1 are not longer than the string 2";    
+    EXPECT_GT(res, 0) << "Fatal: C-string1 are not longer than the string 2";
 
     res = Memory::strcmp("abc", "abC");
-    EXPECT_GT(res, 0) << "Fatal: C-string1 are not longer than the string 2";    
+    EXPECT_GT(res, 0) << "Fatal: C-string1 are not longer than the string 2";
 
     res = Memory::strcmp(NULLPTR, "abc");
-    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";    
+    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";
 
     res = Memory::strcmp("abc", NULLPTR);
-    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";    
+    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";
 
     res = Memory::strcmp(NULLPTR, NULLPTR);
-    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";    
+    EXPECT_EQ(res, static_cast<int32_t>( 0x80000000U )) << "Fatal: No errors detected";
 }
 
 /**
@@ -261,7 +261,7 @@ TEST_F(lib_MemoryTest, strcmp)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_int8)
 {
@@ -269,29 +269,29 @@ TEST_F(lib_MemoryTest, itoa_int8)
     bool_t res( false );
 
     int8_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = -1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";
 
     val = 0x7A;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "7a") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "7a") << "Fatal: C-string is wrong";
 
     val = 127;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "127") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "127") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7f") << "Fatal: C-string is wrong";
@@ -306,20 +306,20 @@ TEST_F(lib_MemoryTest, itoa_int8)
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "-127") << "Fatal: C-string is wrong";
-    
+
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 
     // Test the Exception 1
     val = -128;
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
-   
+
     // Test the Exception 2
-    val = -127;    
+    val = -127;
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
@@ -342,7 +342,7 @@ TEST_F(lib_MemoryTest, itoa_int8)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_uint8)
 {
@@ -350,24 +350,24 @@ TEST_F(lib_MemoryTest, itoa_uint8)
     bool_t res( false );
 
     uint8_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = 0xAB;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "ab") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "ab") << "Fatal: C-string is wrong";
 
     val = 127;
-    res = Memory::itoa(val, str);   
+    res = Memory::itoa(val, str);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "127") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "127") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7f") << "Fatal: C-string is wrong";
@@ -395,7 +395,7 @@ TEST_F(lib_MemoryTest, itoa_uint8)
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 }
 
 /**
@@ -409,7 +409,7 @@ TEST_F(lib_MemoryTest, itoa_uint8)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_int16)
 {
@@ -417,29 +417,29 @@ TEST_F(lib_MemoryTest, itoa_int16)
     bool_t res( false );
 
     int16_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = -1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";
 
     val = 0x7ABC;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "7abc") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "7abc") << "Fatal: C-string is wrong";
 
     val = 32767;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "32767") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "32767") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fff") << "Fatal: C-string is wrong";
@@ -454,20 +454,20 @@ TEST_F(lib_MemoryTest, itoa_int16)
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "-32767") << "Fatal: C-string is wrong";
-    
+
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 
     // Test the Exception 1
     val = -32768;
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
-   
+
     // Test the Exception 2
-    val = -32767;    
+    val = -32767;
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
@@ -490,7 +490,7 @@ TEST_F(lib_MemoryTest, itoa_int16)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_uint16)
 {
@@ -498,24 +498,24 @@ TEST_F(lib_MemoryTest, itoa_uint16)
     bool_t res( false );
 
     uint16_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = 0xABCD;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "abcd") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "abcd") << "Fatal: C-string is wrong";
 
     val = 32767;
-    res = Memory::itoa(val, str);   
+    res = Memory::itoa(val, str);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "32767") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "32767") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fff") << "Fatal: C-string is wrong";
@@ -543,7 +543,7 @@ TEST_F(lib_MemoryTest, itoa_uint16)
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 }
 
 /**
@@ -557,7 +557,7 @@ TEST_F(lib_MemoryTest, itoa_uint16)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_int32)
 {
@@ -565,29 +565,29 @@ TEST_F(lib_MemoryTest, itoa_int32)
     bool_t res( false );
 
     int32_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = -1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";
 
     val = 0x00ABCDEF;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "abcdef") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "abcdef") << "Fatal: C-string is wrong";
 
     val = 2147483647;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "2147483647") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "2147483647") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fffffff") << "Fatal: C-string is wrong";
@@ -602,20 +602,20 @@ TEST_F(lib_MemoryTest, itoa_int32)
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "-2147483647") << "Fatal: C-string is wrong";
-    
+
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 
     // Test the Exception 1
     val = static_cast<int32_t>(0x80000000); // -2147483648
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
-   
+
     // Test the Exception 2
-    val = -2147483647;    
+    val = -2147483647;
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_FALSE(res) << "Fatal: Value is converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
@@ -638,7 +638,7 @@ TEST_F(lib_MemoryTest, itoa_int32)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_uint32)
 {
@@ -646,24 +646,24 @@ TEST_F(lib_MemoryTest, itoa_uint32)
     bool_t res( false );
 
     uint32_t val( 0 );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = 0x89ABCDEF;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "89abcdef") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "89abcdef") << "Fatal: C-string is wrong";
 
     val = 2147483647;
-    res = Memory::itoa(val, str);   
+    res = Memory::itoa(val, str);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "2147483647") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "2147483647") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fffffff") << "Fatal: C-string is wrong";
@@ -691,7 +691,7 @@ TEST_F(lib_MemoryTest, itoa_uint32)
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 }
 
 /**
@@ -705,7 +705,7 @@ TEST_F(lib_MemoryTest, itoa_uint32)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_int64)
 {
@@ -713,29 +713,29 @@ TEST_F(lib_MemoryTest, itoa_int64)
     bool_t res( false );
 
     int64_t val( 0LL );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1LL;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = -1LL;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "-1") << "Fatal: C-string is wrong";
 
     val = 0x1234567890ABCDEFLL;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1234567890abcdef") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1234567890abcdef") << "Fatal: C-string is wrong";
 
     val = 9223372036854775807LL;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "9223372036854775807") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "9223372036854775807") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fffffffffffffff") << "Fatal: C-string is wrong";
@@ -750,18 +750,18 @@ TEST_F(lib_MemoryTest, itoa_int64)
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "-9223372036854775807") << "Fatal: C-string is wrong";
-    
+
     val = 123;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 
     // Test the Exception 1
     val = -9223372036854775807LL - 1LL;
     res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
-   
+
     // Test the Exception 2
     val = -9223372036854775807LL;
     res = Memory::itoa(val, str, Number::BASE_16);
@@ -786,7 +786,7 @@ TEST_F(lib_MemoryTest, itoa_int64)
  *      - Pass integer.
  *
  * @b Assert:
- *      - Test number in C-string is compare. 
+ *      - Test number in C-string is compare.
  */
 TEST_F(lib_MemoryTest, itoa_uint64)
 {
@@ -794,24 +794,24 @@ TEST_F(lib_MemoryTest, itoa_uint64)
     bool_t res( false );
 
     uint64_t val( 0ULL );
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "0") << "Fatal: C-string is wrong";
 
     val = 1ULL;
-    res = Memory::itoa(val, str, Number::BASE_10);   
+    res = Memory::itoa(val, str, Number::BASE_10);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "1") << "Fatal: C-string is wrong";
 
     val = 0x00ABCDEFULL;
-    res = Memory::itoa(val, str, Number::BASE_16);   
+    res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "abcdef") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "abcdef") << "Fatal: C-string is wrong";
 
     val = 9223372036854775807ULL;
-    res = Memory::itoa(val, str);   
+    res = Memory::itoa(val, str);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "9223372036854775807") << "Fatal: C-string is wrong";    
+    EXPECT_STREQ(str, "9223372036854775807") << "Fatal: C-string is wrong";
     res = Memory::itoa(val, str, Number::BASE_16);
     EXPECT_TRUE(res) << "Fatal: Value is not converted";
     EXPECT_STREQ(str, "7fffffffffffffff") << "Fatal: C-string is wrong";
@@ -839,7 +839,7 @@ TEST_F(lib_MemoryTest, itoa_uint64)
     val = 123ULL;
     res = Memory::itoa(val, str, static_cast<Number::Base>(32));
     EXPECT_FALSE(res) << "Fatal: Value is not converted";
-    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";        
+    EXPECT_STREQ(str, "") << "Fatal: C-string is wrong";
 }
 
 /**
@@ -853,20 +853,20 @@ TEST_F(lib_MemoryTest, itoa_uint64)
  *      - Pass C-string.
  *
  * @b Assert:
- *      - Test integer is compare. 
+ *      - Test integer is compare.
  */
 TEST_F(lib_MemoryTest, atoi)
 {
     int32_t val( 0 );
-    
+
     val = Memory::atoi<int32_t>("0", Number::BASE_10);
     EXPECT_EQ(val, 0) << "Fatal: Value is wrong";
 
     val = Memory::atoi<int32_t>("1", Number::BASE_10);
     EXPECT_EQ(val, 1) << "Fatal: Value is wrong";
-    
+
     val = Memory::atoi<int32_t>("-1", Number::BASE_10);
-    EXPECT_EQ(val, -1) << "Fatal: Value is wrong";        
+    EXPECT_EQ(val, -1) << "Fatal: Value is wrong";
 
     val = Memory::atoi<int32_t>("2147483647", Number::BASE_10);
     EXPECT_EQ(val, 2147483647) << "Fatal: Value is wrong";
@@ -875,7 +875,7 @@ TEST_F(lib_MemoryTest, atoi)
     EXPECT_EQ(val, 2147483647) << "Fatal: Value is wrong";
 
     val = Memory::atoi<int32_t>("-2147483647", Number::BASE_10);
-    // @note Use the casting type for passing on Ubuntu 22.04 
+    // @note Use the casting type for passing on Ubuntu 22.04
     // - With GCC 11.2.0 in RelWithDebInfo and "-2147483648" string
     // @todo Check GTEST with GCC 11.2.0 in Release as the failure occured:
     // Expected equality of these values:
@@ -883,7 +883,7 @@ TEST_F(lib_MemoryTest, atoi)
     //     Which is: -2147483648
     //   static_cast<int32_t>(-2147483648)
     //     Which is: -2147483648
-    // Therefore, "-2147483648" pemanantly changed to "-2147483647" 
+    // Therefore, "-2147483648" pemanantly changed to "-2147483647"
     EXPECT_EQ(val, static_cast<int32_t>(-2147483647)) << "Fatal: Value is wrong";
 
     val = Memory::atoi<int32_t>("\t\n\v\f\r +214748y3647", Number::BASE_10);
@@ -915,7 +915,7 @@ TEST_F(lib_MemoryTest, atoi)
     EXPECT_EQ(val, 0xABCDEF1) << "Fatal: Value is wrong";
 
     val = Memory::atoi<int32_t>("123", static_cast<Number::Base>(32));
-    EXPECT_EQ(val, 0) << "Fatal: Value is wrong";        
+    EXPECT_EQ(val, 0) << "Fatal: Value is wrong";
 }
 
 } // namespace lib
