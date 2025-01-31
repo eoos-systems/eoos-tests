@@ -1,7 +1,7 @@
 # EOOS UNIT TESTS.
 #
 # @author    Sergey Baigudin, sergey@baigudin.software
-# @copyright 2020-2024, Sergey Baigudin, Baigudin Software
+# @copyright 2020-2025, Sergey Baigudin, Baigudin Software
 
 add_executable(UnitTests
     "${CMAKE_CURRENT_LIST_DIR}/source/Main.cpp"
@@ -54,7 +54,7 @@ if(NOT EOOS_CMAKE_TARGET_OS STREQUAL "KOS")
     )
 
     add_test(
-        NAME test-eoos-unit-tests
+        NAME EoosTests
         COMMAND UnitTests
     )
 
