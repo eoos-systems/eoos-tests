@@ -70,7 +70,6 @@ protected:
             , isDead_ (false)
             , story_ (STORY_DEFAULT)
             , error_ (ERROR_TEST_UNDEF)
-            , toWait_ (true)
             , stackSize_(0U) {
         }
 
@@ -87,7 +86,6 @@ protected:
             , isDead_ (false)
             , story_ (STORY_DEFAULT)
             , error_ (ERROR_TEST_UNDEF)
-            , toWait_ (true)
             , stackSize_(stackSize) {
         }
 
@@ -104,7 +102,6 @@ protected:
             , isDead_ (false)
             , story_ (STORY_DEFAULT)
             , error_ (ERROR_TEST_UNDEF)
-            , toWait_ (true)
             , stackSize_(0U) {
             setConstructed(isConstructed);
         }
@@ -122,7 +119,6 @@ protected:
             , isDead_ (false)
             , story_ (story)
             , error_ (ERROR_TEST_UNDEF)
-            , toWait_ (true)
             , stackSize_(0U) {
         }
 
@@ -344,7 +340,6 @@ protected:
         bool_t isDead_;             ///< Task dead flag.
         Story story_;               ///< Task story to play.
         int32_t error_;             ///< Execution error.
-        bool_t toWait_;             ///< Task wait and executed.
         size_t stackSize_;          ///< Task stack size.
     };
 
