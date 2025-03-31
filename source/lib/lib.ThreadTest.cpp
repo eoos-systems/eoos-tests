@@ -1,7 +1,7 @@
 /**
  * @file      lib.ThreadTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2021-2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2021-2025, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Thread`.
  */
@@ -127,7 +127,7 @@ protected:
          *
          * @return True if task was started by the OS scheduler.
          */
-        bool waitIsStarted() const
+        bool_t waitIsStarted() const
         {
             bool_t isStarted(false);
             for(uint32_t i=0; i<TESTS_WAIT_CYCLE_TIME; i++)
@@ -162,7 +162,7 @@ protected:
          *
          * @return True if task is is completed execution.
          */
-        bool isDead() const
+        bool_t isDead() const
         {
             return isDead_;
         }
@@ -447,41 +447,68 @@ TEST_F(lib_ThreadTest, isConstructed)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct a constructed and unconstructed objects of the class.
+ *      - Consctuct an objects of the class.
+ *      - Execute a constructed task
  *
  * @b Assert:
  *      - Test the constructed object is executed.
- *      - Test the unconstructed object is not executed.
  */
-TEST_F(lib_ThreadTest, execute)
+TEST_F(lib_ThreadTest, execute_normalTask)
 {
-    // Execute constructed task
-    {
-        Thread<> thread(task.normal);
-        EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
-        EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
-        EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
-        EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
-        EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
-    }
-    // Execute constructed task with stack defined
-    {
+    Thread<> thread(task.normal);
+    EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
+    EXPECT_FALSE(task.normal.waitIsStarted()) << "Error: Thread was started without execute() function";
+    EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
+    EXPECT_TRUE(task.normal.waitIsStarted()) << "Error: Thread was not started after execute() function";
+    EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
+    EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
+}
+
+/**
+ * @relates lib_ThreadTest
+ * @brief Test if thread can be executed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct an objects of the class.
+ *      - Execute a constructed task with stack defined.
+ *
+ * @b Assert:
+ *      - Test the constructed object is executed.
+ */
+TEST_F(lib_ThreadTest, execute_stackDefinedTask)
+{
         Thread<> thread(task.stack);
         EXPECT_TRUE(thread.isConstructed()) << "Error: Object is not constructed";
         EXPECT_FALSE(task.stack.waitIsStarted()) << "Error: Thread was started without execute() function";
         EXPECT_TRUE(thread.execute()) << "Fatal: Thread was not executed";
         EXPECT_TRUE(task.stack.waitIsStarted()) << "Error: Thread was not started after execute() function";
         EXPECT_TRUE(thread.join()) << "Error: Thread was not joined";
-    }
-    // Execute not constructed task
-    {
-        Thread<> thread(task.unconstructed);
-        EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
-        EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
-        EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Error: Unconstructed thread was executed";
-        EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
-    }
+}
+
+/**
+ * @relates lib_ThreadTest
+ * @brief Test if thread can be executed.
+ *
+ * @b Arrange:
+ *      - Initialize the EOOS system.
+ *
+ * @b Act:
+ *      - Consctuct unconstructed objects of the class.
+ *      - Execute an unconstructed task.
+ *
+ * @b Assert:
+ *      - Test the unconstructed object is not executed.
+ */
+TEST_F(lib_ThreadTest, execute_unconstructedTask)
+{
+    Thread<> thread(task.unconstructed);
+    EXPECT_FALSE(thread.isConstructed()) << "Error: Object is constructed";
+    EXPECT_FALSE(thread.execute()) << "Fatal: Thread was executed";
+    EXPECT_FALSE(task.unconstructed.waitIsStarted()) << "Error: Unconstructed thread was executed";
+    EXPECT_FALSE(thread.join()) << "Error: Thread was joined";
 }
 
 /**
@@ -673,7 +700,7 @@ TEST_F(lib_ThreadTest, sleep)
     }
     uint64_t val1( counters[0] + counters[0] );
     uint64_t val2( counters[1] );
-    EXPECT_LT(val1, val2) << "Fatal: Thread was not joined";
+    EXPECT_LT(val1, val2) << "Fatal: Sum of the value 1 is not less than the value 2";
 }
 
 /**

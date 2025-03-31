@@ -34,7 +34,16 @@ add_executable(UnitTests
 )
 
 if(EOOS_CMAKE_TARGET_OS STREQUAL "KOS")
+
+    include(platform/nk)
+
+    nk_build_edl_files(target-eoos-unit-tests-edl-files
+        NK_MODULE   "eoos"
+        EDL         "${CMAKE_CURRENT_LIST_DIR}/resources/UnitTests.edl"
+    )
+
     add_dependencies(UnitTests target-eoos-unit-tests-edl-files)
+
 endif()
 
 target_link_libraries(UnitTests
