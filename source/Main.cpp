@@ -1,7 +1,7 @@
 /**
  * @file      MainTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2024, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2025, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit of `main`.
  */
@@ -27,12 +27,15 @@
 #include "lib.ObjectAllocator.hpp"
 #include "lib.Object.hpp"
 #include "lib.Register.hpp"
-#include "lib.ResourceMemory.hpp"
+#include "lib.MemoryPool.hpp"
 #include "lib.Semaphore.hpp"
 #include "lib.SharedPointer.hpp"
 #include "lib.Stream.hpp"
 #include "lib.Thread.hpp"
 #include "lib.UniquePointer.hpp"
+/// @todo Develop tests for the new functionality
+#include "lib.Assert.hpp"
+#include "lib.NullMutex.hpp"
 
 namespace eoos
 {

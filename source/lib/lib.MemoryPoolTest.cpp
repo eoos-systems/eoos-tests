@@ -1,11 +1,11 @@
 /**
- * @file      lib.ResourceMemoryTest.cpp
+ * @file      lib.MemoryPoolTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
  * @copyright 2024, Sergey Baigudin, Baigudin Software
  *
- * @brief Unit tests of `lib::ResourceMemory`.
+ * @brief Unit tests of `lib::MemoryPool`.
  */
-#include "lib.ResourceMemory.hpp"
+#include "lib.MemoryPool.hpp"
 #include "System.hpp"
 
 namespace eoos
@@ -14,11 +14,11 @@ namespace lib
 {
 
 /**
- * @class lib_ResourceMemoryTest
- * @test ResourceMemory
- * @brief Tests ResourceMemory class functionality.
+ * @class lib_MemoryPoolTest
+ * @test MemoryPool
+ * @brief Tests MemoryPool class functionality.
  */
-class lib_ResourceMemoryTest : public ::testing::Test
+class lib_MemoryPoolTest : public ::testing::Test
 {
 
 protected:
@@ -122,7 +122,7 @@ private:
 };
 
 /**
- * @relates lib_ResourceMemoryTest
+ * @relates lib_MemoryPoolTest
  * @brief Tests the class constructor.
  *
  * @b Arrange:
@@ -134,14 +134,14 @@ private:
  * @b Assert:
  *      - Test the object is constructed.
  */
-TEST_F(lib_ResourceMemoryTest, Constructor)
+TEST_F(lib_MemoryPoolTest, Constructor)
 {
-    ResourceMemory<Resource,3> pool(guard_);
+    MemoryPool<Resource,3> pool(guard_);
     EXPECT_TRUE(pool.isConstructed()) << "Fatal: Object is not constructed";
 }
 
 /**
- * @relates lib_ResourceMemoryTest
+ * @relates lib_MemoryPoolTest
  * @brief Tests allocation and free.
  *
  * @b Arrange:
@@ -153,11 +153,11 @@ TEST_F(lib_ResourceMemoryTest, Constructor)
  * @b Assert:
  *      - Test the functionality is constructed.
  */
-TEST_F(lib_ResourceMemoryTest, allocate_free)
+TEST_F(lib_MemoryPoolTest, allocate_free)
 {
     void* res[3] = { NULLPTR };
     void* tmp( NULLPTR );
-    ResourceMemory<Resource,3> pool(guard_);
+    MemoryPool<Resource,3> pool(guard_);
     EXPECT_TRUE(pool.isConstructed()) << "Fatal: Object is not constructed";
 
     res[0] = pool.allocate(sizeof(Resource), NULLPTR);
