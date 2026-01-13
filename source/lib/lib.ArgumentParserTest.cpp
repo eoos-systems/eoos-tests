@@ -1,16 +1,13 @@
 /**
  * @file      lib.ArgumentParserTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::ArgumentParser`.
  */
 #include "lib.ArgumentParser.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 #include "lib.String.hpp"
-
-#include "lib.Stream.hpp"
-
 
 namespace eoos
 {
@@ -24,10 +21,6 @@ namespace lib
  */
 class lib_ArgumentParserTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

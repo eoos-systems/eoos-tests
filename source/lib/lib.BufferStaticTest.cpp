@@ -1,12 +1,12 @@
 /**
  * @file      lib.BufferStaticTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Buffer`.
  */
 #include "lib.Buffer.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -60,10 +60,6 @@ protected:
  */
 class lib_BufferStaticTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

@@ -1,14 +1,14 @@
 /**
  * @file      lib.HeapTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Heap`.
  */
 #include "lib.Heap.hpp"
+#include "Tests.hpp"
 #include "lib.Mutex.hpp"
 #include "lib.Memory.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -85,12 +85,6 @@ protected:
     virtual void TearDown()
     {
     }
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
-
-protected:
 
     Mutex<> mutex_; ///< Heap mutex defined after EOOS to be it initialized.
 

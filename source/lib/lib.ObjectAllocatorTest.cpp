@@ -1,12 +1,12 @@
 /**
  * @file      lib.ObjectAllocatorTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2023-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::ObjectAllocator`.
  */
 #include "lib.ObjectAllocator.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -55,9 +55,6 @@ protected:
 
     };
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

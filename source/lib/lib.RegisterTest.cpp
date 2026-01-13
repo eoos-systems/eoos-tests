@@ -1,12 +1,12 @@
 /**
  * @file      lib.RegisterTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2024, Sergey Baigudin, Baigudin Software
+ * @copyright 2024-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Register`.
  */
 #include "lib.Register.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -25,32 +25,29 @@ protected:
 
     union YourRegister
     {
-        typedef uint32_t Value;
+        typedef uint32_t reg_t;
         YourRegister(){}
-        YourRegister(Value v){value = v;}
+        YourRegister(reg_t v){value = v;}
        ~YourRegister(){}
 
-        Value value;
-        struct Bit
+        reg_t value;
+        struct bit_t
         {
-            Value inrq  : 1;
-            Value sleep : 1;
-            Value txfp  : 1;
-            Value rflm  : 1;
-            Value nart  : 1;
-            Value awum  : 1;
-            Value abom  : 1;
-            Value ttcm  : 1;
-            Value       : 7;
-            Value reset : 1;
-            Value       : 15;
-            Value dbf   : 1;
+            reg_t inrq  : 1;
+            reg_t sleep : 1;
+            reg_t txfp  : 1;
+            reg_t rflm  : 1;
+            reg_t nart  : 1;
+            reg_t awum  : 1;
+            reg_t abom  : 1;
+            reg_t ttcm  : 1;
+            reg_t       : 7;
+            reg_t reset : 1;
+            reg_t       : 15;
+            reg_t dbf   : 1;
         } bit;
     };
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**
@@ -68,7 +65,7 @@ private:
  */
 TEST_F(lib_RegisterTest, Constructor)
 {
-    const YourRegister::Value VAL(0x812180A5);
+    const YourRegister::reg_t VAL(0x812180A5);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
     EXPECT_EQ(reg.value(), VAL) << "Fatal: Value of register is wrong";
@@ -89,7 +86,7 @@ TEST_F(lib_RegisterTest, Constructor)
  */
 TEST_F(lib_RegisterTest, bit)
 {
-    const YourRegister::Value VAL(0x800080A5);
+    const YourRegister::reg_t VAL(0x800080A5);
     YourRegister mem(VAL);
     {
         Register<YourRegister> reg(mem);
@@ -254,7 +251,7 @@ TEST_F(lib_RegisterTest, bit)
  */
 TEST_F(lib_RegisterTest, value)
 {
-    const YourRegister::Value VAL(0x812180A5);
+    const YourRegister::reg_t VAL(0x812180A5);
     YourRegister mem(VAL);
     {
         Register<YourRegister> reg(mem);
@@ -281,7 +278,7 @@ TEST_F(lib_RegisterTest, value)
  */
 TEST_F(lib_RegisterTest, setBit)
 {
-    const YourRegister::Value VAL(0x00000000);
+    const YourRegister::reg_t VAL(0x00000000);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
 
@@ -456,7 +453,7 @@ TEST_F(lib_RegisterTest, setBit)
  */
 TEST_F(lib_RegisterTest, clearBit)
 {
-    const YourRegister::Value VAL(0x808080FF);
+    const YourRegister::reg_t VAL(0x808080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
 
@@ -631,7 +628,7 @@ TEST_F(lib_RegisterTest, clearBit)
  */
 TEST_F(lib_RegisterTest, commit)
 {
-    const YourRegister::Value VAL(0x800080FF);
+    const YourRegister::reg_t VAL(0x800080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
 
@@ -697,7 +694,7 @@ TEST_F(lib_RegisterTest, commit)
  */
 TEST_F(lib_RegisterTest, fetch)
 {
-    const YourRegister::Value VAL(0x800080FF);
+    const YourRegister::reg_t VAL(0x800080FF);
     YourRegister mem(VAL);
     Register<YourRegister> reg(mem);
 

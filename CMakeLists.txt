@@ -5,7 +5,7 @@
 
 add_executable(UnitTests
     "${CMAKE_CURRENT_LIST_DIR}/source/Main.cpp"
-    "${CMAKE_CURRENT_LIST_DIR}/source/ProgramTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/Program.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.AlignTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ArgumentParserTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.BaseStringStaticTest.cpp"

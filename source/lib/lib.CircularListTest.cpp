@@ -1,12 +1,12 @@
 /**
  * @file      lib.CircularListTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::CircularList`.
  */
 #include "lib.CircularList.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -54,10 +54,6 @@ public:
  */
 class lib_CircularListTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

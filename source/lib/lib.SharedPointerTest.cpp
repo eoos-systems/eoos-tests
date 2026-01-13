@@ -1,12 +1,12 @@
 /**
  * @file      lib.SharedPointerTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::SharedPointer`.
  */
 #include "lib.SharedPointer.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -20,10 +20,6 @@ namespace lib
  */
 class lib_SharedPointerTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 namespace

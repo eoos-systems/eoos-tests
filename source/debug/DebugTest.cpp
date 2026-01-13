@@ -8,7 +8,6 @@
 #include "lib.Thread.hpp"
 #include "lib.String.hpp"
 #include "lib.Stream.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -60,9 +59,6 @@ protected:
 
     Task task;
 
-private:
-
-    System eoos_;
 };
 
 /**

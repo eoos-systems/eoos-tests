@@ -1,13 +1,13 @@
 /**
  * @file      lib.MutexTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Mutex`.
  */
 #include "lib.Mutex.hpp"
+#include "Tests.hpp"
 #include "lib.AbstractThreadTask.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -108,9 +108,6 @@ protected:
         api::Mutex& mutex_;              ///< Mutex to lock.
     };
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

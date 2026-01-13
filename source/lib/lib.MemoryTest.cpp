@@ -1,12 +1,12 @@
 /**
  * @file      lib.MemoryTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Memory`.
  */
 #include "lib.Memory.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {

@@ -1,12 +1,12 @@
 /**
  * @file      lib.MemoryPoolTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2024, Sergey Baigudin, Baigudin Software
+ * @copyright 2024-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::MemoryPool`.
  */
 #include "lib.MemoryPool.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -116,9 +116,6 @@ protected:
 
     Guard guard_; ///< Test guard.
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

@@ -1,14 +1,14 @@
 /**
  * @file      lib.GuardTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Guard`.
  */
 #include "lib.Guard.hpp"
+#include "Tests.hpp"
 #include "lib.Mutex.hpp"
 #include "lib.AbstractThreadTask.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -250,9 +250,6 @@ protected:
 
     };
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

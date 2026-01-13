@@ -9,7 +9,7 @@
 #define TESTS_HPP_
 
 #include "gtest/gtest.h"
-#include "Types.hpp"
+#include "api.Types.hpp"
 
 /**
  * @brief Number of cycles when a test would wait a result.

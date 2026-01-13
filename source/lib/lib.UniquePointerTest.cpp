@@ -1,12 +1,12 @@
 /**
  * @file      lib.UniquePointerTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2021, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::UniquePointer`.
  */
 #include "lib.UniquePointer.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -20,10 +20,6 @@ namespace lib
  */
 class lib_UniquePointerTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 namespace

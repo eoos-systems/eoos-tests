@@ -1,13 +1,13 @@
 /**
  * @file      lib.ThreadTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2021-2025, Sergey Baigudin, Baigudin Software
+ * @copyright 2021-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Thread`.
  */
 #include "lib.Thread.hpp"
+#include "Tests.hpp"
 #include "lib.AbstractTask.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -375,9 +375,6 @@ protected:
         Task* counters[2];
     } task;
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 int32_t volatile lib_ThreadTest::Task::channelItoR_(lib_ThreadTest::Task::MSG_IDLE);

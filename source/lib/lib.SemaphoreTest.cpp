@@ -1,13 +1,13 @@
 /**
  * @file      lib.SemaphoreTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2022-2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2022-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Semaphore`.
  */
 #include "lib.Semaphore.hpp"
+#include "Tests.hpp"
 #include "lib.AbstractThreadTask.hpp"
-#include "System.hpp"
 
 namespace eoos
 {
@@ -72,9 +72,6 @@ protected:
         api::Semaphore& semRelease_; ///< Semaphore to release in the thread after the acquirement.
     };
 
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

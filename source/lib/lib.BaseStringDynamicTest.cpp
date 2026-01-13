@@ -1,12 +1,12 @@
 /**
  * @file      lib.BaseStringDynamicTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2020-2022, Sergey Baigudin, Baigudin Software
+ * @copyright 2020-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::BaseString<char_t,0>`.
  */
 #include "lib.String.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -20,10 +20,6 @@ namespace lib
  */
 class lib_BaseStringDynamicTest_char_t : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 namespace

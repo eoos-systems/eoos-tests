@@ -1,12 +1,12 @@
 /**
  * @file      lib.CharTraitTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2023-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib.CharTrait`.
  */
 #include "lib.CharTrait.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -20,10 +20,6 @@ namespace lib
  */
 class lib_CharTrait : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**

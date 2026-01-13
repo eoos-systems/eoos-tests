@@ -1,12 +1,12 @@
 /**
  * @file      lib.FifoTest.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2024, Sergey Baigudin, Baigudin Software
+ * @copyright 2024-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Unit tests of `lib::Fifo`.
  */
 #include "lib.Fifo.hpp"
-#include "System.hpp"
+#include "Tests.hpp"
 
 namespace eoos
 {
@@ -68,10 +68,6 @@ protected:
  */
 class lib_FifoTest : public ::testing::Test
 {
-
-private:
-
-    System eoos_; ///< EOOS Operating System.
 };
 
 /**
