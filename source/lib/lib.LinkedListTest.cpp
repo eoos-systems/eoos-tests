@@ -67,7 +67,7 @@ class lib_LinkedListTest : public ::testing::Test
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -92,7 +92,7 @@ TEST_F(lib_LinkedListTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -127,7 +127,7 @@ TEST_F(lib_LinkedListTest, illegal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -193,7 +193,7 @@ TEST_F(lib_LinkedListTest, collection)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -269,7 +269,7 @@ TEST_F(lib_LinkedListTest, queue)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -470,7 +470,7 @@ TEST_F(lib_LinkedListTest, list)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -831,7 +831,7 @@ TEST_F(lib_LinkedListTest, listIterator)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.

@@ -260,7 +260,7 @@ protected:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.

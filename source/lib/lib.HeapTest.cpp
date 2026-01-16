@@ -98,7 +98,7 @@ protected:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -129,7 +129,7 @@ TEST_F(lib_HeapTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *      - Destruct the object of the class.
  *
  * @b Assert:
@@ -152,7 +152,7 @@ TEST_F(lib_HeapTest, Destructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object operator delete is called.
@@ -183,7 +183,7 @@ TEST_F(lib_HeapTest, newdeletion)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Allocate memory.
@@ -227,7 +227,7 @@ TEST_F(lib_HeapTest, allocate_fragmentation)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Allocate memory.
@@ -270,7 +270,7 @@ TEST_F(lib_HeapTest, allocate_unfit)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Allocate memory.
@@ -347,7 +347,7 @@ TEST_F(lib_HeapTest, allocate_deletionSequence)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Allocate memory.
@@ -369,7 +369,7 @@ TEST_F(lib_HeapTest, allocate_unconstructed)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Allocate memory.
@@ -391,7 +391,7 @@ TEST_F(lib_HeapTest, allocate_zeroSize)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct as many objects as heap can allocate.
+ *      - Construct as many objects as heap can allocate.
  *
  * @b Assert:
  *      - Test overflow has not happened.

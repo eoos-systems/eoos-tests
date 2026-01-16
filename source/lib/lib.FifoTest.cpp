@@ -78,7 +78,7 @@ class lib_FifoTest : public ::testing::Test
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -120,7 +120,7 @@ TEST_F(lib_FifoTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -151,7 +151,7 @@ TEST_F(lib_FifoTest, illegal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -240,7 +240,7 @@ TEST_F(lib_FifoTest, collection)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -321,7 +321,7 @@ TEST_F(lib_FifoTest, queue)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -404,7 +404,7 @@ TEST_F(lib_FifoTest, fifo_isLocked)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.

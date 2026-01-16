@@ -163,7 +163,7 @@ public:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -184,7 +184,7 @@ TEST_F(lib_SharedPointerTest, Constructor_nullptr)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -208,8 +208,8 @@ TEST_F(lib_SharedPointerTest, Constructor_pointer)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class with user defined construct.
- *      - Consctuct an object of the class with copy construct.
+ *      - Construct an object of the class with user defined construct.
+ *      - Construct an object of the class with copy construct.
  *
  * @b Assert:
  *      - Test the objects are constructed.

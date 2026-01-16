@@ -66,7 +66,7 @@ public:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -85,8 +85,8 @@ TEST_F(lib_ObjectTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class with default construct.
- *      - Consctuct an object of the class with copy construct.
+ *      - Construct an object of the class with default construct.
+ *      - Construct an object of the class with copy construct.
  *
  * @b Assert:
  *      - Test the objects are constructed.

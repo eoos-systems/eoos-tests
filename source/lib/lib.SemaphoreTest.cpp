@@ -82,7 +82,7 @@ protected:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -101,7 +101,7 @@ TEST_F(lib_SemaphoreTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct a constructed and unconstructed objects of the class.
+ *      - Construct a constructed and unconstructed objects of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.

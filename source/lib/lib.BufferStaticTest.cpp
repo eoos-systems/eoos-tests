@@ -70,7 +70,7 @@ class lib_BufferStaticTest : public ::testing::Test
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -95,7 +95,7 @@ TEST_F(lib_BufferStaticTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -126,7 +126,7 @@ TEST_F(lib_BufferStaticTest, illegal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -153,7 +153,7 @@ TEST_F(lib_BufferStaticTest, collection)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -183,7 +183,7 @@ TEST_F(lib_BufferStaticTest, getData)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -276,7 +276,7 @@ TEST_F(lib_BufferStaticTest, fill_operator_subscript)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -310,7 +310,7 @@ TEST_F(lib_BufferStaticTest, operator_subscript)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.

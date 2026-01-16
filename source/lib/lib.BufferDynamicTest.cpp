@@ -77,7 +77,7 @@ class lib_BufferDynamicTest : public ::testing::Test
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -116,7 +116,7 @@ TEST_F(lib_BufferDynamicTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -147,7 +147,7 @@ TEST_F(lib_BufferDynamicTest, illegal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -174,7 +174,7 @@ TEST_F(lib_BufferDynamicTest, collection)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -211,7 +211,7 @@ TEST_F(lib_BufferDynamicTest, getData)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -304,7 +304,7 @@ TEST_F(lib_BufferDynamicTest, fill_operator_subscript)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -397,7 +397,7 @@ TEST_F(lib_BufferDynamicTest, fill_operator_subscript_extern)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -463,7 +463,7 @@ TEST_F(lib_BufferDynamicTest, operator_subscript)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.

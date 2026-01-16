@@ -22,6 +22,7 @@ add_executable(UnitTests
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.MutexTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.NoAllocatorTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.NonCopyableTest.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.NullMutexTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectAllocatorTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.ObjectTest.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/source/lib/lib.RegisterTest.cpp"

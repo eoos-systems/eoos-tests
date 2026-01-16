@@ -140,7 +140,7 @@ TEST_F(lib_ArgumentParserTest, getArguments)
         char_t* argv[] = {ARG0, ARG1, NULLPTR};
         int32_t argc( 2 );
         ArgumentParser<char_t,0> obj(argc, argv);
-        // @todo The problem was investigeting for 2 days with core dump
+        // @todo The problem was investigating for 2 days with core dump
         // if avoid `volatile` here or write the test like two tests above.
         // It appears with Release configuration only compiled with gcc.
         // The assumption is that gcc has a bug, but this has to be check.

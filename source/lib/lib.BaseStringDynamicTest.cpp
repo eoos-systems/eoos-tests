@@ -76,7 +76,7 @@ typedef TestBaseString<char_t> TestString;
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -142,8 +142,8 @@ TEST_F(lib_BaseStringDynamicTest_char_t, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class with user defined construct.
- *      - Consctuct an object of the class with copy construct.
+ *      - Construct an object of the class with user defined construct.
+ *      - Construct an object of the class with copy construct.
  *
  * @b Assert:
  *      - Test the objects are constructed.
@@ -347,7 +347,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, MoveAssignment)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -460,7 +460,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, getChar_getLength_isEmpty)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -530,7 +530,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -576,7 +576,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_unconstructed)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -609,7 +609,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, copy_banana)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -679,7 +679,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenate)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -725,7 +725,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_unconstructed)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -754,7 +754,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, concatenation_banana)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -800,7 +800,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, isEqualTo)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -1434,7 +1434,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, convert_uint64)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -1516,7 +1516,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_equal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -1598,7 +1598,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_unequal)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.
@@ -1634,7 +1634,7 @@ TEST_F(lib_BaseStringDynamicTest_char_t, operator_assignment_sum)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is correct.

@@ -397,7 +397,7 @@ static const int32_t PRIORITY_IDLE(api::Thread::PRIORITY_IDLE);
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -416,7 +416,7 @@ TEST_F(lib_ThreadTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct a constructed and unconstructed objects of the class.
+ *      - Construct a constructed and unconstructed objects of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -444,7 +444,7 @@ TEST_F(lib_ThreadTest, isConstructed)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an objects of the class.
+ *      - Construct an objects of the class.
  *      - Execute a constructed task
  *
  * @b Assert:
@@ -469,7 +469,7 @@ TEST_F(lib_ThreadTest, execute_normalTask)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an objects of the class.
+ *      - Construct an objects of the class.
  *      - Execute a constructed task with stack defined.
  *
  * @b Assert:
@@ -493,7 +493,7 @@ TEST_F(lib_ThreadTest, execute_stackDefinedTask)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct unconstructed objects of the class.
+ *      - Construct unconstructed objects of the class.
  *      - Execute an unconstructed task.
  *
  * @b Assert:
@@ -516,7 +516,7 @@ TEST_F(lib_ThreadTest, execute_unconstructedTask)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct a constructed and unconstructed objects of the class.
+ *      - Construct a constructed and unconstructed objects of the class.
  *
  * @b Assert:
  *      - Test the constructed object is joined and dead after that.
@@ -548,7 +548,7 @@ TEST_F(lib_ThreadTest, join)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct a constructed and unconstructed objects of the class.
+ *      - Construct a constructed and unconstructed objects of the class.
  *
  * @b Assert:
  *      - Test the constructed object has Normal priority.

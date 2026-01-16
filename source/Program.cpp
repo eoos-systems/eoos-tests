@@ -1,7 +1,7 @@
 /**
  * @file      Prorgam.cpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2023-2025, Sergey Baigudin, Baigudin Software
+ * @copyright 2023-2026, Sergey Baigudin, Baigudin Software
  *
  * @brief Program of tests.
  */
@@ -34,9 +34,8 @@
 #include "lib.Stream.hpp"
 #include "lib.Thread.hpp"
 #include "lib.UniquePointer.hpp"
-/// @todo Develop tests for the new functionality
-#include "lib.Assert.hpp"
 #include "lib.NullMutex.hpp"
+#include "lib.Assert.hpp"
 
 namespace eoos
 {
@@ -87,22 +86,22 @@ void printConfiguration()
         lib::Stream::cout() << "[EOOS ] ENABLE: Dynamic heap memory allocation\r\n";
     #endif
 
-    #if EOOS_GLOBAL_SYS_NUMBER_OF_MUTEXS == 0
+    #if EOOS_GLOBAL_SYS_MUTEX_AMOUNT == 0
         lib::Stream::cout() << "[EOOS ] MEMORY MODE: Mutex in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Mutex in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_MUTEXS << ".\r\n";
+        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Mutex in pool memory of " << EOOS_GLOBAL_SYS_MUTEX_AMOUNT << ".\r\n";
     #endif
 
-    #if EOOS_GLOBAL_SYS_NUMBER_OF_SEMAPHORES == 0
+    #if EOOS_GLOBAL_SYS_SEMAPHORE_AMOUNT == 0
         lib::Stream::cout() << "[EOOS ] MEMORY MODE: Semaphore in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Semaphore in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_SEMAPHORES << ".\r\n";
+        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Semaphore in pool memory of " << EOOS_GLOBAL_SYS_SEMAPHORE_AMOUNT << ".\r\n";
     #endif
 
-    #if EOOS_GLOBAL_SYS_NUMBER_OF_THREADS == 0
+    #if EOOS_GLOBAL_SYS_THREAD_AMOUNT == 0
         lib::Stream::cout() << "[EOOS ] MEMORY MODE: Thread in heap memory.\r\n";
     #else
-        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_SYS_NUMBER_OF_THREADS << ".\r\n";
+        lib::Stream::cout() << "[EOOS ] MEMORY MODE: Thread in pool memory of " << EOOS_GLOBAL_SYS_THREAD_AMOUNT << ".\r\n";
     #endif
 }
 

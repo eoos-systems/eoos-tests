@@ -58,7 +58,7 @@ protected:
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the object is constructed.
@@ -79,7 +79,7 @@ TEST_F(lib_RegisterTest, Constructor)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.
@@ -244,7 +244,7 @@ TEST_F(lib_RegisterTest, bit)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.
@@ -271,7 +271,7 @@ TEST_F(lib_RegisterTest, value)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.
@@ -446,7 +446,7 @@ TEST_F(lib_RegisterTest, setBit)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.
@@ -621,7 +621,7 @@ TEST_F(lib_RegisterTest, clearBit)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.
@@ -687,7 +687,7 @@ TEST_F(lib_RegisterTest, commit)
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an object of the class.
+ *      - Construct an object of the class.
  *
  * @b Assert:
  *      - Test the function is correct.

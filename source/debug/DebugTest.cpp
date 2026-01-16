@@ -88,7 +88,7 @@ static bool_t wait()
  *      - Initialize the EOOS system.
  *
  * @b Act:
- *      - Consctuct an Thread object.
+ *      - Construct an Thread object.
  *      - Delete the Thread object.
  *
  * @b Assert:
